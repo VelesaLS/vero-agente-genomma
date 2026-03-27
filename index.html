@@ -4,204 +4,212 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VERO · Agente de Operaciones PDV · Genomma Lab</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:#080c14; --bg2:#0d1320; --bg3:#121929; --bg4:#1a2438;
-  --border:rgba(255,255,255,0.07); --border2:rgba(255,255,255,0.12);
-  --accent:#00e5a0; --accent3:#5b8fff;
-  --red:#ff4757; --amber:#ffa502; --green:#2ed573;
-  --text:#e8edf5; --text2:#8892a4; --text3:#4a5568;
-  --mono:'Space Mono',monospace; --display:'Syne',sans-serif; --body:'DM Sans',sans-serif;
+  --bg:#f8f9fc; --bg2:#ffffff; --bg3:#f1f3f8; --bg4:#e8ecf4;
+  --sidebar:#1a2540; --sidebar2:#243050; --border:#e2e8f0; --border2:#cbd5e1;
+  --accent:#0ea96e; --blue:#2563eb; --red:#e53e3e; --amber:#d97706; --green:#059669;
+  --text:#1e293b; --text2:#64748b; --text3:#94a3b8;
+  --sans:'Plus Jakarta Sans',sans-serif; --body:'Inter',sans-serif;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh;overflow:hidden;}
-body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,229,160,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,160,0.02) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
-.orb{position:fixed;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0;}
-.orb1{width:500px;height:500px;background:rgba(0,229,160,0.04);top:-150px;left:-150px;}
-.orb2{width:350px;height:350px;background:rgba(91,143,255,0.05);bottom:0;right:0;}
- 
-/* LAYOUT PRINCIPAL — flex row, altura completa */
-.shell{position:relative;z-index:1;display:flex;height:100vh;overflow:hidden;}
+.shell{display:flex;height:100vh;overflow:hidden;}
  
 /* SIDEBAR */
-.sidebar{width:240px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;}
-.sidebar-header{padding:20px 16px;border-bottom:1px solid var(--border);}
-.agent-badge{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
-.agent-logo{width:38px;height:38px;border-radius:9px;background:linear-gradient(135deg,#00e5a0,#5b8fff);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:800;font-size:15px;color:#080c14;flex-shrink:0;}
-.agent-name{font-family:var(--display);font-weight:800;font-size:16px;letter-spacing:-0.5px;}
-.agent-sub{font-size:9px;color:var(--text2);letter-spacing:0.08em;text-transform:uppercase;}
-.live-dot{display:inline-flex;align-items:center;gap:6px;font-size:10px;color:var(--accent);font-family:var(--mono);}
-.live-dot::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);animation:pulse 2s infinite;}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
-.nav-section{padding:12px 8px 6px;}
-.nav-label{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);font-family:var(--mono);padding:0 8px 6px;}
-.nav-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:7px;cursor:pointer;font-size:12px;color:var(--text2);transition:all .2s;border:1px solid transparent;}
-.nav-item:hover{background:var(--bg3);color:var(--text);}
-.nav-item.active{background:rgba(0,229,160,0.08);border-color:rgba(0,229,160,0.2);color:var(--accent);}
-.nav-icon{font-size:14px;width:18px;text-align:center;}
-.kpi-stack{padding:12px 10px;border-top:1px solid var(--border);margin-top:auto;}
-.kpi-pill{display:flex;justify-content:space-between;align-items:center;padding:6px 10px;border-radius:5px;margin-bottom:5px;background:var(--bg3);font-size:11px;}
-.kpi-pill .label{color:var(--text2);}
-.kpi-pill .val{font-family:var(--mono);font-weight:700;font-size:12px;}
-.val.red{color:var(--red);} .val.amber{color:var(--amber);} .val.green{color:var(--green);} .val.blue{color:var(--accent3);}
-.sidebar-footer{padding:12px 16px;border-top:1px solid var(--border);font-size:10px;color:var(--text3);font-family:var(--mono);}
+.sidebar{width:228px;flex-shrink:0;background:var(--sidebar);display:flex;flex-direction:column;overflow-y:auto;}
+.sh{padding:18px 14px 14px;border-bottom:1px solid rgba(255,255,255,0.07);}
+.logo-row{display:flex;align-items:center;gap:9px;margin-bottom:4px;}
+.logo-box{width:32px;height:32px;border-radius:7px;background:linear-gradient(135deg,#00e5a0,#2563eb);display:flex;align-items:center;justify-content:center;font-family:var(--sans);font-weight:800;font-size:13px;color:#fff;flex-shrink:0;}
+.logo-name{font-family:var(--sans);font-weight:800;font-size:14px;color:#fff;}
+.logo-sub{font-size:9px;color:rgba(255,255,255,0.35);letter-spacing:.06em;text-transform:uppercase;}
+.live-b{display:inline-flex;align-items:center;gap:5px;font-size:10px;color:#00e5a0;margin-top:7px;}
+.live-b::before{content:'';width:5px;height:5px;border-radius:50%;background:#00e5a0;box-shadow:0 0 5px #00e5a0;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
  
-/* MAIN — columna derecha, flex column */
+.ns{padding:10px 8px 4px;}
+.ng{font-size:9px;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.25);padding:0 7px 5px;}
+.ni{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:6px;cursor:pointer;font-size:12px;color:rgba(255,255,255,.55);transition:all .15s;border:1px solid transparent;user-select:none;}
+.ni:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.9);}
+.ni.active{background:rgba(0,229,160,.1);border-color:rgba(0,229,160,.22);color:#00e5a0;}
+.ni-icon{width:16px;text-align:center;font-size:12px;flex-shrink:0;}
+.ni-kpi{margin-left:auto;font-size:9px;font-weight:600;padding:1px 5px;border-radius:8px;}
+.kred{background:rgba(229,62,62,.18);color:#fc8181;}
+.kamb{background:rgba(217,119,6,.18);color:#fbbf24;}
+.kgrn{background:rgba(5,150,105,.18);color:#34d399;}
+ 
+.kpi-s{padding:10px 10px 6px;border-top:1px solid rgba(255,255,255,.05);margin-top:auto;}
+.kpi-sl{font-size:9px;color:rgba(255,255,255,.22);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px;}
+.kr{display:flex;justify-content:space-between;padding:5px 7px;border-radius:4px;font-size:11px;margin-bottom:3px;background:rgba(255,255,255,.03);}
+.kr .k{color:rgba(255,255,255,.4);}
+.kr .v{font-weight:600;}
+.vred{color:#fc8181;}.vamb{color:#fbbf24;}.vgrn{color:#34d399;}.vblu{color:#93c5fd;}
+.sf{padding:9px 13px;border-top:1px solid rgba(255,255,255,.05);font-size:9px;color:rgba(255,255,255,.18);}
+ 
+/* MAIN */
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
  
-/* TOPBAR — altura fija */
-.topbar{padding:12px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--bg);flex-shrink:0;}
-.topbar-title{font-family:var(--display);font-weight:700;font-size:16px;letter-spacing:-0.5px;}
-.topbar-meta{font-size:11px;color:var(--text2);margin-top:2px;}
-.topbar-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
-.chip{padding:4px 10px;border-radius:20px;font-size:10px;border:1px solid var(--border2);color:var(--text2);font-family:var(--mono);cursor:pointer;transition:all .2s;background:var(--bg2);}
-.chip.active{border-color:var(--accent);color:var(--accent);background:rgba(0,229,160,0.08);}
-.week-badge{font-family:var(--mono);font-size:10px;padding:4px 8px;border-radius:4px;background:rgba(91,143,255,0.1);color:var(--accent3);border:1px solid rgba(91,143,255,0.2);}
+/* TOPBAR */
+.topbar{padding:0 22px;height:54px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--bg2);flex-shrink:0;}
+.tb-t{font-family:var(--sans);font-weight:700;font-size:14px;color:var(--text);letter-spacing:-.3px;}
+.tb-m{font-size:10px;color:var(--text2);margin-top:1px;}
+.tb-r{display:flex;align-items:center;gap:7px;}
+.zchip{padding:4px 11px;border-radius:20px;font-size:10px;border:1.5px solid var(--border2);color:var(--text2);cursor:pointer;transition:all .15s;background:var(--bg2);font-weight:500;}
+.zchip:hover{border-color:var(--accent);color:var(--accent);}
+.zchip.active{border-color:var(--accent);color:var(--accent);background:rgba(14,169,110,.06);}
+.wtag{font-size:10px;padding:4px 9px;border-radius:5px;background:var(--sidebar);color:#fff;font-weight:600;}
  
-/* CONTENT — scroll interno */
-.content{flex:1;overflow-y:auto;padding:16px 20px;min-height:0;max-height:calc(100vh - 60px - 260px);}
+/* CONTENT */
+.content{flex:1;overflow-y:auto;padding:18px 22px;min-height:0;}
  
-/* CHAT — altura fija abajo */
-.chat-wrapper{flex-shrink:0;background:var(--bg2);border-top:1px solid var(--border);display:flex;flex-direction:column;height:260px;min-height:260px;}
-.chat-messages{padding:12px 16px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;flex:1;}
-.msg{display:flex;gap:8px;animation:fadeUp .3s ease;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.msg-avatar{width:26px;height:26px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;font-family:var(--display);}
-.msg-avatar.agent{background:linear-gradient(135deg,#00e5a0,#5b8fff);color:#080c14;}
-.msg-avatar.user{background:var(--bg4);color:var(--text2);border:1px solid var(--border2);}
-.msg-bubble{background:var(--bg3);border:1px solid var(--border);border-radius:0 9px 9px 9px;padding:9px 12px;font-size:12px;color:var(--text);line-height:1.6;max-width:600px;}
-.msg.user .msg-bubble{border-radius:9px 0 9px 9px;background:var(--bg4);}
-.msg-bubble b{color:var(--accent);font-weight:600;}
-.quick-btns{display:flex;flex-wrap:wrap;gap:5px;padding:8px 16px;border-bottom:1px solid var(--border);}
-.quick-btn{padding:5px 10px;border-radius:5px;border:1px solid var(--border);background:var(--bg3);color:var(--text2);font-size:10px;cursor:pointer;transition:all .2s;font-family:var(--mono);}
-.quick-btn:hover{border-color:var(--accent);color:var(--accent);}
-.chat-input-row{padding:10px 16px;border-top:1px solid var(--border);display:flex;gap:8px;flex-shrink:0;}
-.chat-input{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:9px 14px;color:var(--text);font-family:var(--body);font-size:12px;outline:none;transition:border-color .2s;}
-.chat-input:focus{border-color:var(--accent);}
-.chat-input::placeholder{color:var(--text3);}
-.chat-send{padding:9px 16px;border-radius:7px;background:var(--accent);color:#080c14;border:none;font-family:var(--display);font-weight:700;font-size:12px;cursor:pointer;transition:all .2s;white-space:nowrap;}
-.chat-send:hover{background:#00c98e;}
-.chat-send:disabled{background:var(--bg4);color:var(--text3);cursor:not-allowed;}
-.typing{display:flex;gap:4px;align-items:center;}
-.typing span{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:bounce 1.2s infinite;}
-.typing span:nth-child(2){animation-delay:.2s} .typing span:nth-child(3){animation-delay:.4s}
-@keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-5px)}}
+/* METRIC GRID */
+.mg{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:14px;}
+.mc{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:14px 16px;position:relative;overflow:hidden;transition:box-shadow .15s;}
+.mc:hover{box-shadow:0 2px 10px rgba(0,0,0,.06);}
+.mc .ab{position:absolute;top:0;left:0;right:0;height:3px;}
+.ab-r{background:var(--red);}.ab-a{background:var(--amber);}
+.ab-g{background:var(--green);}.ab-b{background:var(--blue);}
+.ml{font-size:9px;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);font-weight:600;margin-bottom:7px;margin-top:2px;}
+.mv{font-family:var(--sans);font-weight:800;font-size:24px;letter-spacing:-.5px;line-height:1;}
+.mv.red{color:var(--red);}.mv.amb{color:var(--amber);}.mv.grn{color:var(--green);}.mv.blu{color:var(--blue);}
+.ms{font-size:10px;color:var(--text2);margin-top:4px;}
  
-/* METRIC GRID — 4 columnas */
-.metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
-.metric-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;position:relative;overflow:hidden;transition:border-color .2s,transform .2s;}
-.metric-card:hover{border-color:var(--border2);transform:translateY(-1px);}
-.metric-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;}
-.metric-card.red::after{background:var(--red);} .metric-card.amber::after{background:var(--amber);}
-.metric-card.green::after{background:var(--green);} .metric-card.blue::after{background:var(--accent3);}
-.metric-label{font-size:9px;text-transform:uppercase;letter-spacing:0.1em;color:var(--text3);font-family:var(--mono);margin-bottom:8px;}
-.metric-value{font-family:var(--display);font-weight:800;font-size:26px;letter-spacing:-1px;line-height:1;}
-.metric-value.red{color:var(--red);} .metric-value.amber{color:var(--amber);} .metric-value.green{color:var(--green);}
-.metric-value.blue{color:var(--accent3);} .metric-value.accent{color:var(--accent);}
-.metric-sub{font-size:10px;color:var(--text2);margin-top:5px;}
- 
-/* GRID 2 */
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:13px;}
  
 /* PANELS */
-.panel{background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:12px;}
-.panel-header{padding:11px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
-.panel-title{font-family:var(--display);font-weight:700;font-size:13px;letter-spacing:-0.3px;}
-.panel-badge{font-family:var(--mono);font-size:9px;padding:3px 7px;border-radius:20px;background:rgba(255,71,87,0.12);color:var(--red);border:1px solid rgba(255,71,87,0.2);}
-.panel-badge.amber{background:rgba(255,165,2,0.12);color:var(--amber);border-color:rgba(255,165,2,0.2);}
-.panel-badge.green{background:rgba(46,213,115,0.12);color:var(--green);border-color:rgba(46,213,115,0.2);}
-.panel-body{padding:12px 14px;}
+.panel{background:var(--bg2);border:1px solid var(--border);border-radius:9px;overflow:hidden;margin-bottom:13px;}
+.panel:last-child{margin-bottom:0;}
+.ph{padding:11px 15px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.pt{font-family:var(--sans);font-weight:700;font-size:12px;color:var(--text);}
+.pt::before{content:'';display:inline-block;width:3px;height:12px;border-radius:2px;margin-right:7px;vertical-align:middle;}
+.pt.tr::before{background:var(--red);}.pt.ta::before{background:var(--amber);}
+.pt.tg::before{background:var(--green);}.pt.tb::before{background:var(--blue);}
+.badge{font-size:9px;padding:2px 7px;border-radius:20px;font-weight:600;}
+.br{background:#fff5f5;color:var(--red);border:1px solid #fed7d7;}
+.ba{background:#fffbeb;color:var(--amber);border:1px solid #fde68a;}
+.bg{background:#f0fdf4;color:var(--green);border:1px solid #bbf7d0;}
+.bb{background:#eff6ff;color:var(--blue);border:1px solid #bfdbfe;}
+.pb{padding:13px 15px;}
  
 /* TABLE */
-.data-table{width:100%;border-collapse:collapse;font-size:11px;}
-.data-table th{text-align:left;padding:6px 8px;color:var(--text3);font-size:9px;text-transform:uppercase;letter-spacing:0.08em;font-family:var(--mono);border-bottom:1px solid var(--border);}
-.data-table td{padding:7px 8px;border-bottom:1px solid var(--border);color:var(--text2);}
-.data-table tr:last-child td{border-bottom:none;}
-.data-table tr:hover td{background:rgba(255,255,255,0.02);}
-.td-name{color:var(--text)!important;font-weight:500;}
-.td-red{color:var(--red)!important;font-family:var(--mono);font-size:10px;}
-.td-amber{color:var(--amber)!important;font-family:var(--mono);font-size:10px;}
-.td-green{color:var(--green)!important;font-family:var(--mono);font-size:10px;}
-.td-blue{color:var(--accent3)!important;font-family:var(--mono);font-size:10px;}
+.tbl{width:100%;border-collapse:collapse;font-size:11px;}
+.tbl th{text-align:left;padding:6px 7px;color:var(--text3);font-size:9px;text-transform:uppercase;letter-spacing:.06em;font-weight:600;border-bottom:1px solid var(--border);background:var(--bg3);}
+.tbl td{padding:7px 7px;border-bottom:1px solid var(--border);color:var(--text2);}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tr:hover td{background:var(--bg3);}
+.tdm{color:var(--text)!important;font-weight:500;}
+.cr{color:var(--red)!important;font-weight:600;}
+.ca{color:var(--amber)!important;font-weight:600;}
+.cg{color:var(--green)!important;font-weight:600;}
+.cb{color:var(--blue)!important;font-weight:600;}
+ 
+/* PILL */
+.pill{display:inline-block;font-size:9px;padding:2px 6px;border-radius:9px;font-weight:600;}
+.pr{background:#fff5f5;color:var(--red);border:1px solid #fed7d7;}
+.pa{background:#fffbeb;color:var(--amber);border:1px solid #fde68a;}
+.pg{background:#f0fdf4;color:var(--green);border:1px solid #bbf7d0;}
  
 /* ALERT ROWS */
-.alert-row{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);}
-.alert-row:last-child{border-bottom:none;}
-.alert-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:4px;}
-.dot-red{background:var(--red);box-shadow:0 0 6px var(--red);}
-.dot-amber{background:var(--amber);box-shadow:0 0 6px var(--amber);}
-.dot-green{background:var(--green);}
-.alert-content{flex:1;}
-.alert-title{font-size:11px;font-weight:500;color:var(--text);margin-bottom:2px;}
-.alert-meta{font-size:10px;color:var(--text2);line-height:1.5;}
-.alert-tag{font-family:var(--mono);font-size:8px;padding:2px 5px;border-radius:3px;margin-left:5px;}
-.tag-red{background:rgba(255,71,87,0.15);color:var(--red);}
-.tag-amber{background:rgba(255,165,2,0.15);color:var(--amber);}
+.ar{display:flex;align-items:flex-start;gap:9px;padding:9px 0;border-bottom:1px solid var(--border);}
+.ar:last-child{border-bottom:none;}
+.ai{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;}
+.air{background:#fff5f5;}.aia{background:#fffbeb;}
+.ac{flex:1;}
+.at{font-size:11px;font-weight:600;color:var(--text);margin-bottom:2px;}
+.am{font-size:10px;color:var(--text2);line-height:1.5;}
  
 /* PROGRESS */
-.prog-row{margin-bottom:10px;}
-.prog-header{display:flex;justify-content:space-between;margin-bottom:4px;font-size:11px;}
-.prog-label{color:var(--text2);}
-.prog-val{font-family:var(--mono);font-size:10px;}
-.prog-track{height:4px;background:var(--bg4);border-radius:2px;overflow:hidden;}
-.prog-fill{height:100%;border-radius:2px;transition:width 1s ease;}
-.fill-red{background:var(--red);} .fill-amber{background:var(--amber);}
-.fill-green{background:var(--green);} .fill-accent{background:var(--accent);}
+.pr-row{margin-bottom:9px;}
+.pr-hdr{display:flex;justify-content:space-between;margin-bottom:3px;font-size:11px;}
+.pr-lbl{color:var(--text2);font-weight:500;}
+.pr-val{font-weight:700;font-size:11px;}
+.pr-track{height:4px;background:var(--bg3);border-radius:2px;overflow:hidden;}
+.pr-fill{height:100%;border-radius:2px;transition:width 1s ease;}
+.pfr{background:var(--red);}.pfa{background:var(--amber);}
+.pfg{background:var(--green);}.pfb{background:var(--blue);}
  
 /* SEMAFORO */
-.semaforo-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);}
-.semaforo-item:last-child{border-bottom:none;}
-.sem-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-.sem-label{flex:1;font-size:11px;color:var(--text2);}
-.sem-val{font-family:var(--mono);font-size:11px;font-weight:700;}
-.sem-note{font-size:9px;color:var(--text3);margin-left:auto;max-width:140px;text-align:right;}
+.sr{display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:1px solid var(--border);}
+.sr:last-child{border-bottom:none;}
+.sd{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.sl{flex:1;font-size:11px;color:var(--text2);}
+.sv{font-weight:700;font-size:11px;}
+.sn{font-size:9px;color:var(--text3);max-width:120px;text-align:right;}
  
-/* VAC ROW */
-.vac-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);font-size:11px;}
-.vac-row:last-child{border-bottom:none;}
-.vac-ruta{font-family:var(--mono);color:var(--accent3);font-size:10px;margin-right:6px;}
-.vac-tiendas{font-family:var(--mono);font-weight:700;font-size:13px;}
+/* VAC */
+.vrow{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);font-size:11px;}
+.vrow:last-child{border-bottom:none;}
+.vc{font-weight:700;color:var(--blue);font-size:10px;margin-right:5px;}
+.vn{font-weight:800;font-size:13px;}
  
-/* TAB CONTENT */
-.tab-content{display:none;}
-.tab-content.active{display:block;}
+/* TIP */
+.tip{padding:8px 11px;border-radius:6px;font-size:11px;color:var(--text2);margin-top:9px;border:1px solid;}
+.tipg{background:#f0fdf4;border-color:#bbf7d0;}
+.tipa{background:#fffbeb;border-color:#fde68a;}
+.tipb{background:#eff6ff;border-color:#bfdbfe;}
  
-/* SCROLLBAR */
-::-webkit-scrollbar{width:4px;}
-::-webkit-scrollbar-track{background:transparent;}
-::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:2px;}
+/* TAB */
+.tab-content{display:none;}.tab-content.active{display:block;}
+ 
+/* CHAT — altura fija, no afecta content */
+.chat-w{height:255px;min-height:255px;flex-shrink:0;background:var(--bg2);border-top:1px solid var(--border);display:flex;flex-direction:column;}
+.qrow{display:flex;flex-wrap:wrap;gap:5px;padding:7px 14px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.qbtn{padding:4px 9px;border-radius:5px;border:1px solid var(--border2);background:var(--bg2);color:var(--text2);font-size:10px;cursor:pointer;transition:all .15s;font-weight:500;}
+.qbtn:hover{border-color:var(--accent);color:var(--accent);background:rgba(14,169,110,.04);}
+.msgs{flex:1;overflow-y:auto;padding:9px 14px;display:flex;flex-direction:column;gap:7px;}
+.msg{display:flex;gap:7px;animation:fu .25s ease;}
+@keyframes fu{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.mav{width:24px;height:24px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;font-family:var(--sans);}
+.ava{background:linear-gradient(135deg,#00e5a0,#2563eb);color:#fff;}
+.avu{background:var(--sidebar);color:#fff;}
+.mb{border-radius:0 7px 7px 7px;padding:7px 11px;font-size:11px;line-height:1.55;max-width:580px;border:1px solid var(--border);}
+.mba{background:var(--bg2);color:var(--text);}
+.mbu{background:var(--sidebar);color:rgba(255,255,255,.9);border-color:transparent;border-radius:7px 0 7px 7px;}
+.mb b{color:#0d9161;font-weight:600;}
+.inrow{padding:7px 14px;border-top:1px solid var(--border);display:flex;gap:7px;flex-shrink:0;}
+.chin{flex:1;background:var(--bg3);border:1.5px solid var(--border);border-radius:6px;padding:8px 12px;color:var(--text);font-family:var(--body);font-size:11px;outline:none;transition:border-color .15s;}
+.chin:focus{border-color:var(--accent);background:var(--bg2);}
+.chin::placeholder{color:var(--text3);}
+.csend{padding:8px 14px;border-radius:6px;background:var(--sidebar);color:#fff;border:none;font-family:var(--sans);font-weight:700;font-size:11px;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.csend:hover{background:var(--sidebar2);}
+.csend:disabled{background:var(--bg4);color:var(--text3);cursor:not-allowed;}
+.typing{display:flex;gap:3px;align-items:center;}
+.typing span{width:4px;height:4px;border-radius:50%;background:var(--text3);animation:bo 1.2s infinite;}
+.typing span:nth-child(2){animation-delay:.2s}.typing span:nth-child(3){animation-delay:.4s}
+@keyframes bo{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-4px)}}
+ 
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:2px;}
  
 /* MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(8,12,20,0.94);display:flex;align-items:center;justify-content:center;z-index:100;backdrop-filter:blur(6px);}
-.modal-box{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:32px;max-width:440px;width:90%;animation:fadeUp .4s ease;}
-.modal-logo{width:50px;height:50px;border-radius:12px;background:linear-gradient(135deg,#00e5a0,#5b8fff);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:800;font-size:20px;color:#080c14;margin-bottom:18px;}
-.modal-title{font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:-0.5px;margin-bottom:6px;}
-.modal-sub{font-size:12px;color:var(--text2);margin-bottom:20px;line-height:1.6;}
-.modal-label{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:0.08em;font-family:var(--mono);margin-bottom:5px;}
-.modal-input{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:7px;padding:11px 14px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none;margin-bottom:14px;transition:border-color .2s;}
-.modal-input:focus{border-color:var(--accent);}
-.modal-btn{width:100%;padding:12px;border-radius:7px;background:var(--accent);color:#080c14;border:none;font-family:var(--display);font-weight:700;font-size:14px;cursor:pointer;transition:all .2s;}
-.modal-btn:hover{background:#00c98e;}
-.modal-note{font-size:10px;color:var(--text3);margin-top:10px;text-align:center;font-family:var(--mono);}
-.modal-error{font-size:11px;color:var(--red);margin-top:8px;display:none;font-family:var(--mono);}
+.mo{position:fixed;inset:0;background:rgba(15,23,42,.55);display:flex;align-items:center;justify-content:center;z-index:100;backdrop-filter:blur(3px);}
+.mb2{background:#fff;border:1px solid var(--border);border-radius:13px;padding:30px;max-width:400px;width:90%;box-shadow:0 20px 50px rgba(0,0,0,.12);}
+.mlog{width:42px;height:42px;border-radius:9px;background:linear-gradient(135deg,#00e5a0,#2563eb);display:flex;align-items:center;justify-content:center;font-family:var(--sans);font-weight:800;font-size:16px;color:#fff;margin-bottom:14px;}
+.mti{font-family:var(--sans);font-weight:800;font-size:19px;color:var(--text);margin-bottom:3px;}
+.msu{font-size:12px;color:var(--text2);margin-bottom:18px;line-height:1.6;}
+.mla{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:.07em;font-weight:600;margin-bottom:4px;}
+.min{width:100%;background:var(--bg3);border:1.5px solid var(--border2);border-radius:6px;padding:10px 12px;color:var(--text);font-family:var(--body);font-size:12px;outline:none;margin-bottom:11px;transition:border-color .15s;}
+.min:focus{border-color:var(--accent);background:#fff;}
+.mbtn{width:100%;padding:11px;border-radius:6px;background:var(--sidebar);color:#fff;border:none;font-family:var(--sans);font-weight:700;font-size:13px;cursor:pointer;transition:all .15s;}
+.mbtn:hover{background:var(--sidebar2);}
+.merr{font-size:11px;color:var(--red);margin-top:7px;display:none;padding:6px 9px;background:#fff5f5;border-radius:5px;border:1px solid #fed7d7;}
+.mnote{font-size:9px;color:var(--text3);margin-top:9px;text-align:center;}
 </style>
 </head>
 <body>
-<div class="orb orb1"></div>
-<div class="orb orb2"></div>
  
-<!-- MODAL -->
-<div class="modal-overlay" id="modal">
-  <div class="modal-box">
-    <div class="modal-logo">V</div>
-    <div class="modal-title">VERO · Agente Operaciones</div>
-    <div class="modal-sub">Agente de Visibilidad y Ejecución en Retail de Operaciones PDV · Genomma Lab.<br>Ingresa tu API Key de Anthropic para activar el análisis inteligente.</div>
-    <div class="modal-label">API Key de Anthropic</div>
-    <input type="password" class="modal-input" id="apiKeyInput" placeholder="sk-ant-api03-..." autocomplete="off"/>
-    <button class="modal-btn" onclick="activateAgent()">Activar VERO →</button>
-    <div class="modal-error" id="modalError">⚠ API Key inválida. Verifica que empiece con sk-ant-api03-</div>
-    <div class="modal-note">Tu clave se guarda solo en esta sesión · No se almacena en servidores</div>
+<!-- MODAL API KEY -->
+<div class="mo" id="modal" style="display:none;">
+  <div class="mb2">
+    <div class="mlog">V</div>
+    <div class="mti">VERO · Agente Operaciones PDV</div>
+    <div class="msu">Genomma Lab · Visibilidad y Ejecución en Retail de Operaciones.<br>Ingresa tu API Key de Anthropic para activar el análisis.</div>
+    <div class="mla">API Key de Anthropic</div>
+    <input type="password" class="min" id="apiKeyInput" placeholder="sk-ant-api03-..." autocomplete="off"/>
+    <button class="mbtn" onclick="activateAgent()">Activar VERO →</button>
+    <div class="merr" id="modalErr">⚠ API Key inválida. Debe empezar con sk-ant-api03-</div>
+    <div class="mnote">Tu clave se guarda solo en esta sesión · No se almacena en servidores</div>
   </div>
 </div>
  
@@ -210,190 +218,182 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
  
   <!-- SIDEBAR -->
   <div class="sidebar">
-    <div class="sidebar-header">
-      <div class="agent-badge">
-        <div class="agent-logo">V</div>
-        <div><div class="agent-name">VERO</div><div class="agent-sub">Ops Intelligence Agent</div></div>
+    <div class="sh">
+      <div class="logo-row">
+        <div class="logo-box">V</div>
+        <div><div class="logo-name">VERO</div><div class="logo-sub">Ops Intelligence</div></div>
       </div>
-      <div class="live-dot">ACTIVO · Genomma Lab</div>
+      <div class="live-b">ACTIVO · Genomma Lab</div>
     </div>
-    <div class="nav-section">
-      <div class="nav-label">Módulos</div>
-      <div class="nav-item active" onclick="switchTab('dashboard',this)"><span class="nav-icon">⊞</span> Dashboard General</div>
-      <div class="nav-item" onclick="switchTab('vacantes',this)"><span class="nav-icon">⚠</span> Vacantes</div>
-      <div class="nav-item" onclick="switchTab('supervisores',this)"><span class="nav-icon">◈</span> Supervisores</div>
-      <div class="nav-item" onclick="switchTab('nuevos',this)"><span class="nav-icon">◉</span> Nuevos Ingresos</div>
-      <div class="nav-item" onclick="switchTab('concursos',this)"><span class="nav-icon">★</span> Concursos</div>
+ 
+    <div class="ns">
+      <div class="ng">Módulos</div>
+      <div class="ni active" id="nav-dashboard" onclick="goTab('dashboard','nav-dashboard')">
+        <span class="ni-icon">⊞</span> Dashboard General
+      </div>
+      <div class="ni" id="nav-vacantes" onclick="goTab('vacantes','nav-vacantes')">
+        <span class="ni-icon">⚠</span> Vacantes
+      </div>
+      <div class="ni" id="nav-supervisores" onclick="goTab('supervisores','nav-supervisores')">
+        <span class="ni-icon">◈</span> Supervisores
+      </div>
+      <div class="ni" id="nav-nuevos" onclick="goTab('nuevos','nav-nuevos')">
+        <span class="ni-icon">◉</span> Nuevos Ingresos
+      </div>
+      <div class="ni" id="nav-concursos" onclick="goTab('concursos','nav-concursos')">
+        <span class="ni-icon">★</span> Concursos
+      </div>
     </div>
-    <div class="nav-section">
-      <div class="nav-label">Zonas</div>
-      <div class="nav-item" onclick="askAbout('¿Cuál es el estado actual de la zona Bajío y qué acciones urgentes necesito tomar esta semana?')"><span class="nav-icon" style="color:var(--red)">●</span> Bajío <span style="margin-left:auto;font-family:var(--mono);font-size:9px;color:var(--red)">51.8%</span></div>
-      <div class="nav-item" onclick="askAbout('¿Cuál es el estado de la zona Norte y por qué sigue cayendo su efectividad?')"><span class="nav-icon" style="color:var(--amber)">●</span> Norte <span style="margin-left:auto;font-family:var(--mono);font-size:9px;color:var(--amber)">59.5%</span></div>
-      <div class="nav-item" onclick="askAbout('¿Qué está haciendo bien la zona Sureste?')"><span class="nav-icon" style="color:var(--green)">●</span> Sureste <span style="margin-left:auto;font-family:var(--mono);font-size:9px;color:var(--green)">73.5%</span></div>
-      <div class="nav-item" onclick="askAbout('¿Por qué Centro lidera el país y qué pueden aprender las otras zonas?')"><span class="nav-icon" style="color:var(--accent)">●</span> Centro <span style="margin-left:auto;font-family:var(--mono);font-size:9px;color:var(--accent)">80.1%</span></div>
+ 
+    <div class="ns">
+      <div class="ng">Consultar zona al chat</div>
+      <div class="ni" onclick="ask('Cuál es el estado actual de la zona Bajío y qué acciones urgentes necesito tomar esta semana?')">
+        <span class="ni-icon" style="color:#fc8181">●</span> Bajío
+        <span class="ni-kpi kred">51.8%</span>
+      </div>
+      <div class="ni" onclick="ask('Cuál es el estado de la zona Norte y por qué sigue cayendo su efectividad?')">
+        <span class="ni-icon" style="color:#fbbf24">●</span> Norte
+        <span class="ni-kpi kamb">59.5%</span>
+      </div>
+      <div class="ni" onclick="ask('Qué está haciendo bien la zona Sureste para mantener su tendencia positiva?')">
+        <span class="ni-icon" style="color:#34d399">●</span> Sureste
+        <span class="ni-kpi kgrn">73.5%</span>
+      </div>
+      <div class="ni" onclick="ask('Por qué Centro lidera el país y qué pueden aprender las otras zonas?')">
+        <span class="ni-icon" style="color:#93c5fd">●</span> Centro
+        <span class="ni-kpi kgrn">80.1%</span>
+      </div>
     </div>
-    <div class="kpi-stack">
-      <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);font-family:var(--mono);margin-bottom:6px;">S12 · Resumen</div>
-      <div class="kpi-pill"><span class="label">HC Veronica</span><span class="val blue">163</span></div>
-      <div class="kpi-pill"><span class="label">Promotores activos</span><span class="val green">154</span></div>
-      <div class="kpi-pill"><span class="label">Vacantes</span><span class="val red">10</span></div>
-      <div class="kpi-pill"><span class="label">Nuevos &lt;90d</span><span class="val amber">30</span></div>
-      <div class="kpi-pill"><span class="label">En curva &lt;15d</span><span class="val red">8</span></div>
-      <div class="kpi-pill"><span class="label">Tiendas vacantes</span><span class="val red">244</span></div>
+ 
+    <div class="kpi-s">
+      <div class="kpi-sl">S12 · Resumen</div>
+      <div class="kr"><span class="k">HC Veronica</span><span class="v vblu">163</span></div>
+      <div class="kr"><span class="k">Promotores activos</span><span class="v vgrn">154</span></div>
+      <div class="kr"><span class="k">Vacantes</span><span class="v vred">10</span></div>
+      <div class="kr"><span class="k">Nuevos &lt;90d</span><span class="v vamb">30</span></div>
+      <div class="kr"><span class="k">En curva &lt;15d</span><span class="v vred">8</span></div>
+      <div class="kr"><span class="k">Tiendas sin cob.</span><span class="v vred">244</span></div>
     </div>
-    <div class="sidebar-footer">Datos: S09–S12 2026 · Rutero 13-Mar<br>Genomma Lab · Dirección de Operaciones</div>
+    <div class="sf">Datos: S09–S12 · Rutero 13-Mar-2026<br>Genomma Lab · Dirección de Operaciones</div>
   </div>
  
   <!-- MAIN -->
   <div class="main">
-    <!-- TOPBAR -->
     <div class="topbar">
       <div>
-        <div class="topbar-title">VERO · Visibilidad y Ejecución en Retail de Operaciones</div>
-        <div class="topbar-meta">Lider: Verónica León · Zonas: Bajío y Occidente · 13-Mar-2026</div>
+        <div class="tb-t">VERO · Visibilidad y Ejecución en Retail de Operaciones</div>
+        <div class="tb-m">Líder: Verónica León · Bajío y Occidente · 13-Mar-2026</div>
       </div>
-      <div class="topbar-right">
-        <span class="week-badge">S12 / 2026</span>
-        <div class="chip active">Bajío</div>
-        <div class="chip">Norte</div>
-        <div class="chip">Todas</div>
+      <div class="tb-r">
+        <span class="wtag">S12 / 2026</span>
+        <div class="zchip active">Bajío</div>
+        <div class="zchip">Norte</div>
+        <div class="zchip">Todas</div>
       </div>
     </div>
  
-    <!-- CONTENT SCROLLABLE -->
+    <!-- CONTENT AREA - scrollable -->
     <div class="content" id="mainContent">
  
       <!-- DASHBOARD -->
       <div class="tab-content active" id="tab-dashboard">
-        <div class="metric-grid">
-          <div class="metric-card red">
-            <div class="metric-label">Efectividad Bajío S12</div>
-            <div class="metric-value red">51.8%</div>
-            <div class="metric-sub">Sin mejora 4 semanas · -28 pts vs Centro</div>
-          </div>
-          <div class="metric-card red">
-            <div class="metric-label">Vacantes activas</div>
-            <div class="metric-value red">10</div>
-            <div class="metric-sub">De 163 HC · +6 en 3 semanas</div>
-          </div>
-          <div class="metric-card red">
-            <div class="metric-label">Tiendas sin cobertura</div>
-            <div class="metric-value red">244</div>
-            <div class="metric-sub">14 rutas vacantes · Gallegos / NL</div>
-          </div>
-          <div class="metric-card amber">
-            <div class="metric-label">En curva crítica &lt;15d</div>
-            <div class="metric-value amber">8</div>
-            <div class="metric-sub">Sin SIM · Sin captura posible</div>
-          </div>
+        <div class="mg">
+          <div class="mc"><div class="ab ab-r"></div><div class="ml">Efectividad Bajío S12</div><div class="mv red">51.8%</div><div class="ms">Sin mejora 4 semanas · -28 pts vs Centro</div></div>
+          <div class="mc"><div class="ab ab-r"></div><div class="ml">Vacantes activas</div><div class="mv red">10</div><div class="ms">De 163 HC · +6 en 3 semanas</div></div>
+          <div class="mc"><div class="ab ab-r"></div><div class="ml">Tiendas sin cobertura</div><div class="mv red">244</div><div class="ms">14 rutas vacantes · Gallegos / NL</div></div>
+          <div class="mc"><div class="ab ab-a"></div><div class="ml">En curva crítica &lt;15d</div><div class="mv amb">8</div><div class="ms">Sin SIM · Sin captura posible</div></div>
         </div>
-        <div class="metric-grid">
-          <div class="metric-card amber">
-            <div class="metric-label">Sin captura S12</div>
-            <div class="metric-value amber">1,420</div>
-            <div class="metric-sub">Tareas no ejecutadas</div>
-          </div>
-          <div class="metric-card amber">
-            <div class="metric-label">Falta de POP S12</div>
-            <div class="metric-value amber">1,966</div>
-            <div class="metric-sub">Principal motivo nacional</div>
-          </div>
-          <div class="metric-card green">
-            <div class="metric-label">Efectividad Centro</div>
-            <div class="metric-value green">80.1%</div>
-            <div class="metric-sub">Zona líder nacional</div>
-          </div>
-          <div class="metric-card blue">
-            <div class="metric-label">Nuevos ingresos &lt;90d</div>
-            <div class="metric-value blue">30</div>
-            <div class="metric-sub">19.5% del equipo Verónica</div>
-          </div>
+        <div class="mg">
+          <div class="mc"><div class="ab ab-a"></div><div class="ml">Sin captura S12</div><div class="mv amb">1,420</div><div class="ms">Tareas no ejecutadas</div></div>
+          <div class="mc"><div class="ab ab-a"></div><div class="ml">Falta de POP S12</div><div class="mv amb">1,966</div><div class="ms">Principal motivo nacional</div></div>
+          <div class="mc"><div class="ab ab-g"></div><div class="ml">Efectividad Centro</div><div class="mv grn">80.1%</div><div class="ms">Zona líder nacional</div></div>
+          <div class="mc"><div class="ab ab-b"></div><div class="ml">Nuevos ingresos &lt;90d</div><div class="mv blu">30</div><div class="ms">19.5% del equipo Verónica</div></div>
         </div>
-        <div class="grid2">
+        <div class="g2">
           <div class="panel">
-            <div class="panel-header"><div class="panel-title">WR por Zona — S09 a S12</div><span class="panel-badge amber">Tendencia</span></div>
-            <div class="panel-body">
-              <div class="prog-row"><div class="prog-header"><span class="prog-label">Bajío <span style="color:var(--text3);font-size:9px;">51.3→48.3→50.1→51.8%</span></span><span class="prog-val td-red">51.8%</span></div><div class="prog-track"><div class="prog-fill fill-red" style="width:51.8%"></div></div></div>
-              <div class="prog-row"><div class="prog-header"><span class="prog-label">Norte <span style="color:var(--text3);font-size:9px;">68.4→60.6→63.7→59.5%</span></span><span class="prog-val td-amber">59.5%</span></div><div class="prog-track"><div class="prog-fill fill-amber" style="width:59.5%"></div></div></div>
-              <div class="prog-row"><div class="prog-header"><span class="prog-label">Sureste <span style="color:var(--text3);font-size:9px;">71.7→72.5→73.5→73.5%</span></span><span class="prog-val td-green">73.5%</span></div><div class="prog-track"><div class="prog-fill fill-green" style="width:73.5%"></div></div></div>
-              <div class="prog-row" style="margin-bottom:0"><div class="prog-header"><span class="prog-label">Centro <span style="color:var(--text3);font-size:9px;">82.2→80.8→80.0→80.1%</span></span><span class="prog-val" style="color:var(--accent)">80.1%</span></div><div class="prog-track"><div class="prog-fill fill-accent" style="width:80.1%"></div></div></div>
+            <div class="ph"><div class="pt tb">WR por Zona — S09 a S12</div><span class="badge ba">Tendencia</span></div>
+            <div class="pb">
+              <div class="pr-row"><div class="pr-hdr"><span class="pr-lbl">Bajío <span style="color:var(--text3);font-size:9px">51.3→48.3→50.1→51.8%</span></span><span class="pr-val cr">51.8%</span></div><div class="pr-track"><div class="pr-fill pfr" style="width:51.8%"></div></div></div>
+              <div class="pr-row"><div class="pr-hdr"><span class="pr-lbl">Norte <span style="color:var(--text3);font-size:9px">68.4→60.6→63.7→59.5%</span></span><span class="pr-val ca">59.5%</span></div><div class="pr-track"><div class="pr-fill pfa" style="width:59.5%"></div></div></div>
+              <div class="pr-row"><div class="pr-hdr"><span class="pr-lbl">Sureste <span style="color:var(--text3);font-size:9px">71.7→72.5→73.5→73.5%</span></span><span class="pr-val cg">73.5%</span></div><div class="pr-track"><div class="pr-fill pfg" style="width:73.5%"></div></div></div>
+              <div class="pr-row" style="margin-bottom:0"><div class="pr-hdr"><span class="pr-lbl">Centro <span style="color:var(--text3);font-size:9px">82.2→80.8→80.0→80.1%</span></span><span class="pr-val cb">80.1%</span></div><div class="pr-track"><div class="pr-fill pfb" style="width:80.1%"></div></div></div>
             </div>
           </div>
           <div class="panel">
-            <div class="panel-header"><div class="panel-title">Semáforo de KPIs</div><span class="panel-badge">4 críticos</span></div>
-            <div class="panel-body">
-              <div class="semaforo-item"><div class="sem-dot dot-red"></div><div class="sem-label">Efectividad Bajío S12</div><div class="sem-val td-red">51.8%</div><div class="sem-note">Sin mejora 4 sem.</div></div>
-              <div class="semaforo-item"><div class="sem-dot dot-red"></div><div class="sem-label">Rutas vacantes Gallegos</div><div class="sem-val td-red">244 tiendas</div><div class="sem-note">14 rutas · NL</div></div>
-              <div class="semaforo-item"><div class="sem-dot dot-red"></div><div class="sem-label">Promotores curva &lt;15d</div><div class="sem-val td-red">8 personas</div><div class="sem-note">Sin SIM activa</div></div>
-              <div class="semaforo-item"><div class="sem-dot dot-amber"></div><div class="sem-label">Norte — caída</div><div class="sem-val td-amber">59.5%</div><div class="sem-note">-8.9 pts desde S09</div></div>
-              <div class="semaforo-item"><div class="sem-dot dot-amber"></div><div class="sem-label">Falta de POP S12</div><div class="sem-val td-amber">1,966</div><div class="sem-note">Principal motivo</div></div>
-              <div class="semaforo-item"><div class="sem-dot" style="background:var(--green)"></div><div class="sem-label">Efectividad Centro</div><div class="sem-val td-green">80.1%</div><div class="sem-note">Zona líder estable</div></div>
+            <div class="ph"><div class="pt tr">Semáforo de KPIs</div><span class="badge br">4 críticos</span></div>
+            <div class="pb">
+              <div class="sr"><div class="sd" style="background:var(--red)"></div><div class="sl">Efectividad Bajío S12</div><div class="sv cr">51.8%</div><div class="sn">Sin mejora 4 sem.</div></div>
+              <div class="sr"><div class="sd" style="background:var(--red)"></div><div class="sl">Rutas vacantes Gallegos</div><div class="sv cr">244 tiendas</div><div class="sn">14 rutas · NL</div></div>
+              <div class="sr"><div class="sd" style="background:var(--red)"></div><div class="sl">Promotores curva &lt;15d</div><div class="sv cr">8 personas</div><div class="sn">Sin SIM activa</div></div>
+              <div class="sr"><div class="sd" style="background:var(--amber)"></div><div class="sl">Norte — en caída</div><div class="sv ca">59.5%</div><div class="sn">-8.9 pts desde S09</div></div>
+              <div class="sr"><div class="sd" style="background:var(--amber)"></div><div class="sl">Falta de POP S12</div><div class="sv ca">1,966</div><div class="sn">Principal motivo</div></div>
+              <div class="sr"><div class="sd" style="background:var(--green)"></div><div class="sl">Efectividad Centro</div><div class="sv cg">80.1%</div><div class="sn">Zona líder estable</div></div>
             </div>
           </div>
         </div>
         <div class="panel">
-          <div class="panel-header"><div class="panel-title">Alertas Operativas — Acciones Esta Semana</div><span class="panel-badge">4 urgentes</span></div>
-          <div class="panel-body">
-            <div class="alert-row"><div class="alert-dot dot-red"></div><div class="alert-content"><div class="alert-title">244 tiendas sin cobertura — Gallegos / Nuevo León <span class="alert-tag tag-red">URGENTE</span></div><div class="alert-meta">14 rutas vacías. RP116 (36), RP549 (22), RP138 (21). Ausentes de WR — impacto invisible en ventas. Solicitar plan de contratación con fechas esta semana.</div></div></div>
-            <div class="alert-row"><div class="alert-dot dot-red"></div><div class="alert-content"><div class="alert-title">8 promotores sin SIM — no pueden operar <span class="alert-tag tag-red">URGENTE</span></div><div class="alert-meta">Bastida Mata (Sup: Vega Gutierrez, 0d·RP154) · Arteaga Arroyo (Sup: Picasso Puente, 1d·RP498) · Montes Navarro (Sup: Gomez Lupercio, 2d·RP465) · Duran Rios (Sup: Lopez Quintero, 3d·RP555). Bono de concurso perdido cada día.</div></div></div>
-            <div class="alert-row"><div class="alert-dot dot-amber"></div><div class="alert-content"><div class="alert-title">Gomez Lupercio: acompañamiento urgente, no sanción <span class="alert-tag tag-amber">ATENCIÓN</span></div><div class="alert-meta">36 días como supervisora (Manzanarez, Zona 252 GDL/MICH). 26.7% estructural: 3 promotores en curva + vacante RP291. Meta S13: 45-50% en equipo real.</div></div></div>
-            <div class="alert-row"><div class="alert-dot dot-amber"></div><div class="alert-content"><div class="alert-title">Norte en caída: -8.9 pts en 4 semanas <span class="alert-tag tag-amber">ATENCIÓN</span></div><div class="alert-meta">68.4% (S09) → 59.5% (S12). Caída más pronunciada del país.</div></div></div>
+          <div class="ph"><div class="pt tr">Alertas Operativas — Acciones Esta Semana</div><span class="badge br">4 urgentes</span></div>
+          <div class="pb">
+            <div class="ar"><div class="ai air">🔴</div><div class="ac"><div class="at">244 tiendas sin cobertura — Gallegos / Nuevo León</div><div class="am">14 rutas vacías. RP116 (36), RP549 (22), RP138 (21). Ausentes de WR — impacto en ventas invisible. Solicitar plan de contratación con fechas esta semana.</div></div></div>
+            <div class="ar"><div class="ai air">🔴</div><div class="ac"><div class="at">8 promotores sin SIM — no pueden operar ni capturar</div><div class="am">Bastida Mata (Sup: Vega Gutierrez, 0d · RP154) · Arteaga Arroyo (Sup: Picasso Puente, 1d · RP498) · Montes Navarro (Sup: Gomez Lupercio, 2d · RP465) · Duran Rios (Sup: Lopez Quintero, 3d · RP555). Bono de concurso perdido cada día.</div></div></div>
+            <div class="ar"><div class="ai aia">🟡</div><div class="ac"><div class="at">Gomez Lupercio: acompañamiento urgente, no sanción</div><div class="am">36 días como supervisora (Manzanarez, Zona 252 GDL/MICH). 26.7% estructural: 3 promotores en curva + vacante RP291. Meta S13: 45-50% en equipo real.</div></div></div>
+            <div class="ar"><div class="ai aia">🟡</div><div class="ac"><div class="at">Norte en caída: -8.9 pts en 4 semanas</div><div class="am">68.4% (S09) → 59.5% (S12). Caída más pronunciada del país. Monitoreo cruzado con Bajío.</div></div></div>
           </div>
         </div>
       </div>
  
       <!-- VACANTES -->
       <div class="tab-content" id="tab-vacantes">
-        <div class="grid2">
+        <div class="g2">
           <div class="panel">
-            <div class="panel-header"><div class="panel-title">Vacantes Individuales — Evolución</div><span class="panel-badge">Mar10: 10</span></div>
-            <div class="panel-body">
-              <table class="data-table">
-                <thead><tr><th>Lider / JT</th><th>Feb24</th><th>Mar03</th><th>Mar10</th><th>% HC</th></tr></thead>
+            <div class="ph"><div class="pt tr">Vacantes Individuales — Evolución</div><span class="badge br">Mar10: 10</span></div>
+            <div class="pb">
+              <table class="tbl">
+                <thead><tr><th>Líder / JT</th><th>Feb24</th><th>Mar03</th><th>Mar10</th><th>% HC</th></tr></thead>
                 <tbody>
-                  <tr><td class="td-name">Total Verónica León</td><td>4</td><td>7</td><td class="td-red">10</td><td class="td-red">6.1%</td></tr>
-                  <tr><td class="td-name" style="padding-left:16px">↳ Gallegos (JT)</td><td>—</td><td>—</td><td class="td-amber">4</td><td class="td-amber">4.3%</td></tr>
-                  <tr><td class="td-name" style="padding-left:16px">↳ Manzanarez (JT)</td><td>—</td><td>—</td><td class="td-red">6</td><td class="td-red">8.7%</td></tr>
-                  <tr><td class="td-name">Lizbeth Camberos (Ref.)</td><td>5</td><td>5</td><td class="td-green">2</td><td class="td-green">0.8%</td></tr>
+                  <tr><td class="tdm">Total Verónica León</td><td>4</td><td>7</td><td class="cr">10</td><td class="cr">6.1%</td></tr>
+                  <tr><td class="tdm" style="padding-left:16px">↳ Gallegos Garrido (JT)</td><td>—</td><td>—</td><td class="ca">4</td><td class="ca">4.3%</td></tr>
+                  <tr><td class="tdm" style="padding-left:16px">↳ Manzanarez Urzua (JT)</td><td>—</td><td>—</td><td class="cr">6</td><td class="cr">8.7%</td></tr>
+                  <tr><td class="tdm">Lizbeth Camberos (Ref.)</td><td>5</td><td>5</td><td class="cg">2</td><td class="cg">0.8%</td></tr>
                 </tbody>
               </table>
-              <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
-                <div style="font-size:9px;color:var(--text3);font-family:var(--mono);margin-bottom:6px">HISTORIAL GALLEGOS</div>
-                <div style="font-size:10px;color:var(--text2);line-height:1.8">Ene5-11:<span class="td-red"> 10</span> · Ene12-18:<span class="td-amber"> 5</span> · Ene19-25:<span class="td-amber"> 5</span> · Ene26-31:<span class="td-amber"> 4</span><br>Feb2-8:<span class="td-amber"> 4</span> · Feb9-15:<span class="td-amber"> 5</span> · Feb16-21:<span class="td-green"> 2</span> · Feb23-28:<span class="td-amber"> 3</span> · Mar2-8:<span class="td-amber"> 4</span></div>
-                <div style="font-size:10px;color:var(--red);margin-top:5px">⚠ Nivel nunca baja a cero — rotación crónica desde enero.</div>
+              <div style="margin-top:9px;padding-top:9px;border-top:1px solid var(--border)">
+                <div style="font-size:9px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px">Historial Gallegos</div>
+                <div style="font-size:10px;color:var(--text2);line-height:1.9">Ene5-11:<b style="color:var(--red)"> 10</b> · Ene12-18:<b style="color:var(--amber)"> 5</b> · Ene19-25:<b style="color:var(--amber)"> 5</b> · Ene26-31:<b style="color:var(--amber)"> 4</b><br>Feb2-8:<b style="color:var(--amber)"> 4</b> · Feb9-15:<b style="color:var(--amber)"> 5</b> · Feb16-21:<b style="color:var(--green)"> 2</b> · Feb23-28:<b style="color:var(--amber)"> 3</b> · Mar2-8:<b style="color:var(--amber)"> 4</b></div>
+                <div style="font-size:10px;color:var(--red);margin-top:4px;font-weight:500">⚠ Nivel nunca baja a cero — rotación crónica desde enero</div>
               </div>
             </div>
           </div>
           <div class="panel">
-            <div class="panel-header"><div class="panel-title">Rutas Vacantes Rutero — Gallegos / NL</div><span class="panel-badge">244 tiendas · 14 rutas</span></div>
-            <div class="panel-body">
-              <div class="vac-row"><span><span class="vac-ruta">RP116</span>Benavides, FG, FAHO</span><span class="vac-tiendas td-red">36</span></div>
-              <div class="vac-row"><span><span class="vac-ruta">RP549</span>Walmart, FG, Benavides</span><span class="vac-tiendas td-red">22</span></div>
-              <div class="vac-row"><span><span class="vac-ruta">RP138</span>Benavides, Soriana, Walmart</span><span class="vac-tiendas td-red">21</span></div>
-              <div class="vac-row"><span><span class="vac-ruta">RP481</span>Benavides, Walmart, FG</span><span class="vac-tiendas td-red">20</span></div>
-              <div class="vac-row"><span><span class="vac-ruta">RP135</span>Benavides, FG, FAHO</span><span class="vac-tiendas td-amber">28</span></div>
-              <div class="vac-row"><span><span class="vac-ruta">RP506</span>Benavides, Walmart, Soriana</span><span class="vac-tiendas td-amber">19</span></div>
-              <div class="vac-row"><span><span class="vac-ruta">RP483</span>Benavides, Walmart, HEB</span><span class="vac-tiendas td-amber">24</span></div>
-              <div class="vac-row"><span><span class="vac-ruta">RP487</span>FG, Benavides, Walmart</span><span class="vac-tiendas td-amber">17</span></div>
-              <div class="vac-row"><span><span class="vac-ruta">RP408</span>FG, Benavides, Walmart</span><span class="vac-tiendas td-amber">21</span></div>
-              <div class="vac-row"><span><span class="vac-ruta">RP259</span>Benavides, Walmart, FG</span><span class="vac-tiendas td-amber">18</span></div>
-              <div class="vac-row"><span><span class="vac-ruta">RP320</span>Soriana, FG, Benavides</span><span class="vac-tiendas td-amber">14</span></div>
-              <div class="vac-row" style="border-bottom:none"><span><span class="vac-ruta">+3 más</span>RP021, RP117, RP530</span><span class="vac-tiendas" style="color:var(--text2)">4</span></div>
+            <div class="ph"><div class="pt tr">Rutas Vacantes Rutero — Gallegos / NL</div><span class="badge br">244 tiendas · 14 rutas</span></div>
+            <div class="pb">
+              <div class="vrow"><span><span class="vc">RP116</span>Benavides, FG, FAHO</span><span class="vn cr">36</span></div>
+              <div class="vrow"><span><span class="vc">RP549</span>Walmart, FG, Benavides</span><span class="vn cr">22</span></div>
+              <div class="vrow"><span><span class="vc">RP138</span>Benavides, Soriana, Walmart</span><span class="vn cr">21</span></div>
+              <div class="vrow"><span><span class="vc">RP481</span>Benavides, Walmart, FG</span><span class="vn cr">20</span></div>
+              <div class="vrow"><span><span class="vc">RP135</span>Benavides, FG, FAHO</span><span class="vn ca">28</span></div>
+              <div class="vrow"><span><span class="vc">RP506</span>Benavides, Walmart, Soriana</span><span class="vn ca">19</span></div>
+              <div class="vrow"><span><span class="vc">RP483</span>Benavides, Walmart, HEB</span><span class="vn ca">24</span></div>
+              <div class="vrow"><span><span class="vc">RP487</span>FG, Benavides, Walmart</span><span class="vn ca">17</span></div>
+              <div class="vrow"><span><span class="vc">RP408</span>FG, Benavides, Walmart</span><span class="vn ca">21</span></div>
+              <div class="vrow"><span><span class="vc">RP259</span>Benavides, Walmart, FG</span><span class="vn ca">18</span></div>
+              <div class="vrow"><span><span class="vc">RP320</span>Soriana, FG, Benavides</span><span class="vn ca">14</span></div>
+              <div class="vrow" style="border-bottom:none"><span><span class="vc">+3 más</span>RP021, RP117, RP530</span><span class="vn" style="color:var(--text3)">4</span></div>
             </div>
           </div>
         </div>
         <div class="panel">
-          <div class="panel-header"><div class="panel-title">Supervisores con Vacantes — Mar10</div><span class="panel-badge">6 afectados</span></div>
-          <div class="panel-body">
-            <table class="data-table">
+          <div class="ph"><div class="pt tr">Supervisores con Vacantes — Mar10</div><span class="badge br">6 afectados</span></div>
+          <div class="pb">
+            <table class="tbl">
               <thead><tr><th>Supervisor</th><th>JT</th><th>Vacantes</th><th>% HC</th><th>Prioridad</th></tr></thead>
               <tbody>
-                <tr><td class="td-name">Lopez Quintero Katy Marcela</td><td class="td-blue">Gallegos</td><td class="td-red">3</td><td class="td-red">21.4%</td><td><span class="alert-tag tag-red">CRÍTICO</span></td></tr>
-                <tr><td class="td-name">Vega Gutierrez Maria Magdalena</td><td class="td-blue">Manzanarez</td><td class="td-red">2</td><td class="td-red">20.0%</td><td><span class="alert-tag tag-red">CRÍTICO</span></td></tr>
-                <tr><td class="td-name">Gomez Lupercio Luisa Sarai</td><td class="td-blue">Manzanarez</td><td class="td-red">2</td><td class="td-red">18.2%</td><td><span class="alert-tag tag-red">CRÍTICO</span></td></tr>
-                <tr><td class="td-name">Alonso Padron Jose Jesus</td><td class="td-blue">Manzanarez</td><td class="td-amber">1</td><td class="td-amber">7.7%</td><td><span class="alert-tag tag-amber">ATENCIÓN</span></td></tr>
-                <tr><td class="td-name">Chavez Alfaro Adriana Alejandra</td><td class="td-blue">Manzanarez</td><td class="td-amber">1</td><td class="td-amber">9.1%</td><td><span class="alert-tag tag-amber">ATENCIÓN</span></td></tr>
-                <tr><td class="td-name">Picasso Puente Mayra Alejandra</td><td class="td-blue">Gallegos</td><td class="td-amber">1</td><td class="td-amber">11.1%</td><td><span class="alert-tag tag-amber">ATENCIÓN</span></td></tr>
+                <tr><td class="tdm">Lopez Quintero Katy Marcela</td><td class="cb">Gallegos</td><td class="cr">3</td><td class="cr">21.4%</td><td><span class="pill pr">CRÍTICO</span></td></tr>
+                <tr><td class="tdm">Vega Gutierrez Maria Magdalena</td><td class="cb">Manzanarez</td><td class="cr">2</td><td class="cr">20.0%</td><td><span class="pill pr">CRÍTICO</span></td></tr>
+                <tr><td class="tdm">Gomez Lupercio Luisa Sarai</td><td class="cb">Manzanarez</td><td class="cr">2</td><td class="cr">18.2%</td><td><span class="pill pr">CRÍTICO</span></td></tr>
+                <tr><td class="tdm">Alonso Padron Jose Jesus</td><td class="cb">Manzanarez</td><td class="ca">1</td><td class="ca">7.7%</td><td><span class="pill pa">ATENCIÓN</span></td></tr>
+                <tr><td class="tdm">Chavez Alfaro Adriana Alejandra</td><td class="cb">Manzanarez</td><td class="ca">1</td><td class="ca">9.1%</td><td><span class="pill pa">ATENCIÓN</span></td></tr>
+                <tr><td class="tdm">Picasso Puente Mayra Alejandra</td><td class="cb">Gallegos</td><td class="ca">1</td><td class="ca">11.1%</td><td><span class="pill pa">ATENCIÓN</span></td></tr>
               </tbody>
             </table>
           </div>
@@ -403,59 +403,59 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       <!-- SUPERVISORES -->
       <div class="tab-content" id="tab-supervisores">
         <div class="panel">
-          <div class="panel-header"><div class="panel-title">Efectividad WR S12 — Supervisores Bajío (Manzanarez)</div><span class="panel-badge amber">Con contexto rutero</span></div>
-          <div class="panel-body">
-            <table class="data-table">
-              <thead><tr><th>Supervisor</th><th>JT</th><th>Tareas</th><th>Resueltas</th><th>% Efect.</th><th>Contexto</th></tr></thead>
+          <div class="ph"><div class="pt tb">Efectividad WR S12 — Supervisores Bajío (Manzanarez)</div><span class="badge ba">Con contexto rutero</span></div>
+          <div class="pb">
+            <table class="tbl">
+              <thead><tr><th>Supervisor</th><th>JT</th><th>Tareas</th><th>Resueltas</th><th>% Efect.</th><th>Contexto rutero</th></tr></thead>
               <tbody>
-                <tr><td class="td-name">Gomez Lupercio Luisa Sarai</td><td class="td-blue">Manzanarez</td><td>1,055</td><td>282</td><td class="td-red">26.7% ⚠</td><td style="font-size:10px;color:var(--amber)">36d en puesto · 3 prom &lt;15d + vac RP291</td></tr>
-                <tr><td class="td-name">Vega Gutierrez Maria Magdalena</td><td class="td-blue">Manzanarez</td><td>986</td><td>472</td><td class="td-red">47.9%</td><td style="font-size:10px;color:var(--text2)">3 nuevos &lt;90d · Bastida Mata 0d RP154</td></tr>
-                <tr><td class="td-name">Gutierrez Flores Armando</td><td class="td-blue">Manzanarez</td><td>843</td><td>463</td><td class="td-amber">54.9%</td><td style="font-size:10px;color:var(--text2)">4 promotores nuevos &lt;90d</td></tr>
-                <tr><td class="td-name">Alonso Padron Jose Jesus</td><td class="td-blue">Manzanarez</td><td>1,163</td><td>645</td><td class="td-amber">55.5%</td><td style="font-size:10px;color:var(--text2)">Medina Gonzalez 14d RP486</td></tr>
-                <tr><td class="td-name">Chavez Alfaro Adriana Alejandra</td><td class="td-blue">Manzanarez</td><td>982</td><td>548</td><td class="td-amber">55.8%</td><td style="font-size:10px;color:var(--text2)">Limon 65d RP124 · Arvizu 58d RP519</td></tr>
-                <tr><td class="td-name">Martinez Gonzalez Ma De La Luz</td><td class="td-blue">Manzanarez</td><td>1,095</td><td>765</td><td class="td-green">69.9%</td><td style="font-size:10px;color:var(--green)">Mejor resultado JT Manzanarez</td></tr>
+                <tr><td class="tdm">Gomez Lupercio Luisa Sarai</td><td class="cb">Manzanarez</td><td>1,055</td><td>282</td><td class="cr">26.7% ⚠</td><td style="font-size:10px;color:var(--amber);font-weight:500">36d en puesto · 3 prom &lt;15d + vac RP291</td></tr>
+                <tr><td class="tdm">Vega Gutierrez Maria Magdalena</td><td class="cb">Manzanarez</td><td>986</td><td>472</td><td class="cr">47.9%</td><td style="font-size:10px;color:var(--text2)">3 nuevos &lt;90d · Bastida Mata 0d RP154</td></tr>
+                <tr><td class="tdm">Gutierrez Flores Armando</td><td class="cb">Manzanarez</td><td>843</td><td>463</td><td class="ca">54.9%</td><td style="font-size:10px;color:var(--text2)">4 promotores nuevos &lt;90d</td></tr>
+                <tr><td class="tdm">Alonso Padron Jose Jesus</td><td class="cb">Manzanarez</td><td>1,163</td><td>645</td><td class="ca">55.5%</td><td style="font-size:10px;color:var(--text2)">Medina Gonzalez 14d RP486</td></tr>
+                <tr><td class="tdm">Chavez Alfaro Adriana Alejandra</td><td class="cb">Manzanarez</td><td>982</td><td>548</td><td class="ca">55.8%</td><td style="font-size:10px;color:var(--text2)">Limon 65d RP124 · Arvizu 58d RP519</td></tr>
+                <tr><td class="tdm">Martinez Gonzalez Ma De La Luz</td><td class="cb">Manzanarez</td><td>1,095</td><td>765</td><td class="cg">69.9%</td><td style="font-size:10px;color:var(--green);font-weight:500">Mejor resultado JT Manzanarez</td></tr>
               </tbody>
             </table>
-            <div style="margin-top:10px;padding:9px 11px;background:rgba(0,229,160,0.05);border-radius:7px;border:1px solid rgba(0,229,160,0.1);font-size:11px;color:var(--text2)">💡 <strong style="color:var(--accent)">Área de oportunidad:</strong> Efectividad real ajustada (sin curvas/vacantes) es 8-12 pts mayor. Meta S13: Vega Gutierrez y Gutierrez Flores por encima del 60%.</div>
+            <div class="tip tipg" style="margin-top:10px">💡 <strong>Área de oportunidad:</strong> Efectividad real ajustada (sin curvas/vacantes) es 8-12 pts mayor. Meta S13: Vega Gutierrez y Gutierrez Flores por encima del 60%.</div>
           </div>
         </div>
       </div>
  
       <!-- NUEVOS INGRESOS -->
       <div class="tab-content" id="tab-nuevos">
-        <div class="panel" style="margin-bottom:12px">
-          <div class="panel-header"><div class="panel-title">Curva Crítica — Menos de 15 días (13-Mar-2026)</div><span class="panel-badge">8 sin SIM</span></div>
-          <div class="panel-body">
-            <table class="data-table">
+        <div class="panel" style="margin-bottom:13px">
+          <div class="ph"><div class="pt tr">Curva Crítica — Menos de 15 días (13-Mar-2026)</div><span class="badge br">8 sin SIM</span></div>
+          <div class="pb">
+            <table class="tbl">
               <thead><tr><th>Promotor</th><th>Supervisor</th><th>JT</th><th>Días</th><th>Ruta</th><th>Estado</th></tr></thead>
               <tbody>
-                <tr><td class="td-name">Bastida Mata Angel Jael</td><td>Vega Gutierrez M.M.</td><td class="td-blue">Manzanarez</td><td class="td-red">0d</td><td class="td-blue">RP154</td><td><span class="alert-tag tag-red">Sin acceso</span></td></tr>
-                <tr><td class="td-name">Arteaga Arroyo Lorena Margarita</td><td>Picasso Puente M.A.</td><td class="td-blue">Gallegos</td><td class="td-red">1d</td><td class="td-blue">RP498</td><td><span class="alert-tag tag-red">Sin SIM</span></td></tr>
-                <tr><td class="td-name">Montes Navarro Jonathan Israel</td><td>Gomez Lupercio L.S.</td><td class="td-blue">Manzanarez</td><td class="td-red">2d</td><td class="td-blue">RP465</td><td><span class="alert-tag tag-red">Sin SIM</span></td></tr>
-                <tr><td class="td-name">Duran Rios Hector Alexander</td><td>Lopez Quintero K.M.</td><td class="td-blue">Gallegos</td><td class="td-red">3d</td><td class="td-blue">RP555</td><td><span class="alert-tag tag-red">Sin SIM</span></td></tr>
-                <tr><td class="td-name">Medrano Ibarra Jenny Elizabeth</td><td>Gomez Lupercio L.S.</td><td class="td-blue">Manzanarez</td><td class="td-amber">8d</td><td class="td-blue">RP288</td><td><span class="alert-tag tag-amber">En trámite</span></td></tr>
-                <tr><td class="td-name">Olveda Godinez Juan Francisco</td><td>Gomez Lupercio L.S.</td><td class="td-blue">Manzanarez</td><td class="td-amber">9d</td><td class="td-blue">RP464</td><td><span class="alert-tag tag-amber">En trámite</span></td></tr>
-                <tr><td class="td-name">Nuñez Sanchez Erika Arlet</td><td>Martinez Gonzalez M.L.</td><td class="td-blue">Manzanarez</td><td class="td-amber">9d</td><td class="td-blue">RP104</td><td><span class="alert-tag tag-amber">En trámite</span></td></tr>
-                <tr><td class="td-name">Medina Gonzalez Jose Miguel</td><td>Alonso Padron J.J.</td><td class="td-blue">Manzanarez</td><td class="td-amber">14d</td><td class="td-blue">RP486</td><td><span class="alert-tag tag-amber">Por activar</span></td></tr>
+                <tr><td class="tdm">Bastida Mata Angel Jael</td><td>Vega Gutierrez M.M.</td><td class="cb">Manzanarez</td><td class="cr">0d</td><td class="cb">RP154</td><td><span class="pill pr">Sin acceso</span></td></tr>
+                <tr><td class="tdm">Arteaga Arroyo Lorena Margarita</td><td>Picasso Puente M.A.</td><td class="cb">Gallegos</td><td class="cr">1d</td><td class="cb">RP498</td><td><span class="pill pr">Sin SIM</span></td></tr>
+                <tr><td class="tdm">Montes Navarro Jonathan Israel</td><td>Gomez Lupercio L.S.</td><td class="cb">Manzanarez</td><td class="cr">2d</td><td class="cb">RP465</td><td><span class="pill pr">Sin SIM</span></td></tr>
+                <tr><td class="tdm">Duran Rios Hector Alexander</td><td>Lopez Quintero K.M.</td><td class="cb">Gallegos</td><td class="cr">3d</td><td class="cb">RP555</td><td><span class="pill pr">Sin SIM</span></td></tr>
+                <tr><td class="tdm">Medrano Ibarra Jenny Elizabeth</td><td>Gomez Lupercio L.S.</td><td class="cb">Manzanarez</td><td class="ca">8d</td><td class="cb">RP288</td><td><span class="pill pa">En trámite</span></td></tr>
+                <tr><td class="tdm">Olveda Godinez Juan Francisco</td><td>Gomez Lupercio L.S.</td><td class="cb">Manzanarez</td><td class="ca">9d</td><td class="cb">RP464</td><td><span class="pill pa">En trámite</span></td></tr>
+                <tr><td class="tdm">Nuñez Sanchez Erika Arlet</td><td>Martinez Gonzalez M.L.</td><td class="cb">Manzanarez</td><td class="ca">9d</td><td class="cb">RP104</td><td><span class="pill pa">En trámite</span></td></tr>
+                <tr><td class="tdm">Medina Gonzalez Jose Miguel</td><td>Alonso Padron J.J.</td><td class="cb">Manzanarez</td><td class="ca">14d</td><td class="cb">RP486</td><td><span class="pill pa">Por activar</span></td></tr>
               </tbody>
             </table>
           </div>
         </div>
         <div class="panel">
-          <div class="panel-header"><div class="panel-title">Nuevos &lt;90 días por Supervisor</div><span class="panel-badge amber">30 en total</span></div>
-          <div class="panel-body">
-            <table class="data-table">
-              <thead><tr><th>Supervisor</th><th>JT</th><th>Total prom.</th><th>Nuevos &lt;90d</th><th>Curva &lt;15d</th></tr></thead>
+          <div class="ph"><div class="pt ta">Nuevos &lt;90 días por Supervisor</div><span class="badge ba">30 en total</span></div>
+          <div class="pb">
+            <table class="tbl">
+              <thead><tr><th>Supervisor</th><th>JT</th><th>Total</th><th>Nuevos &lt;90d</th><th>Curva &lt;15d</th></tr></thead>
               <tbody>
-                <tr><td class="td-name">Lopez Quintero Katy Marcela</td><td class="td-blue">Gallegos</td><td>12</td><td class="td-amber">4</td><td class="td-red">1</td></tr>
-                <tr><td class="td-name">Gutierrez Flores Armando</td><td class="td-blue">Manzanarez</td><td>9</td><td class="td-amber">4</td><td class="td-green">0</td></tr>
-                <tr><td class="td-name">Gomez Lupercio Luisa Sarai</td><td class="td-blue">Manzanarez</td><td>11</td><td class="td-amber">3</td><td class="td-red">3</td></tr>
-                <tr><td class="td-name">Martinez Gonzalez Ma De La Luz</td><td class="td-blue">Manzanarez</td><td>15</td><td class="td-amber">3</td><td class="td-red">1</td></tr>
-                <tr><td class="td-name">Vega Gutierrez Maria Magdalena</td><td class="td-blue">Manzanarez</td><td>9</td><td class="td-amber">3</td><td class="td-red">1</td></tr>
-                <tr><td class="td-name">Macias Salazar Carlos</td><td class="td-blue">Gallegos</td><td>11</td><td class="td-amber">3</td><td class="td-green">0</td></tr>
-                <tr><td class="td-name">Lopez Salgado Elizabeth BC</td><td class="td-blue">Gallegos</td><td>10</td><td class="td-amber">3</td><td class="td-green">0</td></tr>
-                <tr><td class="td-name">Chavez Alfaro Adriana Alejandra</td><td class="td-blue">Manzanarez</td><td>11</td><td class="td-amber">2</td><td class="td-green">0</td></tr>
-                <tr><td class="td-name">Picasso Puente Mayra Alejandra</td><td class="td-blue">Gallegos</td><td>9</td><td class="td-amber">2</td><td class="td-red">1</td></tr>
+                <tr><td class="tdm">Lopez Quintero Katy Marcela</td><td class="cb">Gallegos</td><td>12</td><td class="ca">4</td><td class="cr">1</td></tr>
+                <tr><td class="tdm">Gutierrez Flores Armando</td><td class="cb">Manzanarez</td><td>9</td><td class="ca">4</td><td class="cg">0</td></tr>
+                <tr><td class="tdm">Gomez Lupercio Luisa Sarai</td><td class="cb">Manzanarez</td><td>11</td><td class="ca">3</td><td class="cr">3</td></tr>
+                <tr><td class="tdm">Martinez Gonzalez Ma De La Luz</td><td class="cb">Manzanarez</td><td>15</td><td class="ca">3</td><td class="cr">1</td></tr>
+                <tr><td class="tdm">Vega Gutierrez Maria Magdalena</td><td class="cb">Manzanarez</td><td>9</td><td class="ca">3</td><td class="cr">1</td></tr>
+                <tr><td class="tdm">Macias Salazar Carlos</td><td class="cb">Gallegos</td><td>11</td><td class="ca">3</td><td class="cg">0</td></tr>
+                <tr><td class="tdm">Lopez Salgado Elizabeth BC</td><td class="cb">Gallegos</td><td>10</td><td class="ca">3</td><td class="cg">0</td></tr>
+                <tr><td class="tdm">Chavez Alfaro Adriana Alejandra</td><td class="cb">Manzanarez</td><td>11</td><td class="ca">2</td><td class="cg">0</td></tr>
+                <tr><td class="tdm">Picasso Puente Mayra Alejandra</td><td class="cb">Gallegos</td><td>9</td><td class="ca">2</td><td class="cr">1</td></tr>
               </tbody>
             </table>
           </div>
@@ -464,40 +464,40 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
  
       <!-- CONCURSOS -->
       <div class="tab-content" id="tab-concursos">
-        <div class="metric-grid" style="grid-template-columns:repeat(3,1fr)">
-          <div class="metric-card blue"><div class="metric-label">Verano OTC + Suerox</div><div class="metric-value blue">~28%</div><div class="metric-sub">Cabeceras · Hasta Ago 2026</div></div>
-          <div class="metric-card amber"><div class="metric-label">Feria de Belleza</div><div class="metric-value amber">~47%</div><div class="metric-sub">Anaquel · Cierra 26-Abr</div></div>
-          <div class="metric-card green"><div class="metric-label">Espectacularidad</div><div class="metric-value green">Activo</div><div class="metric-sub">Desde 2-Mar · $1,600/promotor</div></div>
+        <div class="mg" style="grid-template-columns:repeat(3,1fr)">
+          <div class="mc"><div class="ab ab-b"></div><div class="ml">Verano OTC + Suerox</div><div class="mv blu">~28%</div><div class="ms">Cabeceras · Hasta Ago 2026</div></div>
+          <div class="mc"><div class="ab ab-a"></div><div class="ml">Feria de Belleza</div><div class="mv amb">~47%</div><div class="ms">Anaquel · Cierra 26-Abr</div></div>
+          <div class="mc"><div class="ab ab-g"></div><div class="ml">Espectacularidad</div><div class="mv grn">Activo</div><div class="ms">Desde 2-Mar · $1,600/promotor</div></div>
         </div>
-        <div class="grid2">
+        <div class="g2">
           <div class="panel">
-            <div class="panel-header"><div class="panel-title">Concurso Verano OTC + Suerox</div><span class="panel-badge amber">Al 15-Mar</span></div>
-            <div class="panel-body">
-              <div style="font-size:10px;color:var(--text3);font-family:var(--mono);margin-bottom:8px">FOCO MARZO: Lomecan + Silka + Unesia · ABRIL: Suerox</div>
-              <table class="data-table">
+            <div class="ph"><div class="pt tb">Concurso Verano OTC + Suerox</div><span class="badge ba">Al 15-Mar</span></div>
+            <div class="pb">
+              <div style="font-size:9px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Foco Marzo: Lomecan + Silka + Unesia · Abril: Suerox</div>
+              <table class="tbl">
                 <thead><tr><th>JT</th><th>Isla POP</th><th>Cabecera</th><th>% Cab.</th><th>Cenefa %</th></tr></thead>
                 <tbody>
-                  <tr><td class="td-name">Gallegos M.A.</td><td class="td-amber">2</td><td>252</td><td class="td-amber">27.5%</td><td class="td-green">57.9%</td></tr>
-                  <tr><td class="td-name">Manzanarez C.E.</td><td class="td-red">1</td><td>217</td><td class="td-amber">30.4%</td><td class="td-amber">52.5%</td></tr>
-                  <tr><td class="td-name">Ocampo H.</td><td class="td-green">11</td><td>232</td><td class="td-amber">28.8%</td><td class="td-amber">37.5%</td></tr>
+                  <tr><td class="tdm">Gallegos M.A.</td><td class="ca">2</td><td>252</td><td class="ca">27.5%</td><td class="cg">57.9%</td></tr>
+                  <tr><td class="tdm">Manzanarez C.E.</td><td class="cr">1</td><td>217</td><td class="ca">30.4%</td><td class="ca">52.5%</td></tr>
+                  <tr><td class="tdm">Ocampo H.</td><td class="cg">11</td><td>232</td><td class="ca">28.8%</td><td class="ca">37.5%</td></tr>
                 </tbody>
               </table>
-              <div style="margin-top:8px;padding:8px 10px;background:rgba(255,165,2,0.05);border-radius:6px;border:1px solid rgba(255,165,2,0.12);font-size:11px;color:var(--text2)">💡 <strong style="color:var(--amber)">Isla POP $200 vs $150 sin POP.</strong> Solo 3 islas combinadas — negociar antes del pico Suerox en abril.</div>
+              <div class="tip tipa">💡 <strong>Isla POP $200 vs $150 sin POP.</strong> Solo 3 islas combinadas. Negociar antes del pico Suerox en abril.</div>
             </div>
           </div>
           <div class="panel">
-            <div class="panel-header"><div class="panel-title">Concurso Feria de Belleza</div><span class="panel-badge amber">3 quincenas restantes</span></div>
-            <div class="panel-body">
-              <div style="font-size:10px;color:var(--text3);font-family:var(--mono);margin-bottom:8px">MARCAS: Cicatricure, Tio Nacho, Vanart, Teatrical, Goicoechea</div>
-              <table class="data-table">
+            <div class="ph"><div class="pt tg">Concurso Feria de Belleza</div><span class="badge ba">3 quincenas restantes</span></div>
+            <div class="pb">
+              <div style="font-size:9px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Marcas: Cicatricure, Tio Nacho, Vanart, Teatrical, Goicoechea</div>
+              <table class="tbl">
                 <thead><tr><th>JT</th><th>Laterales</th><th>% Cab.</th><th>% Tira</th><th>% Anaquel</th></tr></thead>
                 <tbody>
-                  <tr><td class="td-name">Gallegos M.A.</td><td class="td-amber">74</td><td class="td-green">55.3%</td><td class="td-green">57.8%</td><td class="td-amber">50.8%</td></tr>
-                  <tr><td class="td-name">Manzanarez C.E.</td><td class="td-green">189</td><td class="td-amber">42.5%</td><td class="td-amber">48.7%</td><td class="td-amber">41.0%</td></tr>
-                  <tr><td class="td-name">Ocampo H.</td><td class="td-amber">93</td><td class="td-amber">47.2%</td><td class="td-amber">44.4%</td><td class="td-red">37.5%</td></tr>
+                  <tr><td class="tdm">Gallegos M.A.</td><td class="ca">74</td><td class="cg">55.3%</td><td class="cg">57.8%</td><td class="ca">50.8%</td></tr>
+                  <tr><td class="tdm">Manzanarez C.E.</td><td class="cg">189</td><td class="ca">42.5%</td><td class="ca">48.7%</td><td class="ca">41.0%</td></tr>
+                  <tr><td class="tdm">Ocampo H.</td><td class="ca">93</td><td class="ca">47.2%</td><td class="ca">44.4%</td><td class="cr">37.5%</td></tr>
                 </tbody>
               </table>
-              <div style="margin-top:8px;padding:8px 10px;background:rgba(46,213,115,0.05);border-radius:6px;border:1px solid rgba(46,213,115,0.12);font-size:11px;color:var(--text2)">💡 <strong style="color:var(--green)">Gallegos fuerte en cabeceras, Manzanarez en laterales.</strong> Capitalizar ventajas — 3 quincenas restantes.</div>
+              <div class="tip tipg">💡 <strong>Gallegos fuerte en cabeceras, Manzanarez en laterales.</strong> Capitalizar ventajas — 3 quincenas de pago restantes.</div>
             </div>
           </div>
         </div>
@@ -505,20 +505,20 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
  
     </div><!-- /content -->
  
-    <!-- CHAT -->
-    <div class="chat-wrapper">
-      <div class="quick-btns">
-        <button class="quick-btn" onclick="askAbout('¿Cuáles son las 3 acciones más urgentes que debo tomar esta semana?')">🎯 Acciones urgentes</button>
-        <button class="quick-btn" onclick="askAbout('Dame un diagnóstico completo de Gomez Lupercio y qué apoyo necesita')">👤 Gomez Lupercio</button>
-        <button class="quick-btn" onclick="askAbout('¿Cuál es el impacto real de las 244 tiendas sin cobertura de Gallegos en Nuevo León?')">📊 244 tiendas</button>
-        <button class="quick-btn" onclick="askAbout('¿Qué estrategia de concursos debo priorizar esta semana para maximizar bonos?')">🏆 Concursos</button>
-        <button class="quick-btn" onclick="askAbout('¿Cómo va la zona Norte y qué tan preocupante es la caída de -8.9 puntos?')">⚠️ Norte</button>
-        <button class="quick-btn" onclick="askAbout('Dame el plan de rampeo para los 8 promotores sin SIM activa')">📋 Plan SIM</button>
+    <!-- CHAT — altura fija, NO afecta el scroll de content -->
+    <div class="chat-w">
+      <div class="qrow">
+        <button class="qbtn" onclick="ask('Cuáles son las 3 acciones más urgentes que debo tomar esta semana?')">🎯 Acciones urgentes</button>
+        <button class="qbtn" onclick="ask('Dame un diagnóstico completo de Gomez Lupercio y qué apoyo necesita')">👤 Gomez Lupercio</button>
+        <button class="qbtn" onclick="ask('Cuál es el impacto real de las 244 tiendas sin cobertura de Gallegos en Nuevo León?')">📊 244 tiendas</button>
+        <button class="qbtn" onclick="ask('Qué estrategia de concursos debo priorizar esta semana para maximizar bonos?')">🏆 Concursos</button>
+        <button class="qbtn" onclick="ask('Cómo va la zona Norte y qué tan preocupante es la caída de -8.9 puntos?')">⚠️ Norte</button>
+        <button class="qbtn" onclick="ask('Dame el plan de rampeo para los 8 promotores sin SIM activa')">📋 Plan SIM</button>
       </div>
-      <div class="chat-messages" id="chatMessages"></div>
-      <div class="chat-input-row">
-        <input type="text" class="chat-input" id="chatInput" placeholder="Pregunta a VERO sobre operaciones, vacantes, WR, concursos…"/>
-        <button class="chat-send" id="sendBtn" onclick="sendMessage()">Enviar →</button>
+      <div class="msgs" id="chatMsgs"></div>
+      <div class="inrow">
+        <input type="text" class="chin" id="chatInput" placeholder="Pregunta a VERO sobre operaciones, vacantes, WR, concursos…"/>
+        <button class="csend" id="sendBtn" onclick="sendMsg()">Enviar →</button>
       </div>
     </div>
  
@@ -526,137 +526,155 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 </div><!-- /shell -->
  
 <script>
-let API_KEY = sessionStorage.getItem('vero_key') || '';
-let chatHistory = [];
-// Auto-skip modal if key already saved
-if (API_KEY) {
-  document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('modal').style.display = 'none';
-    document.getElementById('appShell').style.display = 'flex';
-    addAgentMsg('VERO activa 🟢 — sesión restaurada, Verónica.\n\n¿Qué revisamos hoy?');
-  });
-}
+// ── Estado ────────────────────────────────────────────────────
+let APIKEY = '';
+let history = [];
  
-const SYSTEM_PROMPT = `Eres VERO — Agente de Visibilidad y Ejecución en Retail de Operaciones para Genomma Lab. Respondes a Verónica León, Líder Nacional de Operaciones Zona Bajío y Norte.
+const SYS = `Eres VERO, Agente de Operaciones PDV Genomma Lab. Respondes a Verónica León, Líder de Bajío y Norte.
  
-EFECTIVIDAD WR: Bajío S12=51.8% (estancada), Norte S12=59.5% (caída -8.9pts desde S09), Sureste=73.5%, Centro=80.1% líder.
+WR S12: Bajío=51.8%(estancada), Norte=59.5%(caída -8.9pts desde S09), Sureste=73.5%, Centro=80.1%.
+MOTIVOS NO EJECUCIÓN: POP=1966, Gerencia=1841, SinCaptura=1420, Inventario=1189, Festivo=764, Espacio=741, Vacante=286, NI=54.
+VACANTES: 10 individuales (Manzanarez:6, Gallegos:4). Rutero: 14 rutas=244 tiendas TODAS Gallegos NL (RP116=36,RP549=22,RP138=21,RP481=20,RP135=28,RP506=19,RP483=24,RP487=17,RP408=21,RP259=18,RP320=14). Gallegos crónico desde enero.
+SUPERVISORES BAJÍO (Manzanarez): GomezLupercio 26.7%(36d supervisora,3prom<15d:Medrano8dRP288,Olveda9dRP464,MontesNavarro2dRP465,vacRP291—ESTRUCTURAL), VegaGutierrez 47.9%, GutierrezFlores 54.9%, AlonsoPadron 55.5%, ChavezAlfaro 55.8%, MartinezGonzalez 69.9%.
+CURVA<15d: BastidaMata(VegaGutierrez,0d,RP154), ArteagaArroyo(PicassoPuente,1d,RP498), MontesNavarro(GomezLupercio,2d,RP465), DuranRios(LopezQuintero,3d,RP555), MedranoIbarra(GomezLupercio,8d,RP288), OlvedaGodinez(GomezLupercio,9d,RP464), NuñezSanchez(MartinezGonzalez,9d,RP104), MedinaGonzalez(AlonsoPadron,14d,RP486).
+CONCURSOS: VeranoOTC+Suerox(feb-ago), FeriaBelleza(cierra26abr,3quincenas), Espectacularidad(mar-ago,$1600/promotor). IslaPOP: Gallegos=2,Manzanarez=1. $200conPOP vs $150sinPOP.
+REGLAS: Siempre menciona supervisor al citar promotor. GomezLupercio=acompañamiento no sanción. Directa, máx 3 acciones. Semáforo 🔴🟡🟢.`;
  
-MOTIVOS NO EJECUCIÓN S12: POP=1966, Gerencia=1841, Sin Captura=1420, Inventario=1189, Festivo=764, Espacio=741, Vacante=286, NI=54.
+// ── Inicialización ────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  try {
+    const saved = sessionStorage.getItem('vero_k');
+    if (saved && saved.startsWith('sk-ant')) {
+      APIKEY = saved;
+      boot();
+      return;
+    }
+  } catch(e) {}
+  document.getElementById('modal').style.display = 'flex';
+});
  
-VACANTES: 10 individuales (Manzanarez:6, Gallegos:4). Rutero: 14 rutas vacantes=244 tiendas TODAS Gallegos TODAS Nuevo León (RP116=36,RP549=22,RP138=21,RP481=20,RP135=28,RP506=19,RP483=24,RP487=17,RP408=21,RP259=18,RP320=14). Gallegos crónico desde enero.
- 
-SUPERVISORES BAJÍO S12 (Manzanarez): Gomez Lupercio 26.7% (36d como supervisora, 3 promotores <15d: Medrano 8d RP288, Olveda 9d RP464, Montes Navarro 2d RP465, + vacante RP291 — ESTRUCTURAL no disciplinario), Vega Gutierrez 47.9%, Gutierrez Flores 54.9%, Alonso Padron 55.5%, Chavez Alfaro 55.8%, Martinez Gonzalez 69.9% (mejor).
- 
-CURVA CRÍTICA <15d: Bastida Mata(Vega Gutierrez,0d,RP154), Arteaga Arroyo(Picasso Puente,1d,RP498), Montes Navarro(Gomez Lupercio,2d,RP465), Duran Rios(Lopez Quintero,3d,RP555), Medrano Ibarra(Gomez Lupercio,8d,RP288), Olveda Godinez(Gomez Lupercio,9d,RP464), Nuñez Sanchez(Martinez Gonzalez,9d,RP104), Medina Gonzalez(Alonso Padron,14d,RP486).
- 
-CONCURSOS: Verano OTC+Suerox (feb-ago), Feria Belleza (cierra 26-abr, 3 quincenas), Espectacularidad (mar-ago, $1600/promotor). Isla POP Suerox: Gallegos=2, Manzanarez=1 — OPORTUNIDAD: $200 con POP vs $150 sin POP.
- 
-REGLAS: Siempre menciona supervisor cuando cites un promotor. Gomez Lupercio=acompañamiento no sanción. Respuestas directas, operacionales, máx 3 acciones concretas. Semáforo 🔴🟡🟢 cuando aplique.`;
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    if (document.activeElement.id === 'apiKeyInput') { activateAgent(); return; }
+    if (document.activeElement.id === 'chatInput') { sendMsg(); }
+  }
+});
  
 function activateAgent() {
   const key = document.getElementById('apiKeyInput').value.trim();
-  const errEl = document.getElementById('modalError');
-  if (!key.startsWith('sk-ant')) {
-    errEl.style.display = 'block';
-    errEl.textContent = '⚠ API Key inválida. Debe empezar con sk-ant-api03-';
-    return;
-  }
-  errEl.style.display = 'none';
-  API_KEY = key;
-  // Guardar en sessionStorage para que no se pierda al navegar
-  sessionStorage.setItem('vero_key', key);
+  const err = document.getElementById('modalErr');
+  if (!key.startsWith('sk-ant')) { err.style.display = 'block'; return; }
+  err.style.display = 'none';
+  APIKEY = key;
+  try { sessionStorage.setItem('vero_k', key); } catch(e) {}
+  boot();
+}
+ 
+function boot() {
   document.getElementById('modal').style.display = 'none';
   document.getElementById('appShell').style.display = 'flex';
-  addAgentMsg('Hola **Verónica** 👋 Soy **VERO**, activa y lista.\n\n4 alertas urgentes:\n🔴 **244 tiendas sin cobertura** — Gallegos / NL\n🔴 **8 promotores sin SIM** — sin captura, sin concurso\n🔴 **Bajío 51.8%** — estancada 4 semanas\n🟡 **Norte cayendo** — -8.9 pts desde S09\n\n¿Por dónde empezamos?');
-}
- 
-function fmt(t){
-  return t
-    .replace(/\*\*(.*?)\*\*/g,'<b>$1</b>')
-    .replace(/🔴 (.*)/g,'<div style="margin:2px 0"><span style="color:var(--red)">🔴</span> $1</div>')
-    .replace(/🟡 (.*)/g,'<div style="margin:2px 0"><span style="color:var(--amber)">🟡</span> $1</div>')
-    .replace(/🟢 (.*)/g,'<div style="margin:2px 0"><span style="color:var(--green)">🟢</span> $1</div>')
-    .replace(/\n/g,'<br>');
-}
-function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function scrollChat(){const el=document.getElementById('chatMessages');el.scrollTop=el.scrollHeight;}
- 
-function addAgentMsg(text){
-  const d=document.createElement('div');
-  d.className='msg';
-  d.innerHTML=`<div class="msg-avatar agent">V</div><div class="msg-bubble">${fmt(text)}</div>`;
-  document.getElementById('chatMessages').appendChild(d);
-  scrollChat();
-}
-function addUserMsg(text){
-  const d=document.createElement('div');
-  d.className='msg user';
-  d.innerHTML=`<div class="msg-bubble">${esc(text)}</div><div class="msg-avatar user">VL</div>`;
-  document.getElementById('chatMessages').appendChild(d);
-  scrollChat();
-}
-function addTyping(){
-  const d=document.createElement('div');
-  d.className='msg';d.id='typing';
-  d.innerHTML=`<div class="msg-avatar agent">V</div><div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
-  document.getElementById('chatMessages').appendChild(d);scrollChat();
-}
-function removeTyping(){const t=document.getElementById('typing');if(t)t.remove();}
- 
-async function sendMessage(){
-  const input=document.getElementById('chatInput');
-  const btn=document.getElementById('sendBtn');
-  const text=input.value.trim();
-  if(!text||!API_KEY)return;
-  input.value='';btn.disabled=true;
-  addUserMsg(text);
-  chatHistory.push({role:'user',content:text});
-  addTyping();
-  try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-api-key':API_KEY,
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
-      },
-      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:800,system:SYSTEM_PROMPT,messages:chatHistory})
+  addBot('Hola **Verónica** 👋 Soy **VERO**, activa y lista.\n\n🔴 **244 tiendas sin cobertura** — Gallegos / NL\n🔴 **8 promotores sin SIM** — sin captura ni concurso\n🔴 **Bajío 51.8%** — estancada 4 semanas\n🟡 **Norte cayendo** — -8.9 pts desde S09\n\n¿Por dónde empezamos?');
+  setTimeout(() => {
+    document.querySelectorAll('.pr-fill').forEach(el => {
+      const w = el.style.width; el.style.width = '0';
+      setTimeout(() => el.style.width = w, 100);
     });
-    if(!res.ok){
-      const err=await res.json().catch(()=>({}));
-      throw new Error(err?.error?.message||'HTTP '+res.status);
-    }
-    const data=await res.json();
-    removeTyping();
-    const reply=data.content?.[0]?.text||'Sin respuesta.';
-    chatHistory.push({role:'assistant',content:reply});
-    addAgentMsg(reply);
-  }catch(e){
-    removeTyping();
-    let msg = e.message || 'Error de conexión.';
-    if(msg.includes('invalid x-api-key') || msg.includes('401')) {
-      // Limpiar key guardada y pedir nueva
-      sessionStorage.removeItem('vero_key');
-      API_KEY = '';
-      msg = 'API Key inválida o expirada. Recarga la página (F5) e ingresa tu key nuevamente.';
-    }
-    addAgentMsg('🔴 ' + msg);
-  }
-  btn.disabled=false;input.focus();
+  }, 300);
 }
  
-function askAbout(q){document.getElementById('chatInput').value=q;sendMessage();}
-function switchTab(id,el){
-  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.getElementById('tab-'+id).classList.add('active');
-  el.classList.add('active');
+// ── Navegación — SOLO cambia vista, NUNCA llama API ──────────
+function goTab(tabId, navId) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.ni').forEach(n => n.classList.remove('active'));
+  document.getElementById('tab-' + tabId).classList.add('active');
+  document.getElementById(navId).classList.add('active');
 }
-document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.activeElement.id==='chatInput')sendMessage();});
-window.addEventListener('load',()=>{
-  document.querySelectorAll('.prog-fill').forEach(el=>{const w=el.style.width;el.style.width='0';setTimeout(()=>el.style.width=w,400);});
-});
+ 
+// ── Chat — SOLO para enviar preguntas a la API ───────────────
+function fmt(t) {
+  return t
+    .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
+    .replace(/🔴 (.*)/g, '<div style="margin:2px 0;color:var(--red)">🔴 $1</div>')
+    .replace(/🟡 (.*)/g, '<div style="margin:2px 0;color:var(--amber)">🟡 $1</div>')
+    .replace(/🟢 (.*)/g, '<div style="margin:2px 0;color:var(--green)">🟢 $1</div>')
+    .replace(/\n/g, '<br>');
+}
+function esc(t) { return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function sc() { const el = document.getElementById('chatMsgs'); el.scrollTop = el.scrollHeight; }
+ 
+function addBot(text) {
+  const d = document.createElement('div');
+  d.className = 'msg';
+  d.innerHTML = `<div class="mav ava">V</div><div class="mb mba">${fmt(text)}</div>`;
+  document.getElementById('chatMsgs').appendChild(d); sc();
+}
+function addUser(text) {
+  const d = document.createElement('div');
+  d.className = 'msg';
+  d.innerHTML = `<div class="mav avu">VL</div><div class="mb mbu">${esc(text)}</div>`;
+  document.getElementById('chatMsgs').appendChild(d); sc();
+}
+function addTyp() {
+  const d = document.createElement('div');
+  d.className = 'msg'; d.id = 'typm';
+  d.innerHTML = `<div class="mav ava">V</div><div class="mb mba"><div class="typing"><span></span><span></span><span></span></div></div>`;
+  document.getElementById('chatMsgs').appendChild(d); sc();
+}
+function rmTyp() { const t = document.getElementById('typm'); if(t) t.remove(); }
+ 
+// ask: pone texto en input y envía — NO navega ni cambia tabs
+function ask(q) {
+  document.getElementById('chatInput').value = q;
+  sendMsg();
+}
+ 
+async function sendMsg() {
+  const input = document.getElementById('chatInput');
+  const btn = document.getElementById('sendBtn');
+  const text = input.value.trim();
+  if (!text || !APIKEY) return;
+ 
+  input.value = ''; btn.disabled = true;
+  addUser(text);
+  history.push({ role: 'user', content: text });
+  addTyp();
+ 
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': APIKEY,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 800, system: SYS, messages: history })
+    });
+ 
+    if (!res.ok) {
+      const e = await res.json().catch(() => ({}));
+      if (res.status === 401) {
+        try { sessionStorage.removeItem('vero_k'); } catch(ex) {}
+        APIKEY = '';
+        rmTyp();
+        addBot('🔴 API Key inválida. Recarga la página (F5) e ingresa tu key nuevamente desde platform.claude.com → API keys → Create Key.');
+        btn.disabled = false; return;
+      }
+      throw new Error(e?.error?.message || 'HTTP ' + res.status);
+    }
+ 
+    const data = await res.json();
+    rmTyp();
+    const reply = data.content?.[0]?.text || 'Sin respuesta.';
+    history.push({ role: 'assistant', content: reply });
+    addBot(reply);
+  } catch(e) {
+    rmTyp();
+    addBot('🔴 ' + (e.message || 'Error de conexión.'));
+  }
+  btn.disabled = false; input.focus();
+}
 </script>
 </body>
 </html>
+ 
