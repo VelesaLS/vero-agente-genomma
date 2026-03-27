@@ -291,7 +291,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
     <div class="topbar">
       <div>
         <div class="tb-t">V.E.R.O · Visibilidad, Ejecución y Resultados de Operación</div>
-        <div class="tb-m">Verónica León &nbsp;·&nbsp; Líder Nacional de Operaciones &nbsp;·&nbsp; Bajío y Norte &nbsp;·&nbsp; 13-Mar-2026</div>
+        <div class="tb-m">Verónica León &nbsp;·&nbsp; Líder Nacional de Operaciones &nbsp;·&nbsp; Bajío y Norte &nbsp;·&nbsp; S12 · 2026</div>
       </div>
       <div class="tb-r">
         <div style="display:flex;gap:4px;margin-right:4px;">
@@ -443,7 +443,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
       <!-- NUEVOS INGRESOS -->
       <div class="tab-content" id="tab-nuevos">
         <div class="panel" style="margin-bottom:13px">
-          <div class="ph"><div class="pt tr">Curva Crítica — Menos de 15 días (13-Mar-2026)</div><span class="badge br">8 sin SIM</span></div>
+          <div class="ph"><div class="pt tr">Curva Crítica — Menos de 15 días (S12 · 2026)</div><span class="badge br">8 sin SIM</span></div>
           <div class="pb">
             <table class="tbl">
               <thead><tr><th>Promotor</th><th>Supervisor</th><th>JT</th><th>Días</th><th>Ruta</th><th>Estado</th></tr></thead>
@@ -856,7 +856,14 @@ function renderCadenas() {
   // Usar la semana activa del topbar
   const semana = activeWeek || 'S12';
   const raw = DATA[activeCadena] || DATA.todas;
-  const f = JT_FACTOR[activeJT] || 1;
+  // Combinar filtro de JT del tab + zona del topbar
+  let zoneJT = activeJT;
+  if (activeJT === 'todos') {
+    if (activeZone === 'bajio') zoneJT = 'manzanarez';
+    else if (activeZone === 'norte') zoneJT = 'gallegos';
+    else zoneJT = 'todos';
+  }
+  const f = JT_FACTOR[zoneJT] || 1;
   const semKeys = ['S09','S10','S11','S12'];
   const semIdx  = semKeys.indexOf(semana);
   const prevSem = semKeys[Math.max(0, semIdx - 1)];
@@ -876,8 +883,9 @@ function renderCadenas() {
   const kpiEl = document.getElementById('cadena-kpis');
   const dColor = delta >= 0 ? '#059669' : '#e53e3e';
   const dSign  = delta >= 0 ? '+' : '';
+  const zLabel = activeZone==='bajio'?'Bajío (Manzanarez)':activeZone==='norte'?'Norte (Gallegos)':'T. Nacional';
   kpiEl.innerHTML = `
-    <div class="mc"><div class="ab ab-b"></div><div class="ml">Total tareas S12</div><div class="mv blu">${fmt2(total12)}</div><div class="ms">${label} · ${activeJT==='todos'?'todos los JT':activeJT}</div></div>
+    <div class="mc"><div class="ab ab-b"></div><div class="ml">Total tareas ${semana}</div><div class="mv blu">${fmt2(total12)}</div><div class="ms">${label} · ${zLabel}</div></div>
     <div class="mc"><div class="ab ab-g"></div><div class="ml">Solucionadas</div><div class="mv grn">${fmt2(sol12)}</div><div class="ms">${efec12}% efectividad</div></div>
     <div class="mc"><div class="ab ab-r"></div><div class="ml">No solucionadas</div><div class="mv red">${fmt2(nosol12)}</div><div class="ms">${100-efec12}% sin resolver</div></div>
     <div class="mc"><div class="ab" style="background:${dColor}"></div><div class="ml">Var vs S11</div><div class="mv" style="color:${dColor}">${dSign}${delta}pts</div><div class="ms">S11: ${efec11}% → S12: ${efec12}%</div></div>
@@ -1006,6 +1014,7 @@ function setZone(zone, el) {
   document.querySelectorAll('.zchip').forEach(b => b.classList.remove('active'));
   el.classList.add('active');
   updateDashboard();
+  if (document.getElementById('tab-cadenas').classList.contains('active')) renderCadenas();
 }
 
 function updateDashboard() {
@@ -1017,7 +1026,7 @@ function updateDashboard() {
 
   // Update topbar meta
   const meta = document.querySelector('.tb-m');
-  if (meta) meta.textContent = 'Verónica León · Líder · Bajío y Norte · 13-Mar-2026 · Zona: ' + zoneLabel + ' (' + jtLabel + ') · ' + weekLabel;
+  if (meta) meta.textContent = 'Verónica León · Líder Nacional de Operaciones · Bajío y Norte · Zona: ' + zoneLabel + ' (' + jtLabel + ') · ' + weekLabel;
 
   const cards = document.querySelectorAll('#tab-dashboard .mc');
   if (cards.length >= 8) {
