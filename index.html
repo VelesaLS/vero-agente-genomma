@@ -4,532 +4,236 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VERO · Agente de Operaciones PDV · Genomma Lab</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #080c14;
-  --bg2: #0d1320;
-  --bg3: #121929;
-  --bg4: #1a2438;
-  --border: rgba(255,255,255,0.07);
-  --border2: rgba(255,255,255,0.12);
-  --accent: #00e5a0;
-  --accent2: #ff6b35;
-  --accent3: #5b8fff;
-  --red: #ff4757;
-  --amber: #ffa502;
-  --green: #2ed573;
-  --text: #e8edf5;
-  --text2: #8892a4;
-  --text3: #4a5568;
-  --mono: 'Space Mono', monospace;
-  --display: 'Syne', sans-serif;
-  --body: 'DM Sans', sans-serif;
+  --bg:#080c14; --bg2:#0d1320; --bg3:#121929; --bg4:#1a2438;
+  --border:rgba(255,255,255,0.07); --border2:rgba(255,255,255,0.12);
+  --accent:#00e5a0; --accent3:#5b8fff;
+  --red:#ff4757; --amber:#ffa502; --green:#2ed573;
+  --text:#e8edf5; --text2:#8892a4; --text3:#4a5568;
+  --mono:'Space Mono',monospace; --display:'Syne',sans-serif; --body:'DM Sans',sans-serif;
 }
-
-* { margin:0; padding:0; box-sizing:border-box; }
-
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--body);
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-/* GRID NOISE BACKGROUND */
-body::before {
-  content:'';
-  position:fixed; inset:0;
-  background-image:
-    linear-gradient(rgba(0,229,160,0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,229,160,0.02) 1px, transparent 1px);
-  background-size: 40px 40px;
-  pointer-events:none; z-index:0;
-}
-
-/* GLOW ORBS */
-.orb {
-  position:fixed; border-radius:50%;
-  filter: blur(120px); pointer-events:none; z-index:0;
-}
-.orb1 { width:600px; height:600px; background:rgba(0,229,160,0.04); top:-200px; left:-200px; }
-.orb2 { width:400px; height:400px; background:rgba(91,143,255,0.05); bottom:0; right:0; }
-
-/* LAYOUT */
-.shell { position:relative; z-index:1; display:flex; height:100vh; overflow:hidden; }
-
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh;overflow:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,229,160,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,160,0.02) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+.orb{position:fixed;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0;}
+.orb1{width:500px;height:500px;background:rgba(0,229,160,0.04);top:-150px;left:-150px;}
+.orb2{width:350px;height:350px;background:rgba(91,143,255,0.05);bottom:0;right:0;}
+ 
+/* LAYOUT PRINCIPAL — flex row, altura completa */
+.shell{position:relative;z-index:1;display:flex;height:100vh;overflow:hidden;}
+ 
 /* SIDEBAR */
-.sidebar {
-  width: 260px; flex-shrink:0;
-  background: var(--bg2);
-  border-right: 1px solid var(--border);
-  display:flex; flex-direction:column;
-  padding: 0;
-  overflow-y:auto;
-}
-
-.sidebar-header {
-  padding: 24px 20px 20px;
-  border-bottom: 1px solid var(--border);
-}
-
-.agent-badge {
-  display:flex; align-items:center; gap:12px; margin-bottom:16px;
-}
-
-.agent-logo {
-  width:42px; height:42px; border-radius:10px;
-  background: linear-gradient(135deg, #00e5a0, #5b8fff);
-  display:flex; align-items:center; justify-content:center;
-  font-family: var(--display); font-weight:800; font-size:16px; color:#080c14;
-  flex-shrink:0;
-}
-
-.agent-name {
-  font-family: var(--display);
-  font-weight:800; font-size:18px; letter-spacing:-0.5px;
-  color: var(--text);
-}
-.agent-sub {
-  font-size:10px; color:var(--text2); letter-spacing:0.08em; text-transform:uppercase;
-}
-
-.live-dot {
-  display:inline-flex; align-items:center; gap:6px;
-  font-size:11px; color:var(--accent); font-family:var(--mono);
-}
-.live-dot::before {
-  content:''; width:7px; height:7px; border-radius:50%;
-  background:var(--accent);
-  box-shadow: 0 0 8px var(--accent);
-  animation: pulse 2s infinite;
-}
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-
-.nav-section { padding: 16px 12px 8px; }
-.nav-label {
-  font-size:10px; letter-spacing:0.1em; text-transform:uppercase;
-  color:var(--text3); font-family:var(--mono); padding: 0 8px 8px;
-}
-
-.nav-item {
-  display:flex; align-items:center; gap:10px;
-  padding: 9px 12px; border-radius:8px; cursor:pointer;
-  font-size:13px; color:var(--text2); transition:all .2s;
-  border: 1px solid transparent;
-}
-.nav-item:hover { background:var(--bg3); color:var(--text); }
-.nav-item.active {
-  background: rgba(0,229,160,0.08);
-  border-color: rgba(0,229,160,0.2);
-  color:var(--accent);
-}
-.nav-icon { font-size:16px; width:20px; text-align:center; }
-
-/* KPI PILLS in sidebar */
-.kpi-stack { padding: 16px 12px; border-top: 1px solid var(--border); margin-top:auto; }
-.kpi-pill {
-  display:flex; justify-content:space-between; align-items:center;
-  padding: 8px 12px; border-radius:6px; margin-bottom:6px;
-  background:var(--bg3); font-size:12px;
-}
-.kpi-pill .label { color:var(--text2); }
-.kpi-pill .val { font-family:var(--mono); font-weight:700; font-size:13px; }
-.val.red { color:var(--red); }
-.val.amber { color:var(--amber); }
-.val.green { color:var(--green); }
-.val.blue { color:var(--accent3); }
-
-.sidebar-footer {
-  padding: 16px 20px;
-  border-top: 1px solid var(--border);
-  font-size:11px; color:var(--text3); font-family:var(--mono);
-}
-
-/* MAIN */
-.main { flex:1; display:flex; flex-direction:column; overflow:hidden; }
-
-/* TOPBAR */
-.topbar {
-  padding: 16px 28px;
-  border-bottom: 1px solid var(--border);
-  display:flex; align-items:center; justify-content:space-between;
-  background:var(--bg);
-  flex-shrink:0;
-}
-.topbar-left { display:flex; flex-direction:column; }
-.topbar-title {
-  font-family:var(--display); font-weight:700; font-size:20px;
-  letter-spacing:-0.5px;
-}
-.topbar-meta { font-size:12px; color:var(--text2); margin-top:2px; }
-
-.topbar-right { display:flex; align-items:center; gap:12px; }
-
-.chip {
-  padding: 5px 12px; border-radius:20px; font-size:11px;
-  border: 1px solid var(--border2); color:var(--text2);
-  font-family:var(--mono); cursor:pointer; transition:all .2s;
-  background:var(--bg2);
-}
-.chip:hover { border-color:var(--accent); color:var(--accent); }
-.chip.active { border-color:var(--accent); color:var(--accent); background:rgba(0,229,160,0.08); }
-
-/* CONTENT AREA */
-.content { flex:1; overflow-y:auto; padding:24px 28px; }
-
-/* METRIC GRID */
-.metric-grid {
-  display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:24px;
-}
-.metric-card {
-  background:var(--bg2); border:1px solid var(--border);
-  border-radius:12px; padding:18px 20px;
-  position:relative; overflow:hidden;
-  transition: border-color .2s, transform .2s;
-}
-.metric-card:hover { border-color:var(--border2); transform:translateY(-1px); }
-.metric-card::after {
-  content:''; position:absolute; bottom:0; left:0; right:0; height:2px;
-}
-.metric-card.red::after { background:var(--red); }
-.metric-card.amber::after { background:var(--amber); }
-.metric-card.green::after { background:var(--green); }
-.metric-card.blue::after { background:var(--accent3); }
-
-.metric-label {
-  font-size:10px; text-transform:uppercase; letter-spacing:0.1em;
-  color:var(--text3); font-family:var(--mono); margin-bottom:10px;
-}
-.metric-value {
-  font-family:var(--display); font-weight:800; font-size:30px;
-  letter-spacing:-1px; line-height:1;
-}
-.metric-value.red { color:var(--red); }
-.metric-value.amber { color:var(--amber); }
-.metric-value.green { color:var(--green); }
-.metric-value.blue { color:var(--accent3); }
-.metric-value.accent { color:var(--accent); }
-.metric-sub { font-size:11px; color:var(--text2); margin-top:6px; }
-
-/* GRID 2 */
-.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
-.grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:16px; }
-
-/* PANELS */
-.panel {
-  background:var(--bg2); border:1px solid var(--border); border-radius:12px;
-  overflow:hidden;
-}
-.panel-header {
-  padding:14px 18px; border-bottom:1px solid var(--border);
-  display:flex; align-items:center; justify-content:space-between;
-}
-.panel-title {
-  font-family:var(--display); font-weight:700; font-size:14px; letter-spacing:-0.3px;
-}
-.panel-badge {
-  font-family:var(--mono); font-size:10px; padding:3px 8px;
-  border-radius:20px; background:rgba(255,71,87,0.12); color:var(--red);
-  border:1px solid rgba(255,71,87,0.2);
-}
-.panel-badge.amber {
-  background:rgba(255,165,2,0.12); color:var(--amber); border-color:rgba(255,165,2,0.2);
-}
-.panel-badge.green {
-  background:rgba(46,213,115,0.12); color:var(--green); border-color:rgba(46,213,115,0.2);
-}
-.panel-body { padding:14px 18px; }
-
-/* TABLE */
-.data-table { width:100%; border-collapse:collapse; font-size:12px; }
-.data-table th {
-  text-align:left; padding:8px 10px;
-  color:var(--text3); font-size:10px; text-transform:uppercase;
-  letter-spacing:0.08em; font-family:var(--mono);
-  border-bottom:1px solid var(--border);
-}
-.data-table td { padding:9px 10px; border-bottom:1px solid var(--border); color:var(--text2); }
-.data-table tr:last-child td { border-bottom:none; }
-.data-table tr:hover td { background:rgba(255,255,255,0.02); }
-.td-name { color:var(--text) !important; font-weight:500; }
-.td-red { color:var(--red) !important; font-family:var(--mono); font-size:11px; }
-.td-amber { color:var(--amber) !important; font-family:var(--mono); font-size:11px; }
-.td-green { color:var(--green) !important; font-family:var(--mono); font-size:11px; }
-.td-blue { color:var(--accent3) !important; font-family:var(--mono); font-size:11px; }
-
-/* ALERT ROWS */
-.alert-row {
-  display:flex; align-items:flex-start; gap:12px;
-  padding: 10px 0; border-bottom:1px solid var(--border);
-}
-.alert-row:last-child { border-bottom:none; }
-.alert-dot {
-  width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:5px;
-}
-.dot-red { background:var(--red); box-shadow:0 0 8px var(--red); }
-.dot-amber { background:var(--amber); box-shadow:0 0 8px var(--amber); }
-.dot-green { background:var(--green); box-shadow:0 0 8px var(--green); }
-.dot-blue { background:var(--accent3); }
-.alert-content { flex:1; }
-.alert-title { font-size:12px; font-weight:500; color:var(--text); margin-bottom:2px; }
-.alert-meta { font-size:11px; color:var(--text2); }
-.alert-tag {
-  font-family:var(--mono); font-size:9px; padding:2px 6px; border-radius:4px;
-  margin-left:6px;
-}
-.tag-red { background:rgba(255,71,87,0.15); color:var(--red); }
-.tag-amber { background:rgba(255,165,2,0.15); color:var(--amber); }
-.tag-green { background:rgba(46,213,115,0.15); color:var(--green); }
-
-/* PROGRESS BAR */
-.prog-row { margin-bottom:12px; }
-.prog-header { display:flex; justify-content:space-between; margin-bottom:5px; font-size:12px; }
-.prog-label { color:var(--text2); }
-.prog-val { font-family:var(--mono); font-size:11px; }
-.prog-track { height:5px; background:var(--bg4); border-radius:3px; overflow:hidden; }
-.prog-fill { height:100%; border-radius:3px; transition:width 1s ease; }
-.fill-red { background:var(--red); }
-.fill-amber { background:var(--amber); }
-.fill-green { background:var(--green); }
-.fill-blue { background:var(--accent3); }
-.fill-accent { background:var(--accent); }
-
-/* SEMAFORO */
-.semaforo-item {
-  display:flex; align-items:center; gap:12px;
-  padding:10px 0; border-bottom:1px solid var(--border);
-}
-.semaforo-item:last-child { border-bottom:none; }
-.sem-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
-.sem-label { flex:1; font-size:12px; color:var(--text2); }
-.sem-val { font-family:var(--mono); font-size:12px; font-weight:700; }
-.sem-note { font-size:10px; color:var(--text3); margin-left:auto; max-width:160px; text-align:right; }
-
-/* CHAT */
-.chat-wrapper {
-  flex-shrink:0;
-  background:var(--bg2);
-  border-top:1px solid var(--border);
-  display:flex; flex-direction:column;
-}
-.chat-messages {
-  padding:16px 24px; max-height:260px; overflow-y:auto;
-  display:flex; flex-direction:column; gap:12px;
-}
-.msg { display:flex; gap:10px; animation: fadeUp 0.3s ease; }
-@keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
-.msg-avatar {
-  width:28px; height:28px; border-radius:7px; flex-shrink:0;
-  display:flex; align-items:center; justify-content:center;
-  font-size:11px; font-weight:700; font-family:var(--display);
-}
-.msg-avatar.agent { background:linear-gradient(135deg,#00e5a0,#5b8fff); color:#080c14; }
-.msg-avatar.user { background:var(--bg4); color:var(--text2); border:1px solid var(--border2); }
-.msg-bubble {
-  background:var(--bg3); border:1px solid var(--border);
-  border-radius:0 10px 10px 10px; padding:10px 14px;
-  font-size:13px; color:var(--text); line-height:1.6; max-width:680px;
-}
-.msg.user .msg-bubble { border-radius:10px 0 10px 10px; background:var(--bg4); }
-.msg-bubble b { color:var(--accent); font-weight:600; }
-.msg-bubble .highlight { color:var(--red); font-weight:600; }
-.msg-bubble .ok { color:var(--green); font-weight:600; }
-
-.chat-input-row {
-  padding:14px 24px;
-  border-top:1px solid var(--border);
-  display:flex; gap:10px;
-}
-.chat-input {
-  flex:1; background:var(--bg3); border:1px solid var(--border);
-  border-radius:8px; padding:11px 16px; color:var(--text);
-  font-family:var(--body); font-size:13px; outline:none;
-  transition:border-color .2s;
-}
-.chat-input:focus { border-color:var(--accent); }
-.chat-input::placeholder { color:var(--text3); }
-.chat-send {
-  padding: 11px 20px; border-radius:8px;
-  background:var(--accent); color:#080c14; border:none;
-  font-family:var(--display); font-weight:700; font-size:13px;
-  cursor:pointer; transition:all .2s; white-space:nowrap;
-}
-.chat-send:hover { background:#00c98e; transform:scale(1.02); }
-.chat-send:disabled { background:var(--bg4); color:var(--text3); cursor:not-allowed; transform:none; }
-
-/* API KEY MODAL */
-.modal-overlay {
-  position:fixed; inset:0; background:rgba(8,12,20,0.92);
-  display:flex; align-items:center; justify-content:center;
-  z-index:100; backdrop-filter:blur(6px);
-}
-.modal-box {
-  background:var(--bg2); border:1px solid var(--border2);
-  border-radius:16px; padding:36px; max-width:480px; width:90%;
-  animation: fadeUp 0.4s ease;
-}
-.modal-logo {
-  width:56px; height:56px; border-radius:14px;
-  background:linear-gradient(135deg,#00e5a0,#5b8fff);
-  display:flex; align-items:center; justify-content:center;
-  font-family:var(--display); font-weight:800; font-size:22px; color:#080c14;
-  margin-bottom:20px;
-}
-.modal-title {
-  font-family:var(--display); font-weight:800; font-size:24px;
-  letter-spacing:-0.5px; margin-bottom:6px;
-}
-.modal-sub { font-size:13px; color:var(--text2); margin-bottom:24px; line-height:1.6; }
-.modal-label { font-size:11px; color:var(--text2); text-transform:uppercase;
-  letter-spacing:0.08em; font-family:var(--mono); margin-bottom:6px; }
-.modal-input {
-  width:100%; background:var(--bg3); border:1px solid var(--border2);
-  border-radius:8px; padding:12px 16px; color:var(--text);
-  font-family:var(--mono); font-size:13px; outline:none; margin-bottom:16px;
-  transition:border-color .2s;
-}
-.modal-input:focus { border-color:var(--accent); }
-.modal-btn {
-  width:100%; padding:13px; border-radius:8px;
-  background:var(--accent); color:#080c14; border:none;
-  font-family:var(--display); font-weight:700; font-size:15px;
-  cursor:pointer; transition:all .2s;
-}
-.modal-btn:hover { background:#00c98e; }
-.modal-note { font-size:11px; color:var(--text3); margin-top:12px; text-align:center; font-family:var(--mono); }
-
-/* TABS */
-.tab-bar { display:flex; gap:4px; margin-bottom:20px; border-bottom:1px solid var(--border); }
-.tab {
-  padding:10px 16px; font-size:12px; cursor:pointer;
-  color:var(--text2); border-bottom:2px solid transparent;
-  transition:all .2s; font-family:var(--mono);
-  margin-bottom:-1px;
-}
-.tab:hover { color:var(--text); }
-.tab.active { color:var(--accent); border-bottom-color:var(--accent); }
-
-/* SECTION HIDDEN */
-.tab-content { display:none; }
-.tab-content.active { display:block; }
-
-/* TYPING */
-.typing { display:flex; gap:4px; align-items:center; padding:2px 0; }
-.typing span { width:5px; height:5px; border-radius:50%; background:var(--accent); animation:bounce 1.2s infinite; }
-.typing span:nth-child(2){animation-delay:.2s}
-.typing span:nth-child(3){animation-delay:.4s}
+.sidebar{width:240px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;}
+.sidebar-header{padding:20px 16px;border-bottom:1px solid var(--border);}
+.agent-badge{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.agent-logo{width:38px;height:38px;border-radius:9px;background:linear-gradient(135deg,#00e5a0,#5b8fff);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:800;font-size:15px;color:#080c14;flex-shrink:0;}
+.agent-name{font-family:var(--display);font-weight:800;font-size:16px;letter-spacing:-0.5px;}
+.agent-sub{font-size:9px;color:var(--text2);letter-spacing:0.08em;text-transform:uppercase;}
+.live-dot{display:inline-flex;align-items:center;gap:6px;font-size:10px;color:var(--accent);font-family:var(--mono);}
+.live-dot::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.nav-section{padding:12px 8px 6px;}
+.nav-label{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);font-family:var(--mono);padding:0 8px 6px;}
+.nav-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:7px;cursor:pointer;font-size:12px;color:var(--text2);transition:all .2s;border:1px solid transparent;}
+.nav-item:hover{background:var(--bg3);color:var(--text);}
+.nav-item.active{background:rgba(0,229,160,0.08);border-color:rgba(0,229,160,0.2);color:var(--accent);}
+.nav-icon{font-size:14px;width:18px;text-align:center;}
+.kpi-stack{padding:12px 10px;border-top:1px solid var(--border);margin-top:auto;}
+.kpi-pill{display:flex;justify-content:space-between;align-items:center;padding:6px 10px;border-radius:5px;margin-bottom:5px;background:var(--bg3);font-size:11px;}
+.kpi-pill .label{color:var(--text2);}
+.kpi-pill .val{font-family:var(--mono);font-weight:700;font-size:12px;}
+.val.red{color:var(--red);} .val.amber{color:var(--amber);} .val.green{color:var(--green);} .val.blue{color:var(--accent3);}
+.sidebar-footer{padding:12px 16px;border-top:1px solid var(--border);font-size:10px;color:var(--text3);font-family:var(--mono);}
+ 
+/* MAIN — columna derecha, flex column */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
+ 
+/* TOPBAR — altura fija */
+.topbar{padding:12px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--bg);flex-shrink:0;}
+.topbar-title{font-family:var(--display);font-weight:700;font-size:16px;letter-spacing:-0.5px;}
+.topbar-meta{font-size:11px;color:var(--text2);margin-top:2px;}
+.topbar-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.chip{padding:4px 10px;border-radius:20px;font-size:10px;border:1px solid var(--border2);color:var(--text2);font-family:var(--mono);cursor:pointer;transition:all .2s;background:var(--bg2);}
+.chip.active{border-color:var(--accent);color:var(--accent);background:rgba(0,229,160,0.08);}
+.week-badge{font-family:var(--mono);font-size:10px;padding:4px 8px;border-radius:4px;background:rgba(91,143,255,0.1);color:var(--accent3);border:1px solid rgba(91,143,255,0.2);}
+ 
+/* CONTENT — scroll interno */
+.content{flex:1;overflow-y:auto;padding:16px 20px;min-height:0;}
+ 
+/* CHAT — altura fija abajo */
+.chat-wrapper{flex-shrink:0;background:var(--bg2);border-top:1px solid var(--border);display:flex;flex-direction:column;max-height:280px;}
+.chat-messages{padding:12px 16px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;flex:1;}
+.msg{display:flex;gap:8px;animation:fadeUp .3s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.msg-avatar{width:26px;height:26px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;font-family:var(--display);}
+.msg-avatar.agent{background:linear-gradient(135deg,#00e5a0,#5b8fff);color:#080c14;}
+.msg-avatar.user{background:var(--bg4);color:var(--text2);border:1px solid var(--border2);}
+.msg-bubble{background:var(--bg3);border:1px solid var(--border);border-radius:0 9px 9px 9px;padding:9px 12px;font-size:12px;color:var(--text);line-height:1.6;max-width:600px;}
+.msg.user .msg-bubble{border-radius:9px 0 9px 9px;background:var(--bg4);}
+.msg-bubble b{color:var(--accent);font-weight:600;}
+.quick-btns{display:flex;flex-wrap:wrap;gap:5px;padding:8px 16px;border-bottom:1px solid var(--border);}
+.quick-btn{padding:5px 10px;border-radius:5px;border:1px solid var(--border);background:var(--bg3);color:var(--text2);font-size:10px;cursor:pointer;transition:all .2s;font-family:var(--mono);}
+.quick-btn:hover{border-color:var(--accent);color:var(--accent);}
+.chat-input-row{padding:10px 16px;border-top:1px solid var(--border);display:flex;gap:8px;flex-shrink:0;}
+.chat-input{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:9px 14px;color:var(--text);font-family:var(--body);font-size:12px;outline:none;transition:border-color .2s;}
+.chat-input:focus{border-color:var(--accent);}
+.chat-input::placeholder{color:var(--text3);}
+.chat-send{padding:9px 16px;border-radius:7px;background:var(--accent);color:#080c14;border:none;font-family:var(--display);font-weight:700;font-size:12px;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.chat-send:hover{background:#00c98e;}
+.chat-send:disabled{background:var(--bg4);color:var(--text3);cursor:not-allowed;}
+.typing{display:flex;gap:4px;align-items:center;}
+.typing span{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:bounce 1.2s infinite;}
+.typing span:nth-child(2){animation-delay:.2s} .typing span:nth-child(3){animation-delay:.4s}
 @keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-5px)}}
-
+ 
+/* METRIC GRID — 4 columnas */
+.metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
+.metric-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;position:relative;overflow:hidden;transition:border-color .2s,transform .2s;}
+.metric-card:hover{border-color:var(--border2);transform:translateY(-1px);}
+.metric-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;}
+.metric-card.red::after{background:var(--red);} .metric-card.amber::after{background:var(--amber);}
+.metric-card.green::after{background:var(--green);} .metric-card.blue::after{background:var(--accent3);}
+.metric-label{font-size:9px;text-transform:uppercase;letter-spacing:0.1em;color:var(--text3);font-family:var(--mono);margin-bottom:8px;}
+.metric-value{font-family:var(--display);font-weight:800;font-size:26px;letter-spacing:-1px;line-height:1;}
+.metric-value.red{color:var(--red);} .metric-value.amber{color:var(--amber);} .metric-value.green{color:var(--green);}
+.metric-value.blue{color:var(--accent3);} .metric-value.accent{color:var(--accent);}
+.metric-sub{font-size:10px;color:var(--text2);margin-top:5px;}
+ 
+/* GRID 2 */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+ 
+/* PANELS */
+.panel{background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:12px;}
+.panel-header{padding:11px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.panel-title{font-family:var(--display);font-weight:700;font-size:13px;letter-spacing:-0.3px;}
+.panel-badge{font-family:var(--mono);font-size:9px;padding:3px 7px;border-radius:20px;background:rgba(255,71,87,0.12);color:var(--red);border:1px solid rgba(255,71,87,0.2);}
+.panel-badge.amber{background:rgba(255,165,2,0.12);color:var(--amber);border-color:rgba(255,165,2,0.2);}
+.panel-badge.green{background:rgba(46,213,115,0.12);color:var(--green);border-color:rgba(46,213,115,0.2);}
+.panel-body{padding:12px 14px;}
+ 
+/* TABLE */
+.data-table{width:100%;border-collapse:collapse;font-size:11px;}
+.data-table th{text-align:left;padding:6px 8px;color:var(--text3);font-size:9px;text-transform:uppercase;letter-spacing:0.08em;font-family:var(--mono);border-bottom:1px solid var(--border);}
+.data-table td{padding:7px 8px;border-bottom:1px solid var(--border);color:var(--text2);}
+.data-table tr:last-child td{border-bottom:none;}
+.data-table tr:hover td{background:rgba(255,255,255,0.02);}
+.td-name{color:var(--text)!important;font-weight:500;}
+.td-red{color:var(--red)!important;font-family:var(--mono);font-size:10px;}
+.td-amber{color:var(--amber)!important;font-family:var(--mono);font-size:10px;}
+.td-green{color:var(--green)!important;font-family:var(--mono);font-size:10px;}
+.td-blue{color:var(--accent3)!important;font-family:var(--mono);font-size:10px;}
+ 
+/* ALERT ROWS */
+.alert-row{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);}
+.alert-row:last-child{border-bottom:none;}
+.alert-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.dot-red{background:var(--red);box-shadow:0 0 6px var(--red);}
+.dot-amber{background:var(--amber);box-shadow:0 0 6px var(--amber);}
+.dot-green{background:var(--green);}
+.alert-content{flex:1;}
+.alert-title{font-size:11px;font-weight:500;color:var(--text);margin-bottom:2px;}
+.alert-meta{font-size:10px;color:var(--text2);line-height:1.5;}
+.alert-tag{font-family:var(--mono);font-size:8px;padding:2px 5px;border-radius:3px;margin-left:5px;}
+.tag-red{background:rgba(255,71,87,0.15);color:var(--red);}
+.tag-amber{background:rgba(255,165,2,0.15);color:var(--amber);}
+ 
+/* PROGRESS */
+.prog-row{margin-bottom:10px;}
+.prog-header{display:flex;justify-content:space-between;margin-bottom:4px;font-size:11px;}
+.prog-label{color:var(--text2);}
+.prog-val{font-family:var(--mono);font-size:10px;}
+.prog-track{height:4px;background:var(--bg4);border-radius:2px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:2px;transition:width 1s ease;}
+.fill-red{background:var(--red);} .fill-amber{background:var(--amber);}
+.fill-green{background:var(--green);} .fill-accent{background:var(--accent);}
+ 
+/* SEMAFORO */
+.semaforo-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);}
+.semaforo-item:last-child{border-bottom:none;}
+.sem-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.sem-label{flex:1;font-size:11px;color:var(--text2);}
+.sem-val{font-family:var(--mono);font-size:11px;font-weight:700;}
+.sem-note{font-size:9px;color:var(--text3);margin-left:auto;max-width:140px;text-align:right;}
+ 
+/* VAC ROW */
+.vac-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);font-size:11px;}
+.vac-row:last-child{border-bottom:none;}
+.vac-ruta{font-family:var(--mono);color:var(--accent3);font-size:10px;margin-right:6px;}
+.vac-tiendas{font-family:var(--mono);font-weight:700;font-size:13px;}
+ 
+/* TAB CONTENT */
+.tab-content{display:none;}
+.tab-content.active{display:block;}
+ 
 /* SCROLLBAR */
-::-webkit-scrollbar { width:5px; }
-::-webkit-scrollbar-track { background:transparent; }
-::-webkit-scrollbar-thumb { background:var(--bg4); border-radius:3px; }
-
-/* WEEK BADGE */
-.week-badge {
-  font-family:var(--mono); font-size:11px;
-  padding:4px 10px; border-radius:4px;
-  background:rgba(91,143,255,0.1); color:var(--accent3);
-  border:1px solid rgba(91,143,255,0.2);
-}
-
-/* VACANTE ROW */
-.vac-row {
-  display:flex; justify-content:space-between; align-items:center;
-  padding:8px 0; border-bottom:1px solid var(--border); font-size:12px;
-}
-.vac-row:last-child { border-bottom:none; }
-.vac-ruta { font-family:var(--mono); color:var(--accent3); font-size:11px; margin-right:8px; }
-.vac-tiendas { font-family:var(--mono); font-weight:700; font-size:14px; }
-
-/* QUICK ACTIONS */
-.quick-btns { display:flex; flex-wrap:wrap; gap:6px; padding:0 24px 12px; }
-.quick-btn {
-  padding:6px 12px; border-radius:6px; border:1px solid var(--border);
-  background:var(--bg3); color:var(--text2); font-size:11px;
-  cursor:pointer; transition:all .2s; font-family:var(--mono);
-}
-.quick-btn:hover { border-color:var(--accent); color:var(--accent); background:rgba(0,229,160,0.05); }
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:2px;}
+ 
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(8,12,20,0.94);display:flex;align-items:center;justify-content:center;z-index:100;backdrop-filter:blur(6px);}
+.modal-box{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:32px;max-width:440px;width:90%;animation:fadeUp .4s ease;}
+.modal-logo{width:50px;height:50px;border-radius:12px;background:linear-gradient(135deg,#00e5a0,#5b8fff);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:800;font-size:20px;color:#080c14;margin-bottom:18px;}
+.modal-title{font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:-0.5px;margin-bottom:6px;}
+.modal-sub{font-size:12px;color:var(--text2);margin-bottom:20px;line-height:1.6;}
+.modal-label{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:0.08em;font-family:var(--mono);margin-bottom:5px;}
+.modal-input{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:7px;padding:11px 14px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none;margin-bottom:14px;transition:border-color .2s;}
+.modal-input:focus{border-color:var(--accent);}
+.modal-btn{width:100%;padding:12px;border-radius:7px;background:var(--accent);color:#080c14;border:none;font-family:var(--display);font-weight:700;font-size:14px;cursor:pointer;transition:all .2s;}
+.modal-btn:hover{background:#00c98e;}
+.modal-note{font-size:10px;color:var(--text3);margin-top:10px;text-align:center;font-family:var(--mono);}
+.modal-error{font-size:11px;color:var(--red);margin-top:8px;display:none;font-family:var(--mono);}
 </style>
 </head>
 <body>
-
-<!-- GLOW ORBS -->
 <div class="orb orb1"></div>
 <div class="orb orb2"></div>
-
-<!-- API KEY MODAL -->
+ 
+<!-- MODAL -->
 <div class="modal-overlay" id="modal">
   <div class="modal-box">
     <div class="modal-logo">V</div>
     <div class="modal-title">VERO · Agente Operaciones</div>
-    <div class="modal-sub">
-      Agente de Visibilidad y Ejecución en el Retailen Operaciones PDV para Genomma Lab.<br>
-      Ingresa tu API Key de Anthropic para activar el análisis inteligente.
-    </div>
+    <div class="modal-sub">Agente de Visibilidad y Ejecución en Retail de Operaciones PDV · Genomma Lab.<br>Ingresa tu API Key de Anthropic para activar el análisis inteligente.</div>
     <div class="modal-label">API Key de Anthropic</div>
-    <input type="password" class="modal-input" id="apiKeyInput" placeholder="sk-ant-api03-..." />
+    <input type="password" class="modal-input" id="apiKeyInput" placeholder="sk-ant-api03-..." autocomplete="off"/>
     <button class="modal-btn" onclick="activateAgent()">Activar VERO →</button>
+    <div class="modal-error" id="modalError">⚠ API Key inválida. Verifica que empiece con sk-ant-api03-</div>
     <div class="modal-note">Tu clave se guarda solo en esta sesión · No se almacena en servidores</div>
   </div>
 </div>
-
-<!-- MAIN SHELL -->
+ 
+<!-- APP -->
 <div class="shell" id="appShell" style="display:none;">
-
+ 
   <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="sidebar-header">
       <div class="agent-badge">
         <div class="agent-logo">V</div>
-        <div>
-          <div class="agent-name">VERO</div>
-          <div class="agent-sub">Ops Intelligence Agent</div>
-        </div>
+        <div><div class="agent-name">VERO</div><div class="agent-sub">Ops Intelligence Agent</div></div>
       </div>
       <div class="live-dot">ACTIVO · Genomma Lab</div>
     </div>
-
     <div class="nav-section">
       <div class="nav-label">Módulos</div>
-      <div class="nav-item active" onclick="switchTab('dashboard',this)">
-        <span class="nav-icon">⊞</span> Dashboard General
-      </div>
-      <div class="nav-item" onclick="switchTab('vacantes',this)">
-        <span class="nav-icon">⚠</span> Vacantes
-      </div>
-      <div class="nav-item" onclick="switchTab('supervisores',this)">
-        <span class="nav-icon">◈</span> Supervisores
-      </div>
-      <div class="nav-item" onclick="switchTab('nuevos',this)">
-        <span class="nav-icon">◉</span> Nuevos Ingresos
-      </div>
-      <div class="nav-item" onclick="switchTab('concursos',this)">
-        <span class="nav-icon">★</span> Concursos
-      </div>
+      <div class="nav-item active" onclick="switchTab('dashboard',this)"><span class="nav-icon">⊞</span> Dashboard General</div>
+      <div class="nav-item" onclick="switchTab('vacantes',this)"><span class="nav-icon">⚠</span> Vacantes</div>
+      <div class="nav-item" onclick="switchTab('supervisores',this)"><span class="nav-icon">◈</span> Supervisores</div>
+      <div class="nav-item" onclick="switchTab('nuevos',this)"><span class="nav-icon">◉</span> Nuevos Ingresos</div>
+      <div class="nav-item" onclick="switchTab('concursos',this)"><span class="nav-icon">★</span> Concursos</div>
     </div>
-
     <div class="nav-section">
       <div class="nav-label">Zonas</div>
-      <div class="nav-item" onclick="askAbout('¿Cuál es el estado actual de la zona Bajío y qué acciones urgentes necesito tomar esta semana?')">
-        <span class="nav-icon" style="color:var(--red)">●</span> Bajío <span style="margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--red)">51.8%</span>
-      </div>
-      <div class="nav-item" onclick="askAbout('¿Cuál es el estado de la zona Norte y por qué sigue cayendo su efectividad?')">
-        <span class="nav-icon" style="color:var(--amber)">●</span> Norte <span style="margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--amber)">59.5%</span>
-      </div>
-      <div class="nav-item" onclick="askAbout('¿Qué está haciendo bien la zona Sureste para mantener su tendencia positiva?')">
-        <span class="nav-icon" style="color:var(--green)">●</span> Sureste <span style="margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--green)">73.5%</span>
-      </div>
-      <div class="nav-item" onclick="askAbout('¿Por qué Centro lidera el país y qué pueden aprender las otras zonas de su modelo operativo?')">
-        <span class="nav-icon" style="color:var(--accent)">●</span> Centro <span style="margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--accent)">80.1%</span>
-      </div>
+      <div class="nav-item" onclick="askAbout('¿Cuál es el estado actual de la zona Bajío y qué acciones urgentes necesito tomar esta semana?')"><span class="nav-icon" style="color:var(--red)">●</span> Bajío <span style="margin-left:auto;font-family:var(--mono);font-size:9px;color:var(--red)">51.8%</span></div>
+      <div class="nav-item" onclick="askAbout('¿Cuál es el estado de la zona Norte y por qué sigue cayendo su efectividad?')"><span class="nav-icon" style="color:var(--amber)">●</span> Norte <span style="margin-left:auto;font-family:var(--mono);font-size:9px;color:var(--amber)">59.5%</span></div>
+      <div class="nav-item" onclick="askAbout('¿Qué está haciendo bien la zona Sureste?')"><span class="nav-icon" style="color:var(--green)">●</span> Sureste <span style="margin-left:auto;font-family:var(--mono);font-size:9px;color:var(--green)">73.5%</span></div>
+      <div class="nav-item" onclick="askAbout('¿Por qué Centro lidera el país y qué pueden aprender las otras zonas?')"><span class="nav-icon" style="color:var(--accent)">●</span> Centro <span style="margin-left:auto;font-family:var(--mono);font-size:9px;color:var(--accent)">80.1%</span></div>
     </div>
-
     <div class="kpi-stack">
-      <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);font-family:var(--mono);margin-bottom:8px;">Semana S12 · Resumen</div>
+      <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);font-family:var(--mono);margin-bottom:6px;">S12 · Resumen</div>
       <div class="kpi-pill"><span class="label">HC Veronica</span><span class="val blue">163</span></div>
       <div class="kpi-pill"><span class="label">Promotores activos</span><span class="val green">154</span></div>
       <div class="kpi-pill"><span class="label">Vacantes</span><span class="val red">10</span></div>
@@ -537,60 +241,52 @@ body::before {
       <div class="kpi-pill"><span class="label">En curva &lt;15d</span><span class="val red">8</span></div>
       <div class="kpi-pill"><span class="label">Tiendas vacantes</span><span class="val red">244</span></div>
     </div>
-
-    <div class="sidebar-footer">
-      Datos: S09–S12 2026 · Rutero 13-Mar<br>
-      Genomma Lab · Dirección de Operaciones
-    </div>
+    <div class="sidebar-footer">Datos: S09–S12 2026 · Rutero 13-Mar<br>Genomma Lab · Dirección de Operaciones</div>
   </div>
-
+ 
   <!-- MAIN -->
   <div class="main">
-
     <!-- TOPBAR -->
     <div class="topbar">
-      <div class="topbar-left">
+      <div>
         <div class="topbar-title">VERO · Visibilidad y Ejecución en Retail de Operaciones</div>
-        <div class="topbar-meta">Lider: Verónica León · Zonas: Bajío y Occidente · Actualizado: 13-Mar-2026 · 10:48</div>
+        <div class="topbar-meta">Lider: Verónica León · Zonas: Bajío y Occidente · 13-Mar-2026</div>
       </div>
       <div class="topbar-right">
-        <span class="week-badge">SEMANA 12 / 2026</span>
+        <span class="week-badge">S12 / 2026</span>
         <div class="chip active">Bajío</div>
         <div class="chip">Norte</div>
-        <div class="chip">Todas las zonas</div>
+        <div class="chip">Todas</div>
       </div>
     </div>
-
-    <!-- CONTENT -->
+ 
+    <!-- CONTENT SCROLLABLE -->
     <div class="content" id="mainContent">
-
-      <!-- TAB: DASHBOARD -->
+ 
+      <!-- DASHBOARD -->
       <div class="tab-content active" id="tab-dashboard">
-
-        <!-- METRIC GRID -->
         <div class="metric-grid">
           <div class="metric-card red">
             <div class="metric-label">Efectividad Bajío S12</div>
             <div class="metric-value red">51.8%</div>
-            <div class="metric-sub">🔴 Sin mejora en 4 semanas · Brecha 28 pts vs Centro</div>
+            <div class="metric-sub">Sin mejora 4 semanas · -28 pts vs Centro</div>
           </div>
           <div class="metric-card red">
             <div class="metric-label">Vacantes activas</div>
             <div class="metric-value red">10</div>
-            <div class="metric-sub">🔴 De 163 HC · +6 en 3 semanas</div>
+            <div class="metric-sub">De 163 HC · +6 en 3 semanas</div>
           </div>
           <div class="metric-card red">
             <div class="metric-label">Tiendas sin cobertura</div>
             <div class="metric-value red">244</div>
-            <div class="metric-sub">🔴 14 rutas vacantes · Todas Gallegos / NL</div>
+            <div class="metric-sub">14 rutas vacantes · Gallegos / NL</div>
           </div>
           <div class="metric-card amber">
             <div class="metric-label">En curva crítica &lt;15d</div>
             <div class="metric-value amber">8</div>
-            <div class="metric-sub">🟡 Sin SIM · Sin captura posible</div>
+            <div class="metric-sub">Sin SIM · Sin captura posible</div>
           </div>
         </div>
-
         <div class="metric-grid">
           <div class="metric-card amber">
             <div class="metric-label">Sin captura S12</div>
@@ -605,7 +301,7 @@ body::before {
           <div class="metric-card green">
             <div class="metric-label">Efectividad Centro</div>
             <div class="metric-value green">80.1%</div>
-            <div class="metric-sub">🟢 Zona líder nacional</div>
+            <div class="metric-sub">Zona líder nacional</div>
           </div>
           <div class="metric-card blue">
             <div class="metric-label">Nuevos ingresos &lt;90d</div>
@@ -613,157 +309,64 @@ body::before {
             <div class="metric-sub">19.5% del equipo Verónica</div>
           </div>
         </div>
-
         <div class="grid2">
-          <!-- TENDENCIA WR -->
           <div class="panel">
-            <div class="panel-header">
-              <div class="panel-title">Efectividad WR por Zona — S09 a S12</div>
-              <span class="panel-badge amber">Tendencia</span>
-            </div>
+            <div class="panel-header"><div class="panel-title">WR por Zona — S09 a S12</div><span class="panel-badge amber">Tendencia</span></div>
             <div class="panel-body">
-              <div class="prog-row">
-                <div class="prog-header"><span class="prog-label">Bajío <span style="color:var(--text3);font-size:10px;">51.3 → 48.3 → 50.1 → 51.8%</span></span><span class="prog-val td-red">51.8%</span></div>
-                <div class="prog-track"><div class="prog-fill fill-red" style="width:51.8%"></div></div>
-              </div>
-              <div class="prog-row">
-                <div class="prog-header"><span class="prog-label">Norte <span style="color:var(--text3);font-size:10px;">68.4 → 60.6 → 63.7 → 59.5%</span></span><span class="prog-val td-amber">59.5%</span></div>
-                <div class="prog-track"><div class="prog-fill fill-amber" style="width:59.5%"></div></div>
-              </div>
-              <div class="prog-row">
-                <div class="prog-header"><span class="prog-label">Sureste <span style="color:var(--text3);font-size:10px;">71.7 → 72.5 → 73.5 → 73.5%</span></span><span class="prog-val td-green">73.5%</span></div>
-                <div class="prog-track"><div class="prog-fill fill-green" style="width:73.5%"></div></div>
-              </div>
-              <div class="prog-row" style="margin-bottom:0">
-                <div class="prog-header"><span class="prog-label">Centro <span style="color:var(--text3);font-size:10px;">82.2 → 80.8 → 80.0 → 80.1%</span></span><span class="prog-val" style="color:var(--accent)">80.1%</span></div>
-                <div class="prog-track"><div class="prog-fill fill-accent" style="width:80.1%"></div></div>
-              </div>
+              <div class="prog-row"><div class="prog-header"><span class="prog-label">Bajío <span style="color:var(--text3);font-size:9px;">51.3→48.3→50.1→51.8%</span></span><span class="prog-val td-red">51.8%</span></div><div class="prog-track"><div class="prog-fill fill-red" style="width:51.8%"></div></div></div>
+              <div class="prog-row"><div class="prog-header"><span class="prog-label">Norte <span style="color:var(--text3);font-size:9px;">68.4→60.6→63.7→59.5%</span></span><span class="prog-val td-amber">59.5%</span></div><div class="prog-track"><div class="prog-fill fill-amber" style="width:59.5%"></div></div></div>
+              <div class="prog-row"><div class="prog-header"><span class="prog-label">Sureste <span style="color:var(--text3);font-size:9px;">71.7→72.5→73.5→73.5%</span></span><span class="prog-val td-green">73.5%</span></div><div class="prog-track"><div class="prog-fill fill-green" style="width:73.5%"></div></div></div>
+              <div class="prog-row" style="margin-bottom:0"><div class="prog-header"><span class="prog-label">Centro <span style="color:var(--text3);font-size:9px;">82.2→80.8→80.0→80.1%</span></span><span class="prog-val" style="color:var(--accent)">80.1%</span></div><div class="prog-track"><div class="prog-fill fill-accent" style="width:80.1%"></div></div></div>
             </div>
           </div>
-
-          <!-- SEMAFORO KPIs -->
           <div class="panel">
-            <div class="panel-header">
-              <div class="panel-title">Semáforo de KPIs</div>
-              <span class="panel-badge">4 críticos</span>
-            </div>
+            <div class="panel-header"><div class="panel-title">Semáforo de KPIs</div><span class="panel-badge">4 críticos</span></div>
             <div class="panel-body">
-              <div class="semaforo-item">
-                <div class="sem-dot dot-red"></div>
-                <div class="sem-label">Efectividad Bajío S12</div>
-                <div class="sem-val td-red">51.8%</div>
-                <div class="sem-note">Sin mejora 4 semanas</div>
-              </div>
-              <div class="semaforo-item">
-                <div class="sem-dot dot-red"></div>
-                <div class="sem-label">Rutas vacantes Gallegos</div>
-                <div class="sem-val td-red">244 tiendas</div>
-                <div class="sem-note">14 rutas · NL</div>
-              </div>
-              <div class="semaforo-item">
-                <div class="sem-dot dot-red"></div>
-                <div class="sem-label">Promotores en curva &lt;15d</div>
-                <div class="sem-val td-red">8 personas</div>
-                <div class="sem-note">Sin SIM activa</div>
-              </div>
-              <div class="semaforo-item">
-                <div class="sem-dot dot-amber"></div>
-                <div class="sem-label">Efectividad Norte — caída</div>
-                <div class="sem-val td-amber">59.5%</div>
-                <div class="sem-note">-8.9 pts desde S09</div>
-              </div>
-              <div class="semaforo-item">
-                <div class="sem-dot dot-amber"></div>
-                <div class="sem-label">Falta de POP S12</div>
-                <div class="sem-val td-amber">1,966 tareas</div>
-                <div class="sem-note">Principal motivo</div>
-              </div>
-              <div class="semaforo-item">
-                <div class="sem-dot dot-green"></div>
-                <div class="sem-label">Efectividad Centro</div>
-                <div class="sem-val td-green">80.1%</div>
-                <div class="sem-note">Zona líder estable</div>
-              </div>
+              <div class="semaforo-item"><div class="sem-dot dot-red"></div><div class="sem-label">Efectividad Bajío S12</div><div class="sem-val td-red">51.8%</div><div class="sem-note">Sin mejora 4 sem.</div></div>
+              <div class="semaforo-item"><div class="sem-dot dot-red"></div><div class="sem-label">Rutas vacantes Gallegos</div><div class="sem-val td-red">244 tiendas</div><div class="sem-note">14 rutas · NL</div></div>
+              <div class="semaforo-item"><div class="sem-dot dot-red"></div><div class="sem-label">Promotores curva &lt;15d</div><div class="sem-val td-red">8 personas</div><div class="sem-note">Sin SIM activa</div></div>
+              <div class="semaforo-item"><div class="sem-dot dot-amber"></div><div class="sem-label">Norte — caída</div><div class="sem-val td-amber">59.5%</div><div class="sem-note">-8.9 pts desde S09</div></div>
+              <div class="semaforo-item"><div class="sem-dot dot-amber"></div><div class="sem-label">Falta de POP S12</div><div class="sem-val td-amber">1,966</div><div class="sem-note">Principal motivo</div></div>
+              <div class="semaforo-item"><div class="sem-dot" style="background:var(--green)"></div><div class="sem-label">Efectividad Centro</div><div class="sem-val td-green">80.1%</div><div class="sem-note">Zona líder estable</div></div>
             </div>
           </div>
         </div>
-
-        <!-- ALERTAS -->
         <div class="panel">
-          <div class="panel-header">
-            <div class="panel-title">Alertas Operativas — Acciones Esta Semana</div>
-            <span class="panel-badge">4 urgentes</span>
-          </div>
+          <div class="panel-header"><div class="panel-title">Alertas Operativas — Acciones Esta Semana</div><span class="panel-badge">4 urgentes</span></div>
           <div class="panel-body">
-            <div class="alert-row">
-              <div class="alert-dot dot-red"></div>
-              <div class="alert-content">
-                <div class="alert-title">244 tiendas sin cobertura — Gallegos / Nuevo León <span class="alert-tag tag-red">URGENTE</span></div>
-                <div class="alert-meta">14 rutas de promotor vacías. RP116 (36 tiendas), RP549 (22), RP138 (21). Ausentes de WR — impacto en ventas invisible. Solicitar plan de contratación con fechas esta semana.</div>
-              </div>
-            </div>
-            <div class="alert-row">
-              <div class="alert-dot dot-red"></div>
-              <div class="alert-content">
-                <div class="alert-title">8 promotores sin SIM — no pueden operar <span class="alert-tag tag-red">URGENTE</span></div>
-                <div class="alert-meta">Bastida Mata (Sup: Vega Gutierrez, 0d·RP154) · Arteaga Arroyo (Sup: Picasso Puente, 1d·RP498) · Montes Navarro (Sup: Gomez Lupercio, 2d·RP465) · Duran Rios (Sup: Lopez Quintero, 3d·RP555). Bono de concurso perdido cada día sin SIM.</div>
-              </div>
-            </div>
-            <div class="alert-row">
-              <div class="alert-dot dot-amber"></div>
-              <div class="alert-content">
-                <div class="alert-title">Gomez Lupercio: acompañamiento urgente, no sanción <span class="alert-tag tag-amber">ATENCIÓN</span></div>
-                <div class="alert-meta">Supervisora con 36 días en puesto (Manzanarez, Zona 252 GDL/MICH). 26.7% de efectividad es estructural: 3 promotores en curva + vacante RP291. Meta S13: 45-50% en equipo real.</div>
-              </div>
-            </div>
-            <div class="alert-row">
-              <div class="alert-dot dot-amber"></div>
-              <div class="alert-content">
-                <div class="alert-title">Norte en caída: -8.9 pts en 4 semanas <span class="alert-tag tag-amber">ATENCIÓN</span></div>
-                <div class="alert-meta">De 68.4% (S09) a 59.5% (S12). Tendencia negativa sostenida — la más pronunciada del país. Monitoreo cruzado con Bajío si hay tiendas compartidas.</div>
-              </div>
-            </div>
+            <div class="alert-row"><div class="alert-dot dot-red"></div><div class="alert-content"><div class="alert-title">244 tiendas sin cobertura — Gallegos / Nuevo León <span class="alert-tag tag-red">URGENTE</span></div><div class="alert-meta">14 rutas vacías. RP116 (36), RP549 (22), RP138 (21). Ausentes de WR — impacto invisible en ventas. Solicitar plan de contratación con fechas esta semana.</div></div></div>
+            <div class="alert-row"><div class="alert-dot dot-red"></div><div class="alert-content"><div class="alert-title">8 promotores sin SIM — no pueden operar <span class="alert-tag tag-red">URGENTE</span></div><div class="alert-meta">Bastida Mata (Sup: Vega Gutierrez, 0d·RP154) · Arteaga Arroyo (Sup: Picasso Puente, 1d·RP498) · Montes Navarro (Sup: Gomez Lupercio, 2d·RP465) · Duran Rios (Sup: Lopez Quintero, 3d·RP555). Bono de concurso perdido cada día.</div></div></div>
+            <div class="alert-row"><div class="alert-dot dot-amber"></div><div class="alert-content"><div class="alert-title">Gomez Lupercio: acompañamiento urgente, no sanción <span class="alert-tag tag-amber">ATENCIÓN</span></div><div class="alert-meta">36 días como supervisora (Manzanarez, Zona 252 GDL/MICH). 26.7% estructural: 3 promotores en curva + vacante RP291. Meta S13: 45-50% en equipo real.</div></div></div>
+            <div class="alert-row"><div class="alert-dot dot-amber"></div><div class="alert-content"><div class="alert-title">Norte en caída: -8.9 pts en 4 semanas <span class="alert-tag tag-amber">ATENCIÓN</span></div><div class="alert-meta">68.4% (S09) → 59.5% (S12). Caída más pronunciada del país.</div></div></div>
           </div>
         </div>
-
-      </div><!-- /tab-dashboard -->
-
-      <!-- TAB: VACANTES -->
+      </div>
+ 
+      <!-- VACANTES -->
       <div class="tab-content" id="tab-vacantes">
         <div class="grid2">
           <div class="panel">
-            <div class="panel-header">
-              <div class="panel-title">Vacantes Individuales — Evolución</div>
-              <span class="panel-badge">Mar10: 10 activas</span>
-            </div>
+            <div class="panel-header"><div class="panel-title">Vacantes Individuales — Evolución</div><span class="panel-badge">Mar10: 10</span></div>
             <div class="panel-body">
               <table class="data-table">
                 <thead><tr><th>Lider / JT</th><th>Feb24</th><th>Mar03</th><th>Mar10</th><th>% HC</th></tr></thead>
                 <tbody>
                   <tr><td class="td-name">Total Verónica León</td><td>4</td><td>7</td><td class="td-red">10</td><td class="td-red">6.1%</td></tr>
-                  <tr><td class="td-name" style="padding-left:20px;">↳ Gallegos Garrido (JT)</td><td>—</td><td>—</td><td class="td-amber">4</td><td class="td-amber">4.3%</td></tr>
-                  <tr><td class="td-name" style="padding-left:20px;">↳ Manzanarez Urzua (JT)</td><td>—</td><td>—</td><td class="td-red">6</td><td class="td-red">8.7%</td></tr>
+                  <tr><td class="td-name" style="padding-left:16px">↳ Gallegos (JT)</td><td>—</td><td>—</td><td class="td-amber">4</td><td class="td-amber">4.3%</td></tr>
+                  <tr><td class="td-name" style="padding-left:16px">↳ Manzanarez (JT)</td><td>—</td><td>—</td><td class="td-red">6</td><td class="td-red">8.7%</td></tr>
                   <tr><td class="td-name">Lizbeth Camberos (Ref.)</td><td>5</td><td>5</td><td class="td-green">2</td><td class="td-green">0.8%</td></tr>
                 </tbody>
               </table>
-              <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);">
-                <div style="font-size:10px;color:var(--text3);font-family:var(--mono);margin-bottom:8px;">HISTORIAL GALLEGOS (Acumulado Baja)</div>
-                <div style="font-size:11px;color:var(--text2);line-height:1.8;">
-                  Ene5-11: <span class="td-red">10</span> · Ene12-18: <span class="td-amber">5</span> · Ene19-25: <span class="td-amber">5</span> · Ene26-31: <span class="td-amber">4</span><br>
-                  Feb2-8: <span class="td-amber">4</span> · Feb9-15: <span class="td-amber">5</span> · Feb16-21: <span class="td-green">2</span> · Feb23-28: <span class="td-amber">3</span> · Mar2-8: <span class="td-amber">4</span>
-                </div>
-                <div style="font-size:11px;color:var(--red);margin-top:6px;">⚠ Nivel nunca baja a cero — rotación crónica desde enero.</div>
+              <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+                <div style="font-size:9px;color:var(--text3);font-family:var(--mono);margin-bottom:6px">HISTORIAL GALLEGOS</div>
+                <div style="font-size:10px;color:var(--text2);line-height:1.8">Ene5-11:<span class="td-red"> 10</span> · Ene12-18:<span class="td-amber"> 5</span> · Ene19-25:<span class="td-amber"> 5</span> · Ene26-31:<span class="td-amber"> 4</span><br>Feb2-8:<span class="td-amber"> 4</span> · Feb9-15:<span class="td-amber"> 5</span> · Feb16-21:<span class="td-green"> 2</span> · Feb23-28:<span class="td-amber"> 3</span> · Mar2-8:<span class="td-amber"> 4</span></div>
+                <div style="font-size:10px;color:var(--red);margin-top:5px">⚠ Nivel nunca baja a cero — rotación crónica desde enero.</div>
               </div>
             </div>
           </div>
-
           <div class="panel">
-            <div class="panel-header">
-              <div class="panel-title">Rutas Vacantes en Rutero — Gallegos / NL</div>
-              <span class="panel-badge">244 tiendas · 14 rutas</span>
-            </div>
+            <div class="panel-header"><div class="panel-title">Rutas Vacantes Rutero — Gallegos / NL</div><span class="panel-badge">244 tiendas · 14 rutas</span></div>
             <div class="panel-body">
-              <div style="font-size:11px;color:var(--text3);font-family:var(--mono);margin-bottom:10px;">RUTA · TIENDAS · CADENAS PRINCIPALES</div>
               <div class="vac-row"><span><span class="vac-ruta">RP116</span>Benavides, FG, FAHO</span><span class="vac-tiendas td-red">36</span></div>
               <div class="vac-row"><span><span class="vac-ruta">RP549</span>Walmart, FG, Benavides</span><span class="vac-tiendas td-red">22</span></div>
               <div class="vac-row"><span><span class="vac-ruta">RP138</span>Benavides, Soriana, Walmart</span><span class="vac-tiendas td-red">21</span></div>
@@ -775,16 +378,12 @@ body::before {
               <div class="vac-row"><span><span class="vac-ruta">RP408</span>FG, Benavides, Walmart</span><span class="vac-tiendas td-amber">21</span></div>
               <div class="vac-row"><span><span class="vac-ruta">RP259</span>Benavides, Walmart, FG</span><span class="vac-tiendas td-amber">18</span></div>
               <div class="vac-row"><span><span class="vac-ruta">RP320</span>Soriana, FG, Benavides</span><span class="vac-tiendas td-amber">14</span></div>
-              <div class="vac-row" style="border-bottom:none"><span><span class="vac-ruta">+3 rutas</span>RP021, RP117, RP530</span><span class="vac-tiendas" style="color:var(--text2)">4</span></div>
+              <div class="vac-row" style="border-bottom:none"><span><span class="vac-ruta">+3 más</span>RP021, RP117, RP530</span><span class="vac-tiendas" style="color:var(--text2)">4</span></div>
             </div>
           </div>
         </div>
-
         <div class="panel">
-          <div class="panel-header">
-            <div class="panel-title">Supervisores con Vacantes Activas — Mar10</div>
-            <span class="panel-badge">6 supervisores afectados</span>
-          </div>
+          <div class="panel-header"><div class="panel-title">Supervisores con Vacantes — Mar10</div><span class="panel-badge">6 afectados</span></div>
           <div class="panel-body">
             <table class="data-table">
               <thead><tr><th>Supervisor</th><th>JT</th><th>Vacantes</th><th>% HC</th><th>Prioridad</th></tr></thead>
@@ -799,41 +398,33 @@ body::before {
             </table>
           </div>
         </div>
-      </div><!-- /tab-vacantes -->
-
-      <!-- TAB: SUPERVISORES -->
+      </div>
+ 
+      <!-- SUPERVISORES -->
       <div class="tab-content" id="tab-supervisores">
         <div class="panel">
-          <div class="panel-header">
-            <div class="panel-title">Efectividad WR S12 — Supervisores Bajío (Manzanarez)</div>
-            <span class="panel-badge amber">Contexto rutero incluido</span>
-          </div>
+          <div class="panel-header"><div class="panel-title">Efectividad WR S12 — Supervisores Bajío (Manzanarez)</div><span class="panel-badge amber">Con contexto rutero</span></div>
           <div class="panel-body">
             <table class="data-table">
-              <thead><tr><th>Supervisor</th><th>JT</th><th>Tareas</th><th>Resueltas</th><th>% Efectividad</th><th>Contexto</th></tr></thead>
+              <thead><tr><th>Supervisor</th><th>JT</th><th>Tareas</th><th>Resueltas</th><th>% Efect.</th><th>Contexto</th></tr></thead>
               <tbody>
-                <tr><td class="td-name">Gomez Lupercio Luisa Sarai</td><td class="td-blue">Manzanarez</td><td>1,055</td><td>282</td><td class="td-red">26.7% ⚠</td><td style="font-size:11px;color:var(--amber)">36d en puesto · 3 prom &lt;15d + vac RP291</td></tr>
-                <tr><td class="td-name">Vega Gutierrez Maria Magdalena</td><td class="td-blue">Manzanarez</td><td>986</td><td>472</td><td class="td-red">47.9%</td><td style="font-size:11px;color:var(--text2)">3 nuevos &lt;90d · Bastida Mata 0d RP154</td></tr>
-                <tr><td class="td-name">Gutierrez Flores Armando</td><td class="td-blue">Manzanarez</td><td>843</td><td>463</td><td class="td-amber">54.9%</td><td style="font-size:11px;color:var(--text2)">4 promotores nuevos &lt;90d</td></tr>
-                <tr><td class="td-name">Alonso Padron Jose Jesus</td><td class="td-blue">Manzanarez</td><td>1,163</td><td>645</td><td class="td-amber">55.5%</td><td style="font-size:11px;color:var(--text2)">Medina Gonzalez 14d en RP486</td></tr>
-                <tr><td class="td-name">Chavez Alfaro Adriana Alejandra</td><td class="td-blue">Manzanarez</td><td>982</td><td>548</td><td class="td-amber">55.8%</td><td style="font-size:11px;color:var(--text2)">Limon Ledesma 65d RP124 · Arvizu 58d RP519</td></tr>
-                <tr><td class="td-name">Martinez Gonzalez Ma De La Luz</td><td class="td-blue">Manzanarez</td><td>1,095</td><td>765</td><td class="td-green">69.9%</td><td style="font-size:11px;color:var(--green)">Mejor resultado JT Manzanarez</td></tr>
+                <tr><td class="td-name">Gomez Lupercio Luisa Sarai</td><td class="td-blue">Manzanarez</td><td>1,055</td><td>282</td><td class="td-red">26.7% ⚠</td><td style="font-size:10px;color:var(--amber)">36d en puesto · 3 prom &lt;15d + vac RP291</td></tr>
+                <tr><td class="td-name">Vega Gutierrez Maria Magdalena</td><td class="td-blue">Manzanarez</td><td>986</td><td>472</td><td class="td-red">47.9%</td><td style="font-size:10px;color:var(--text2)">3 nuevos &lt;90d · Bastida Mata 0d RP154</td></tr>
+                <tr><td class="td-name">Gutierrez Flores Armando</td><td class="td-blue">Manzanarez</td><td>843</td><td>463</td><td class="td-amber">54.9%</td><td style="font-size:10px;color:var(--text2)">4 promotores nuevos &lt;90d</td></tr>
+                <tr><td class="td-name">Alonso Padron Jose Jesus</td><td class="td-blue">Manzanarez</td><td>1,163</td><td>645</td><td class="td-amber">55.5%</td><td style="font-size:10px;color:var(--text2)">Medina Gonzalez 14d RP486</td></tr>
+                <tr><td class="td-name">Chavez Alfaro Adriana Alejandra</td><td class="td-blue">Manzanarez</td><td>982</td><td>548</td><td class="td-amber">55.8%</td><td style="font-size:10px;color:var(--text2)">Limon 65d RP124 · Arvizu 58d RP519</td></tr>
+                <tr><td class="td-name">Martinez Gonzalez Ma De La Luz</td><td class="td-blue">Manzanarez</td><td>1,095</td><td>765</td><td class="td-green">69.9%</td><td style="font-size:10px;color:var(--green)">Mejor resultado JT Manzanarez</td></tr>
               </tbody>
             </table>
-            <div style="margin-top:12px;padding:10px 12px;background:rgba(0,229,160,0.05);border-radius:8px;border:1px solid rgba(0,229,160,0.1);font-size:12px;color:var(--text2);">
-              💡 <strong style="color:var(--accent)">Área de oportunidad:</strong> La efectividad real ajustada (excluyendo promotores en curva y vacantes) es 8-12 pts mayor. Meta S13: llevar Vega Gutierrez y Gutierrez Flores por encima del 60%.
-            </div>
+            <div style="margin-top:10px;padding:9px 11px;background:rgba(0,229,160,0.05);border-radius:7px;border:1px solid rgba(0,229,160,0.1);font-size:11px;color:var(--text2)">💡 <strong style="color:var(--accent)">Área de oportunidad:</strong> Efectividad real ajustada (sin curvas/vacantes) es 8-12 pts mayor. Meta S13: Vega Gutierrez y Gutierrez Flores por encima del 60%.</div>
           </div>
         </div>
-      </div><!-- /tab-supervisores -->
-
-      <!-- TAB: NUEVOS INGRESOS -->
+      </div>
+ 
+      <!-- NUEVOS INGRESOS -->
       <div class="tab-content" id="tab-nuevos">
-        <div class="panel" style="margin-bottom:16px;">
-          <div class="panel-header">
-            <div class="panel-title">Promotores en Curva Crítica — Menos de 15 días (13-Mar-2026)</div>
-            <span class="panel-badge">8 sin SIM activa</span>
-          </div>
+        <div class="panel" style="margin-bottom:12px">
+          <div class="panel-header"><div class="panel-title">Curva Crítica — Menos de 15 días (13-Mar-2026)</div><span class="panel-badge">8 sin SIM</span></div>
           <div class="panel-body">
             <table class="data-table">
               <thead><tr><th>Promotor</th><th>Supervisor</th><th>JT</th><th>Días</th><th>Ruta</th><th>Estado</th></tr></thead>
@@ -851,13 +442,10 @@ body::before {
           </div>
         </div>
         <div class="panel">
-          <div class="panel-header">
-            <div class="panel-title">Resumen Nuevos Ingresos &lt;90 días por Supervisor</div>
-            <span class="panel-badge amber">30 en total</span>
-          </div>
+          <div class="panel-header"><div class="panel-title">Nuevos &lt;90 días por Supervisor</div><span class="panel-badge amber">30 en total</span></div>
           <div class="panel-body">
             <table class="data-table">
-              <thead><tr><th>Supervisor</th><th>JT</th><th>Total promotores</th><th>Nuevos &lt;90d</th><th>En curva &lt;15d</th></tr></thead>
+              <thead><tr><th>Supervisor</th><th>JT</th><th>Total prom.</th><th>Nuevos &lt;90d</th><th>Curva &lt;15d</th></tr></thead>
               <tbody>
                 <tr><td class="td-name">Lopez Quintero Katy Marcela</td><td class="td-blue">Gallegos</td><td>12</td><td class="td-amber">4</td><td class="td-red">1</td></tr>
                 <tr><td class="td-name">Gutierrez Flores Armando</td><td class="td-blue">Manzanarez</td><td>9</td><td class="td-amber">4</td><td class="td-green">0</td></tr>
@@ -872,319 +460,184 @@ body::before {
             </table>
           </div>
         </div>
-      </div><!-- /tab-nuevos -->
-
-      <!-- TAB: CONCURSOS -->
+      </div>
+ 
+      <!-- CONCURSOS -->
       <div class="tab-content" id="tab-concursos">
-        <div class="metric-grid" style="grid-template-columns:repeat(3,1fr);">
-          <div class="metric-card blue">
-            <div class="metric-label">Verano OTC + Suerox</div>
-            <div class="metric-value blue">~28%</div>
-            <div class="metric-sub">Promedio cabeceras · Vigente hasta Ago 2026</div>
-          </div>
-          <div class="metric-card amber">
-            <div class="metric-label">Feria de Belleza</div>
-            <div class="metric-value amber">~47%</div>
-            <div class="metric-sub">Promedio anaquel · Cierra 26-Abr-2026</div>
-          </div>
-          <div class="metric-card green">
-            <div class="metric-label">Espectacularidad</div>
-            <div class="metric-value green">Activo</div>
-            <div class="metric-sub">Desde 2-Mar · Premio $1,600/promotor</div>
-          </div>
+        <div class="metric-grid" style="grid-template-columns:repeat(3,1fr)">
+          <div class="metric-card blue"><div class="metric-label">Verano OTC + Suerox</div><div class="metric-value blue">~28%</div><div class="metric-sub">Cabeceras · Hasta Ago 2026</div></div>
+          <div class="metric-card amber"><div class="metric-label">Feria de Belleza</div><div class="metric-value amber">~47%</div><div class="metric-sub">Anaquel · Cierra 26-Abr</div></div>
+          <div class="metric-card green"><div class="metric-label">Espectacularidad</div><div class="metric-value green">Activo</div><div class="metric-sub">Desde 2-Mar · $1,600/promotor</div></div>
         </div>
         <div class="grid2">
           <div class="panel">
-            <div class="panel-header">
-              <div class="panel-title">Concurso Verano OTC + Suerox</div>
-              <span class="panel-badge amber">Al 15-Mar-2026</span>
-            </div>
+            <div class="panel-header"><div class="panel-title">Concurso Verano OTC + Suerox</div><span class="panel-badge amber">Al 15-Mar</span></div>
             <div class="panel-body">
-              <div style="font-size:11px;color:var(--text3);font-family:var(--mono);margin-bottom:10px;">MARCAS FOCO MARZO: Lomecan + Silka Medic + Unesia · ABRIL: Suerox</div>
+              <div style="font-size:10px;color:var(--text3);font-family:var(--mono);margin-bottom:8px">FOCO MARZO: Lomecan + Silka + Unesia · ABRIL: Suerox</div>
               <table class="data-table">
                 <thead><tr><th>JT</th><th>Isla POP</th><th>Cabecera</th><th>% Cab.</th><th>Cenefa %</th></tr></thead>
                 <tbody>
-                  <tr><td class="td-name">Gallegos Garrido M.A.</td><td class="td-amber">2</td><td>252</td><td class="td-amber">27.5%</td><td class="td-green">57.9%</td></tr>
-                  <tr><td class="td-name">Manzanarez Urzua C.E.</td><td class="td-red">1</td><td>217</td><td class="td-amber">30.4%</td><td class="td-amber">52.5%</td></tr>
-                  <tr><td class="td-name">Ocampo Sanchez H.</td><td class="td-green">11</td><td>232</td><td class="td-amber">28.8%</td><td class="td-amber">37.5%</td></tr>
+                  <tr><td class="td-name">Gallegos M.A.</td><td class="td-amber">2</td><td>252</td><td class="td-amber">27.5%</td><td class="td-green">57.9%</td></tr>
+                  <tr><td class="td-name">Manzanarez C.E.</td><td class="td-red">1</td><td>217</td><td class="td-amber">30.4%</td><td class="td-amber">52.5%</td></tr>
+                  <tr><td class="td-name">Ocampo H.</td><td class="td-green">11</td><td>232</td><td class="td-amber">28.8%</td><td class="td-amber">37.5%</td></tr>
                 </tbody>
               </table>
-              <div style="margin-top:12px;padding:10px 12px;background:rgba(255,165,2,0.05);border-radius:8px;border:1px solid rgba(255,165,2,0.12);font-size:12px;color:var(--text2);">
-                💡 <strong style="color:var(--amber)">Oportunidad:</strong> Isla POP paga $200/quincena vs $150 sin POP. Solo 3 islas combinadas Gallegos+Manzanarez. Abril es mes pico Suerox — negociar islas ahora.
-              </div>
+              <div style="margin-top:8px;padding:8px 10px;background:rgba(255,165,2,0.05);border-radius:6px;border:1px solid rgba(255,165,2,0.12);font-size:11px;color:var(--text2)">💡 <strong style="color:var(--amber)">Isla POP $200 vs $150 sin POP.</strong> Solo 3 islas combinadas — negociar antes del pico Suerox en abril.</div>
             </div>
           </div>
           <div class="panel">
-            <div class="panel-header">
-              <div class="panel-title">Concurso Feria de Belleza</div>
-              <span class="panel-badge amber">Cierra 26-Abr · 3 quincenas restantes</span>
-            </div>
+            <div class="panel-header"><div class="panel-title">Concurso Feria de Belleza</div><span class="panel-badge amber">3 quincenas restantes</span></div>
             <div class="panel-body">
-              <div style="font-size:11px;color:var(--text3);font-family:var(--mono);margin-bottom:10px;">MARCAS: Cicatricure, Tio Nacho, Vanart, Teatrical, Goicoechea</div>
+              <div style="font-size:10px;color:var(--text3);font-family:var(--mono);margin-bottom:8px">MARCAS: Cicatricure, Tio Nacho, Vanart, Teatrical, Goicoechea</div>
               <table class="data-table">
-                <thead><tr><th>JT</th><th>Laterales</th><th>% Cabecera</th><th>% Tira POP</th><th>% Anaquel</th></tr></thead>
+                <thead><tr><th>JT</th><th>Laterales</th><th>% Cab.</th><th>% Tira</th><th>% Anaquel</th></tr></thead>
                 <tbody>
-                  <tr><td class="td-name">Gallegos Garrido M.A.</td><td class="td-amber">74</td><td class="td-green">55.3%</td><td class="td-green">57.8%</td><td class="td-amber">50.8%</td></tr>
-                  <tr><td class="td-name">Manzanarez Urzua C.E.</td><td class="td-green">189</td><td class="td-amber">42.5%</td><td class="td-amber">48.7%</td><td class="td-amber">41.0%</td></tr>
-                  <tr><td class="td-name">Ocampo Sanchez H.</td><td class="td-amber">93</td><td class="td-amber">47.2%</td><td class="td-amber">44.4%</td><td class="td-red">37.5%</td></tr>
+                  <tr><td class="td-name">Gallegos M.A.</td><td class="td-amber">74</td><td class="td-green">55.3%</td><td class="td-green">57.8%</td><td class="td-amber">50.8%</td></tr>
+                  <tr><td class="td-name">Manzanarez C.E.</td><td class="td-green">189</td><td class="td-amber">42.5%</td><td class="td-amber">48.7%</td><td class="td-amber">41.0%</td></tr>
+                  <tr><td class="td-name">Ocampo H.</td><td class="td-amber">93</td><td class="td-amber">47.2%</td><td class="td-amber">44.4%</td><td class="td-red">37.5%</td></tr>
                 </tbody>
               </table>
-              <div style="margin-top:12px;padding:10px 12px;background:rgba(46,213,115,0.05);border-radius:8px;border:1px solid rgba(46,213,115,0.12);font-size:12px;color:var(--text2);">
-                💡 <strong style="color:var(--green)">Estrategia:</strong> Gallegos fuerte en cabeceras, Manzanarez en laterales. Capitalizar ventajas complementarias — 3 quincenas de pago restantes.
-              </div>
+              <div style="margin-top:8px;padding:8px 10px;background:rgba(46,213,115,0.05);border-radius:6px;border:1px solid rgba(46,213,115,0.12);font-size:11px;color:var(--text2)">💡 <strong style="color:var(--green)">Gallegos fuerte en cabeceras, Manzanarez en laterales.</strong> Capitalizar ventajas — 3 quincenas restantes.</div>
             </div>
           </div>
         </div>
-      </div><!-- /tab-concursos -->
-
+      </div>
+ 
     </div><!-- /content -->
-
-    <!-- CHAT AREA -->
+ 
+    <!-- CHAT -->
     <div class="chat-wrapper">
       <div class="quick-btns">
-        <button class="quick-btn" onclick="askAbout('¿Cuáles son las 3 acciones más urgentes que debo tomar esta semana como Verónica León?')">🎯 Acciones urgentes</button>
-        <button class="quick-btn" onclick="askAbout('Dame un diagnóstico completo de la supervisora Gomez Lupercio y qué tipo de apoyo necesita')">👤 Diagnóstico Gomez Lupercio</button>
-        <button class="quick-btn" onclick="askAbout('¿Cuál es el impacto real en ventas de las 244 tiendas sin cobertura de Gallegos en Nuevo León?')">📊 Impacto 244 tiendas</button>
-        <button class="quick-btn" onclick="askAbout('¿Qué estrategia de concursos debo priorizar esta semana para maximizar bonos del equipo?')">🏆 Estrategia concursos</button>
-        <button class="quick-btn" onclick="askAbout('¿Cómo va la zona Norte y qué tan preocupante es la caída de -8.9 puntos?')">⚠️ Norte en caída</button>
-        <button class="quick-btn" onclick="askAbout('Dame el plan de rampeo ideal para los 8 promotores sin SIM activa')">📋 Plan de rampeo SIM</button>
+        <button class="quick-btn" onclick="askAbout('¿Cuáles son las 3 acciones más urgentes que debo tomar esta semana?')">🎯 Acciones urgentes</button>
+        <button class="quick-btn" onclick="askAbout('Dame un diagnóstico completo de Gomez Lupercio y qué apoyo necesita')">👤 Gomez Lupercio</button>
+        <button class="quick-btn" onclick="askAbout('¿Cuál es el impacto real de las 244 tiendas sin cobertura de Gallegos en Nuevo León?')">📊 244 tiendas</button>
+        <button class="quick-btn" onclick="askAbout('¿Qué estrategia de concursos debo priorizar esta semana para maximizar bonos?')">🏆 Concursos</button>
+        <button class="quick-btn" onclick="askAbout('¿Cómo va la zona Norte y qué tan preocupante es la caída de -8.9 puntos?')">⚠️ Norte</button>
+        <button class="quick-btn" onclick="askAbout('Dame el plan de rampeo para los 8 promotores sin SIM activa')">📋 Plan SIM</button>
       </div>
       <div class="chat-messages" id="chatMessages"></div>
       <div class="chat-input-row">
-        <input type="text" class="chat-input" id="chatInput" placeholder="Pregunta a VERO sobre tus operaciones, vacantes, WR, concursos…" />
+        <input type="text" class="chat-input" id="chatInput" placeholder="Pregunta a VERO sobre operaciones, vacantes, WR, concursos…"/>
         <button class="chat-send" id="sendBtn" onclick="sendMessage()">Enviar →</button>
       </div>
     </div>
-
+ 
   </div><!-- /main -->
 </div><!-- /shell -->
-
+ 
 <script>
 let API_KEY = '';
 let chatHistory = [];
-
-const SYSTEM_PROMPT = `Eres VERO — Agente de Visibilidad y Ejecución en Retail de Operaciones para Genomma Lab.
-Respondes directamente a Verónica León, Líder Nacional de Operaciones Zona Bajío y Norte.
-
-CONTEXTO OPERATIVO COMPLETO (datos reales S09-S12 2026):
-
-ESTRUCTURA:
-- Verónica León: JT Gallegos Garrido Maysha Anaid + JT Manzanarez Urzua Cristopher Emmanuel
-- HC autorizado: 163 promotores. Activos: 154. Vacantes individuales: 10 (Mar10)
-- Lizbeth Camberos: Centro y Sur (referencia comparativa, 0.8% vacantes — modelo de estabilidad)
-
-EFECTIVIDAD WR POR ZONA:
-- Bajío: S09=51.3%, S10=48.3%, S11=50.1%, S12=51.8% → ESTANCADA, zona más crítica del país
-- Norte: S09=68.4%, S10=60.6%, S11=63.7%, S12=59.5% → CAÍDA de 8.9 pts, tendencia preocupante
-- Sureste: S09=71.7%, S10=72.5%, S11=73.5%, S12=73.5% → estable y mejorando
-- Centro: S09=82.2%, S10=80.8%, S11=80.0%, S12=80.1% → LÍDER nacional
-
-MOTIVOS DE NO EJECUCIÓN S12:
-1. Falta de POP: 1,966 tareas (principal)
-2. No autorizó Gerencia: 1,841
-3. Sin Captura: 1,420 (vinculado a vacantes y curvas)
-4. Falta de Inventario: 1,189 (tendencia positiva, bajó de 1,427 en S09)
-5. Día Festivo: 764
-6. Falta de espacio: 741
-7. Vacante: 286
-8. Nuevo Ingreso: 54
-
-VACANTES Y COBERTURA:
-CAPA 1 — Vacantes individuales de promotor (reporte semanal):
-- Total Verónica Mar10: 10 (subió de 4 en Feb24)
-- Manzanarez: 6 vacantes (8.7% HC)
-- Gallegos: 4 vacantes (4.3% HC)
-- Gallegos tiene vacantes CRÓNICAS desde enero (10 en primera semana)
-
-CAPA 2 — Rutas vacantes en rutero (14 rutas, 244 tiendas, TODAS Gallegos, TODAS en Nuevo León):
-RP116=36 tiendas (Benavides,FG,FAHO), RP549=22 (Walmart,FG,Benavides), RP138=21, RP481=20, RP135=28, RP506=19, RP483=24, RP487=17, RP408=21, RP259=18, RP320=14, RP021=2, RP117=1, RP530=1
-IMPORTANTE: estas tiendas NO aparecen en reportes de vacantes — su impacto en ventas es invisible.
-
-SUPERVISORES BAJÍO S12 (solo Manzanarez, con contexto rutero):
-- Gomez Lupercio Luisa Sarai: 26.7% (1,055 tareas, 282 resueltas) — 36 DÍAS COMO SUPERVISORA (ingresó 5-Feb-2026), heredó zona con rotación alta, 3 promotores en curva <15d (Medrano 8d RP288, Olveda 9d RP464, Montes Navarro 2d RP465) + vacante RP291 (13 tiendas). DIAGNÓSTICO: resultado estructural, no de desempeño. Requiere acompañamiento.
-- Vega Gutierrez Maria Magdalena: 47.9% (986/472) — Manzanarez. Bastida Mata 0d RP154
-- Gutierrez Flores Armando: 54.9% (843/463) — Manzanarez. 4 nuevos <90d
-- Alonso Padron Jose Jesus: 55.5% (1,163/645) — Manzanarez. Medina Gonzalez 14d RP486
-- Chavez Alfaro Adriana Alejandra: 55.8% (982/548) — Manzanarez. Limon 65d, Arvizu 58d
-- Martinez Gonzalez Ma De La Luz: 69.9% (1,095/765) — Manzanarez. MEJOR del equipo
-
-NUEVOS INGRESOS (al 13-Mar-2026):
-CURVA CRÍTICA <15 días (sin SIM activa, no pueden operar):
-1. Bastida Mata Angel Jael — Sup: Vega Gutierrez M.M. — JT: Manzanarez — 0d — RP154
-2. Arteaga Arroyo Lorena Margarita — Sup: Picasso Puente M.A. — JT: Gallegos — 1d — RP498
-3. Montes Navarro Jonathan Israel — Sup: Gomez Lupercio L.S. — JT: Manzanarez — 2d — RP465
-4. Duran Rios Hector Alexander — Sup: Lopez Quintero K.M. — JT: Gallegos — 3d — RP555
-5. Medrano Ibarra Jenny Elizabeth — Sup: Gomez Lupercio L.S. — JT: Manzanarez — 8d — RP288
-6. Olveda Godinez Juan Francisco — Sup: Gomez Lupercio L.S. — JT: Manzanarez — 9d — RP464
-7. Nuñez Sanchez Erika Arlet — Sup: Martinez Gonzalez M.L. — JT: Manzanarez — 9d — RP104
-8. Medina Gonzalez Jose Miguel — Sup: Alonso Padron J.J. — JT: Manzanarez — 14d — RP486
-Total <90d: 30 promotores (19.5% del equipo)
-
-CONCURSOS ACTIVOS:
-1. Verano OTC + Suerox (16-Feb al 30-Ago-2026): Marcas: Lomecan V, Silka Medic, Unesia, Suerox. Foco Marzo: Lomecan+Silka+Unesia. Foco Abril: Suerox. Pago quincenal: Supervisor $300, JT $200 (60% participación=60% pago, 70%+= 100%). Resultados al 15-Mar: Gallegos (Isla POP:2, Cabecera:252/27.5%, Cenefa:57.9%), Manzanarez (Isla POP:1, Cabecera:217/30.4%, Cenefa:52.5%). OPORTUNIDAD: Isla POP $200 vs $150 sin POP — solo 3 islas POP combinadas.
-2. Feria de Belleza (2-Feb al 26-Abr-2026): Marcas: Cicatricure, Tio Nacho, Vanart, Teatrical. Quedan ~3 quincenas. Resultados: Gallegos (74 laterales/55.3% cab), Manzanarez (189 laterales/42.5% cab). OPORTUNIDAD: Manzanarez puede capitalizar ventaja en laterales + cabeceras.
-3. Espectacularidad Verano (2-Mar al 30-Ago-2026): Suerox, Lomecan, Silka, Unesia. Premio $1,600/promotor. Max 3 ganadores por JT. Evidencias via Smart Eyes.
-
-REGLAS DE ANÁLISIS:
-- Siempre identifica al supervisor cuando mencionas un promotor
-- La efectividad bruta de Bajío está distorsionada por curvas y vacantes — distinguir siempre entre resultado estructural y operativo real
-- Gomez Lupercio: tratar con criterio de acompañamiento, nunca sanción
-- Gallegos tiene problema crónico de rotación desde enero — las 244 tiendas son la mayor brecha no visibilizada
-- Farmacias con visita quincenal: no penalizar si no coincide con la semana analizada
-- Llave tienda = número + cadena para evitar duplicados
-
-ESTILO DE RESPUESTA:
-- Directa, operacional, sin rodeos
-- Siempre incluir: quién, qué supervisor, qué JT, qué ruta cuando aplique
-- Semáforo visual con 🔴🟡🟢 cuando sea útil
-- Máximo 3 acciones concretas cuando te pidan recomendaciones
-- Si algo no está en los datos disponibles, dilo claramente y sugiere qué archivo subir`;
-
+ 
+const SYSTEM_PROMPT = `Eres VERO — Agente de Visibilidad y Ejecución en Retail de Operaciones para Genomma Lab. Respondes a Verónica León, Líder Nacional de Operaciones Zona Bajío y Norte.
+ 
+EFECTIVIDAD WR: Bajío S12=51.8% (estancada), Norte S12=59.5% (caída -8.9pts desde S09), Sureste=73.5%, Centro=80.1% líder.
+ 
+MOTIVOS NO EJECUCIÓN S12: POP=1966, Gerencia=1841, Sin Captura=1420, Inventario=1189, Festivo=764, Espacio=741, Vacante=286, NI=54.
+ 
+VACANTES: 10 individuales (Manzanarez:6, Gallegos:4). Rutero: 14 rutas vacantes=244 tiendas TODAS Gallegos TODAS Nuevo León (RP116=36,RP549=22,RP138=21,RP481=20,RP135=28,RP506=19,RP483=24,RP487=17,RP408=21,RP259=18,RP320=14). Gallegos crónico desde enero.
+ 
+SUPERVISORES BAJÍO S12 (Manzanarez): Gomez Lupercio 26.7% (36d como supervisora, 3 promotores <15d: Medrano 8d RP288, Olveda 9d RP464, Montes Navarro 2d RP465, + vacante RP291 — ESTRUCTURAL no disciplinario), Vega Gutierrez 47.9%, Gutierrez Flores 54.9%, Alonso Padron 55.5%, Chavez Alfaro 55.8%, Martinez Gonzalez 69.9% (mejor).
+ 
+CURVA CRÍTICA <15d: Bastida Mata(Vega Gutierrez,0d,RP154), Arteaga Arroyo(Picasso Puente,1d,RP498), Montes Navarro(Gomez Lupercio,2d,RP465), Duran Rios(Lopez Quintero,3d,RP555), Medrano Ibarra(Gomez Lupercio,8d,RP288), Olveda Godinez(Gomez Lupercio,9d,RP464), Nuñez Sanchez(Martinez Gonzalez,9d,RP104), Medina Gonzalez(Alonso Padron,14d,RP486).
+ 
+CONCURSOS: Verano OTC+Suerox (feb-ago), Feria Belleza (cierra 26-abr, 3 quincenas), Espectacularidad (mar-ago, $1600/promotor). Isla POP Suerox: Gallegos=2, Manzanarez=1 — OPORTUNIDAD: $200 con POP vs $150 sin POP.
+ 
+REGLAS: Siempre menciona supervisor cuando cites un promotor. Gomez Lupercio=acompañamiento no sanción. Respuestas directas, operacionales, máx 3 acciones concretas. Semáforo 🔴🟡🟢 cuando aplique.`;
+ 
 function activateAgent() {
   const key = document.getElementById('apiKeyInput').value.trim();
+  const errEl = document.getElementById('modalError');
   if (!key.startsWith('sk-ant')) {
-    alert('Ingresa una API Key válida de Anthropic (comienza con sk-ant...)');
+    errEl.style.display = 'block';
     return;
   }
+  errEl.style.display = 'none';
   API_KEY = key;
   document.getElementById('modal').style.display = 'none';
   document.getElementById('appShell').style.display = 'flex';
-  addAgentMessage(`Hola **Verónica** 👋 Soy **VERO**, tu agente de operaciones PDV para Genomma Lab.\n\nEstoy cargada con todos tus datos de **S09 a S12 2026** — WR, vacantes, rutero del 13-Mar y resultados de concursos.\n\nTengo **4 alertas urgentes** esperándote:\n\n🔴 **244 tiendas sin cobertura** en NL (14 rutas vacantes, Gallegos)\n🔴 **8 promotores sin SIM** — no pueden operar ni participar en concursos\n🔴 **Bajío en 51.8%** — sin mejora en 4 semanas consecutivas\n🟡 **Norte cayendo** — -8.9 pts desde S09 (68.4% → 59.5%)\n\n¿Por dónde empezamos?`);
+  addAgentMsg('Hola **Verónica** 👋 Soy **VERO**, activa y lista.\n\n4 alertas urgentes:\n🔴 **244 tiendas sin cobertura** — Gallegos / NL\n🔴 **8 promotores sin SIM** — sin captura, sin concurso\n🔴 **Bajío 51.8%** — estancada 4 semanas\n🟡 **Norte cayendo** — -8.9 pts desde S09\n\n¿Por dónde empezamos?');
 }
-
-function addAgentMessage(text) {
-  const div = document.createElement('div');
-  div.className = 'msg';
-  div.innerHTML = `<div class="msg-avatar agent">V</div><div class="msg-bubble">${formatMsg(text)}</div>`;
-  document.getElementById('chatMessages').appendChild(div);
+ 
+function fmt(t){
+  return t
+    .replace(/\*\*(.*?)\*\*/g,'<b>$1</b>')
+    .replace(/🔴 (.*)/g,'<div style="margin:2px 0"><span style="color:var(--red)">🔴</span> $1</div>')
+    .replace(/🟡 (.*)/g,'<div style="margin:2px 0"><span style="color:var(--amber)">🟡</span> $1</div>')
+    .replace(/🟢 (.*)/g,'<div style="margin:2px 0"><span style="color:var(--green)">🟢</span> $1</div>')
+    .replace(/\n/g,'<br>');
+}
+function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function scrollChat(){const el=document.getElementById('chatMessages');el.scrollTop=el.scrollHeight;}
+ 
+function addAgentMsg(text){
+  const d=document.createElement('div');
+  d.className='msg';
+  d.innerHTML=`<div class="msg-avatar agent">V</div><div class="msg-bubble">${fmt(text)}</div>`;
+  document.getElementById('chatMessages').appendChild(d);
   scrollChat();
 }
-
-function addUserMessage(text) {
-  const div = document.createElement('div');
-  div.className = 'msg user';
-  div.innerHTML = `<div class="msg-bubble">${escapeHtml(text)}</div><div class="msg-avatar user">VL</div>`;
-  document.getElementById('chatMessages').appendChild(div);
+function addUserMsg(text){
+  const d=document.createElement('div');
+  d.className='msg user';
+  d.innerHTML=`<div class="msg-bubble">${esc(text)}</div><div class="msg-avatar user">VL</div>`;
+  document.getElementById('chatMessages').appendChild(d);
   scrollChat();
 }
-
-function addTyping() {
-  const div = document.createElement('div');
-  div.className = 'msg'; div.id = 'typing';
-  div.innerHTML = `<div class="msg-avatar agent">V</div><div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
-  document.getElementById('chatMessages').appendChild(div);
-  scrollChat();
+function addTyping(){
+  const d=document.createElement('div');
+  d.className='msg';d.id='typing';
+  d.innerHTML=`<div class="msg-avatar agent">V</div><div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
+  document.getElementById('chatMessages').appendChild(d);scrollChat();
 }
-
-function removeTyping() {
-  const t = document.getElementById('typing');
-  if (t) t.remove();
-}
-
-function formatMsg(text) {
-  return text
-    .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
-    .replace(/🔴 (.*)/g, '<div style="margin:3px 0;"><span class="alert-tag tag-red" style="margin-right:6px;">🔴</span>$1</div>')
-    .replace(/🟡 (.*)/g, '<div style="margin:3px 0;"><span class="alert-tag tag-amber" style="margin-right:6px;">🟡</span>$1</div>')
-    .replace(/🟢 (.*)/g, '<div style="margin:3px 0;"><span class="alert-tag tag-green" style="margin-right:6px;">🟢</span>$1</div>')
-    .replace(/\n/g, '<br>');
-}
-
-function escapeHtml(t) {
-  return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
-function scrollChat() {
-  const el = document.getElementById('chatMessages');
-  el.scrollTop = el.scrollHeight;
-}
-
-async function sendMessage() {
-  const input = document.getElementById('chatInput');
-  const btn = document.getElementById('sendBtn');
-  const text = input.value.trim();
-  if (!text || !API_KEY) return;
-
-  input.value = '';
-  btn.disabled = true;
-  addUserMessage(text);
-  chatHistory.push({ role: 'user', content: text });
+function removeTyping(){const t=document.getElementById('typing');if(t)t.remove();}
+ 
+async function sendMessage(){
+  const input=document.getElementById('chatInput');
+  const btn=document.getElementById('sendBtn');
+  const text=input.value.trim();
+  if(!text||!API_KEY)return;
+  input.value='';btn.disabled=true;
+  addUserMsg(text);
+  chatHistory.push({role:'user',content:text});
   addTyping();
-
-  try {
-    // Usamos el proxy CORS de Anthropic via cloudflare worker para evitar bloqueo desde GitHub Pages
-    const PROXY = 'https://cors.anthropic.workers.dev/v1/messages';
-    const DIRECT = 'https://api.anthropic.com/v1/messages';
-
-    const payload = {
-      model: 'claude-sonnet-4-6',
-      max_tokens: 1000,
-      system: SYSTEM_PROMPT,
-      messages: chatHistory
-    };
-
-    // Intentar directo primero, luego proxy si falla CORS
-    let response;
-    try {
-      response = await fetch(DIRECT, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': API_KEY,
-          'anthropic-version': '2023-06-01',
-          'anthropic-dangerous-direct-browser-access': 'true'
-        },
-        body: JSON.stringify(payload)
-      });
-    } catch(corsErr) {
-      // fallback no aplica sin servidor — mostrar instruccion
-      throw new Error('CORS');
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key':API_KEY,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:800,system:SYSTEM_PROMPT,messages:chatHistory})
+    });
+    if(!res.ok){
+      const err=await res.json().catch(()=>({}));
+      throw new Error(err?.error?.message||'HTTP '+res.status);
     }
-
-    if (!response.ok) {
-      const err = await response.json().catch(() => ({}));
-      throw new Error(err?.error?.message || 'HTTP ' + response.status);
-    }
-
-    const data = await response.json();
+    const data=await res.json();
     removeTyping();
-    const reply = data.content?.[0]?.text || 'Error al obtener respuesta.';
-    chatHistory.push({ role: 'assistant', content: reply });
-    addAgentMessage(reply);
-  } catch (e) {
+    const reply=data.content?.[0]?.text||'Sin respuesta.';
+    chatHistory.push({role:'assistant',content:reply});
+    addAgentMsg(reply);
+  }catch(e){
     removeTyping();
-    const msg = e.message === 'CORS'
-      ? '🔴 Bloqueado por el navegador (CORS). Abre VERO en Chrome, ve a Configuración → Privacidad → y desactiva la protección estricta. O usa el modo incógnito.'
-      : '🔴 ' + (e.message || 'Error de conexión. Verifica tu API Key.');
-    addAgentMessage(msg);
+    addAgentMsg('🔴 '+(e.message||'Error de conexión. Verifica tu API Key.'));
   }
-  btn.disabled = false;
-  input.focus();
+  btn.disabled=false;input.focus();
 }
-
-function askAbout(question) {
-  document.getElementById('chatInput').value = question;
-  sendMessage();
-}
-
-function switchTab(id, el) {
-  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('tab-' + id).classList.add('active');
+ 
+function askAbout(q){document.getElementById('chatInput').value=q;sendMessage();}
+function switchTab(id,el){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
   el.classList.add('active');
 }
-
-// Enter to send
-document.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && document.activeElement.id === 'chatInput') sendMessage();
-});
-
-// Animate progress bars after load
-window.addEventListener('load', () => {
-  document.querySelectorAll('.prog-fill').forEach(el => {
-    const w = el.style.width; el.style.width = '0';
-    setTimeout(() => el.style.width = w, 300);
-  });
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.activeElement.id==='chatInput')sendMessage();});
+window.addEventListener('load',()=>{
+  document.querySelectorAll('.prog-fill').forEach(el=>{const w=el.style.width;el.style.width='0';setTimeout(()=>el.style.width=w,400);});
 });
 </script>
 </body>
