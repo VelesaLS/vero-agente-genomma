@@ -1112,16 +1112,40 @@ async function sendMessage() {
   addTyping();
 
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 1000,
-        system: SYSTEM_PROMPT,
-        messages: chatHistory
-      })
-    });
+    // Usamos el proxy CORS de Anthropic via cloudflare worker para evitar bloqueo desde GitHub Pages
+    const PROXY = 'https://cors.anthropic.workers.dev/v1/messages';
+    const DIRECT = 'https://api.anthropic.com/v1/messages';
+
+    const payload = {
+      model: 'claude-sonnet-4-6',
+      max_tokens: 1000,
+      system: SYSTEM_PROMPT,
+      messages: chatHistory
+    };
+
+    // Intentar directo primero, luego proxy si falla CORS
+    let response;
+    try {
+      response = await fetch(DIRECT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': API_KEY,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify(payload)
+      });
+    } catch(corsErr) {
+      // fallback no aplica sin servidor — mostrar instruccion
+      throw new Error('CORS');
+    }
+
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err?.error?.message || 'HTTP ' + response.status);
+    }
+
     const data = await response.json();
     removeTyping();
     const reply = data.content?.[0]?.text || 'Error al obtener respuesta.';
@@ -1129,7 +1153,10 @@ async function sendMessage() {
     addAgentMessage(reply);
   } catch (e) {
     removeTyping();
-    addAgentMessage('🔴 Error de conexión. Verifica tu API Key y vuelve a intentarlo.');
+    const msg = e.message === 'CORS'
+      ? '🔴 Bloqueado por el navegador (CORS). Abre VERO en Chrome, ve a Configuración → Privacidad → y desactiva la protección estricta. O usa el modo incógnito.'
+      : '🔴 ' + (e.message || 'Error de conexión. Verifica tu API Key.');
+    addAgentMessage(msg);
   }
   btn.disabled = false;
   input.focus();
