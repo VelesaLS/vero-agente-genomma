@@ -252,6 +252,15 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
       </div>
     </div>
 
+    <div class="kpi-s">
+      <div class="kpi-sl">S12 · Resumen</div>
+      <div class="kr"><span class="k">HC Veronica</span><span class="v vblu">163</span></div>
+      <div class="kr"><span class="k">Promotores activos</span><span class="v vgrn">154</span></div>
+      <div class="kr"><span class="k">Vacantes</span><span class="v vred">10</span></div>
+      <div class="kr"><span class="k">Nuevos &lt;90d</span><span class="v vamb">30</span></div>
+      <div class="kr"><span class="k">En curva &lt;15d</span><span class="v vred">8</span></div>
+      <div class="kr"><span class="k">Tiendas sin cob.</span><span class="v vred">244</span></div>
+    </div>
     <div class="ns">
       <div class="ng">Consultar zona al chat</div>
       <div class="ni" onclick="fill('Cuál es el estado actual de la zona Bajío y qué acciones urgentes necesito tomar esta semana?')">
@@ -272,15 +281,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
       </div>
     </div>
 
-    <div class="kpi-s">
-      <div class="kpi-sl">S12 · Resumen</div>
-      <div class="kr"><span class="k">HC Veronica</span><span class="v vblu">163</span></div>
-      <div class="kr"><span class="k">Promotores activos</span><span class="v vgrn">154</span></div>
-      <div class="kr"><span class="k">Vacantes</span><span class="v vred">10</span></div>
-      <div class="kr"><span class="k">Nuevos &lt;90d</span><span class="v vamb">30</span></div>
-      <div class="kr"><span class="k">En curva &lt;15d</span><span class="v vred">8</span></div>
-      <div class="kr"><span class="k">Tiendas sin cob.</span><span class="v vred">244</span></div>
-    </div>
     <div class="sf">Verónica León · Líder · Bajío y Norte<br>Genomma Lab · Dirección de Operaciones</div>
   </div>
 
@@ -300,7 +300,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
         </div>
         <div class="zchip active" id="zone-bajio" onclick="setZone('bajio',this)">Bajío</div>
         <div class="zchip" id="zone-norte" onclick="setZone('norte',this)">Norte</div>
-        <div class="zchip" id="zone-todas" onclick="setZone('todas',this)">Todas</div>
+        <div class="zchip" id="zone-todas" onclick="setZone('todas',this)">T. Nacional</div>
       </div>
     </div>
 
@@ -310,7 +310,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
       <!-- DASHBOARD -->
       <div class="tab-content active" id="tab-dashboard">
         <div class="mg">
-          <div class="mc"><div class="ab ab-r"></div><div class="ml">Efectividad Bajío S12</div><div class="mv red">51.8%</div><div class="ms">Sin mejora 4 semanas · -28 pts vs Centro</div></div>
+          <div class="mc"><div class="ab ab-r"></div><div class="ml">Efectividad Bajío S12</div><div class="mv red">51.8%</div><div class="ms">Sin mejora 4 semanas · JT: Manzanarez · Zona Bajío</div></div>
           <div class="mc"><div class="ab ab-r"></div><div class="ml">Vacantes activas</div><div class="mv red">10</div><div class="ms">Promotores vacantes · HC autorizado: 163</div></div>
           <div class="mc"><div class="ab ab-r"></div><div class="ml">Supervisión Vacante</div><div class="mv red">244</div><div class="ms">PDV Zona Norte · posición de supervisor vacante · Gallegos</div></div>
           <div class="mc"><div class="ab ab-a"></div><div class="ml">En curva crítica &lt;15d</div><div class="mv amb">8</div><div class="ms">Promotores sin SIM activa · sin captura posible</div></div>
@@ -318,8 +318,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
         <div class="mg">
           <div class="mc"><div class="ab ab-a"></div><div class="ml">Sin captura S12</div><div class="mv amb">1,420</div><div class="ms">Tareas no ejecutadas</div></div>
           <div class="mc"><div class="ab ab-a"></div><div class="ml">Falta de POP S12</div><div class="mv amb">1,966</div><div class="ms">Principal motivo nacional</div></div>
-          <div class="mc"><div class="ab ab-g"></div><div class="ml">Efectividad Centro</div><div class="mv grn">80.1%</div><div class="ms">Zona líder nacional</div></div>
           <div class="mc"><div class="ab ab-b"></div><div class="ml">Nuevos ingresos &lt;90d</div><div class="mv blu">30</div><div class="ms">19.5% del equipo Verónica</div></div>
+          <div class="mc"><div class="ab ab-g"></div><div class="ml">Efectividad Centro / Sureste</div><div class="mv grn">80.1%</div><div class="ms">Zona líder · Centro y Sur · Lizbeth Camberos</div></div>
         </div>
         <div class="g2">
           <div class="panel">
@@ -339,7 +339,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
               <div class="sr"><div class="sd" style="background:var(--red)"></div><div class="sl">Promotores curva &lt;15d</div><div class="sv cr">8 personas</div><div class="sn">Sin SIM activa</div></div>
               <div class="sr"><div class="sd" style="background:var(--amber)"></div><div class="sl">Norte — en caída</div><div class="sv ca">59.5%</div><div class="sn">-8.9 pts desde S09</div></div>
               <div class="sr"><div class="sd" style="background:var(--amber)"></div><div class="sl">Falta de POP S12</div><div class="sv ca">1,966</div><div class="sn">Principal motivo</div></div>
-              <div class="sr"><div class="sd" style="background:var(--green)"></div><div class="sl">Efectividad Centro</div><div class="sv cg">80.1%</div><div class="sn">Zona líder estable</div></div>
+              <div class="sr"><div class="sd" style="background:var(--green)"></div><div class="sl">Efectividad Centro / Sureste</div><div class="sv cg">80.1%</div><div class="sn">Zona líder · Centro y Sur</div></div>
             </div>
           </div>
         </div>
@@ -909,22 +909,22 @@ const WR_DATA = {
   S12: {
     bajio: { ef:51.8, vac_prom:6,  sup_vac:0,   curva_prom:6, sincap:649,  pop:712,  zona:'Bajío',  jt:'Manzanarez', ef_label:'Bajío S12' },
     norte: { ef:59.5, vac_prom:4,  sup_vac:244, curva_prom:2, sincap:771,  pop:1254, zona:'Norte',  jt:'Gallegos',   ef_label:'Norte S12' },
-    todas: { ef:65.2, vac_prom:10, sup_vac:244, curva_prom:8, sincap:1420, pop:1966, zona:'Todas',  jt:'Ambos JT',   ef_label:'Nacional S12' },
+    todas: { ef:65.2, vac_prom:12, sup_vac:244, curva_prom:8, sincap:2180, pop:2890, zona:'T. Nacional', jt:'Bajío+Norte+Centro+Sureste', ef_label:'Nacional S12' },
   },
   S11: {
     bajio: { ef:50.1, vac_prom:5,  sup_vac:0,   curva_prom:4, sincap:520,  pop:680,  zona:'Bajío',  jt:'Manzanarez', ef_label:'Bajío S11' },
     norte: { ef:63.7, vac_prom:3,  sup_vac:244, curva_prom:1, sincap:392,  pop:1120, zona:'Norte',  jt:'Gallegos',   ef_label:'Norte S11' },
-    todas: { ef:66.1, vac_prom:8,  sup_vac:244, curva_prom:5, sincap:912,  pop:1800, zona:'Todas',  jt:'Ambos JT',   ef_label:'Nacional S11' },
+    todas: { ef:66.1, vac_prom:10, sup_vac:244, curva_prom:5, sincap:1680, pop:2600, zona:'T. Nacional', jt:'Bajío+Norte+Centro+Sureste', ef_label:'Nacional S11' },
   },
   S10: {
     bajio: { ef:48.3, vac_prom:4,  sup_vac:0,   curva_prom:2, sincap:580,  pop:650,  zona:'Bajío',  jt:'Manzanarez', ef_label:'Bajío S10' },
     norte: { ef:60.6, vac_prom:3,  sup_vac:244, curva_prom:1, sincap:537,  pop:1050, zona:'Norte',  jt:'Gallegos',   ef_label:'Norte S10' },
-    todas: { ef:64.3, vac_prom:7,  sup_vac:244, curva_prom:3, sincap:1117, pop:1700, zona:'Todas',  jt:'Ambos JT',   ef_label:'Nacional S10' },
+    todas: { ef:64.3, vac_prom:9,  sup_vac:244, curva_prom:3, sincap:1900, pop:2500, zona:'T. Nacional', jt:'Bajío+Norte+Centro+Sureste', ef_label:'Nacional S10' },
   },
   S09: {
     bajio: { ef:51.3, vac_prom:3,  sup_vac:0,   curva_prom:1, sincap:600,  pop:620,  zona:'Bajío',  jt:'Manzanarez', ef_label:'Bajío S09' },
     norte: { ef:68.4, vac_prom:1,  sup_vac:220, curva_prom:0, sincap:585,  pop:1030, zona:'Norte',  jt:'Gallegos',   ef_label:'Norte S09' },
-    todas: { ef:67.8, vac_prom:4,  sup_vac:220, curva_prom:2, sincap:1185, pop:1650, zona:'Todas',  jt:'Ambos JT',   ef_label:'Nacional S09' },
+    todas: { ef:67.8, vac_prom:7,  sup_vac:220, curva_prom:2, sincap:2050, pop:2400, zona:'T. Nacional', jt:'Bajío+Norte+Centro+Sureste', ef_label:'Nacional S09' },
   },
 };
 
@@ -968,7 +968,7 @@ function updateDashboard() {
     cards[0].querySelector('.mv').textContent = d.ef + '%';
     cards[0].querySelector('.mv').className = 'mv ' + efClass;
     cards[0].querySelector('.ml').textContent = 'Efectividad ' + zoneLabel + ' ' + activeWeek;
-    cards[0].querySelector('.ms').textContent = 'JT: ' + jtLabel + ' · vs Centro 80.1%';
+    cards[0].querySelector('.ms').textContent = 'JT: ' + jtLabel + '';
 
     // Card 2: Vacantes — promotores, no PDV
     cards[1].querySelector('.mv').textContent = d.vac_prom;
@@ -1048,4 +1048,4 @@ function setKeyInline(val) {
 }
 </script>
 </body>
-</html>
+</html
