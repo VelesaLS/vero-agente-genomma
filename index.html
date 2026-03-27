@@ -292,10 +292,15 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
         <div class="tb-m">Líder: Verónica León · Bajío y Occidente · 13-Mar-2026</div>
       </div>
       <div class="tb-r">
-        <span class="wtag">S12 / 2026</span>
-        <div class="zchip active">Bajío</div>
-        <div class="zchip">Norte</div>
-        <div class="zchip">Todas</div>
+        <div style="display:flex;gap:4px;margin-right:4px;">
+          <div class="wtag" id="week-s12" style="cursor:pointer;" onclick="setWeek('S12',this)">S12 / 2026</div>
+          <div class="wtag" id="week-s11" style="cursor:pointer;background:var(--bg3);color:var(--text2);border:1.5px solid var(--border2);" onclick="setWeek('S11',this)">S11</div>
+          <div class="wtag" id="week-s10" style="cursor:pointer;background:var(--bg3);color:var(--text2);border:1.5px solid var(--border2);" onclick="setWeek('S10',this)">S10</div>
+          <div class="wtag" id="week-s09" style="cursor:pointer;background:var(--bg3);color:var(--text2);border:1.5px solid var(--border2);" onclick="setWeek('S09',this)">S09</div>
+        </div>
+        <div class="zchip active" id="zone-bajio" onclick="setZone('bajio',this)">Bajío</div>
+        <div class="zchip" id="zone-norte" onclick="setZone('norte',this)">Norte</div>
+        <div class="zchip" id="zone-todas" onclick="setZone('todas',this)">Todas</div>
       </div>
     </div>
 
@@ -880,6 +885,127 @@ function renderCadenas() {
 }
 
 // Cadenas se inicializa via goTab() arriba
+
+
+
+// ── Datos por Semana y Zona ─────────────────────────────────
+const WR_DATA = {
+  S12: {
+    bajio:  { ef:51.8, vac:10, sup_vac:244, curva:8, sincap:1420, pop:1966, ef_label:'Bajío S12' },
+    norte:  { ef:59.5, vac:6,  sup_vac:0,   curva:2, sincap:380,  pop:520,  ef_label:'Norte S12' },
+    todas:  { ef:65.2, vac:10, sup_vac:244,  curva:8, sincap:1420, pop:1966, ef_label:'Nacional S12' },
+  },
+  S11: {
+    bajio:  { ef:50.1, vac:8,  sup_vac:244, curva:5, sincap:912,  pop:1800, ef_label:'Bajío S11' },
+    norte:  { ef:63.7, vac:5,  sup_vac:0,   curva:1, sincap:290,  pop:480,  ef_label:'Norte S11' },
+    todas:  { ef:66.1, vac:8,  sup_vac:244,  curva:5, sincap:912,  pop:1800, ef_label:'Nacional S11' },
+  },
+  S10: {
+    bajio:  { ef:48.3, vac:7,  sup_vac:244, curva:3, sincap:1117, pop:1700, ef_label:'Bajío S10' },
+    norte:  { ef:60.6, vac:4,  sup_vac:0,   curva:1, sincap:250,  pop:420,  ef_label:'Norte S10' },
+    todas:  { ef:64.3, vac:7,  sup_vac:244,  curva:3, sincap:1117, pop:1700, ef_label:'Nacional S10' },
+  },
+  S09: {
+    bajio:  { ef:51.3, vac:4,  sup_vac:220, curva:2, sincap:1185, pop:1650, ef_label:'Bajío S09' },
+    norte:  { ef:68.4, vac:3,  sup_vac:0,   curva:0, sincap:210,  pop:390,  ef_label:'Norte S09' },
+    todas:  { ef:67.8, vac:4,  sup_vac:220,  curva:2, sincap:1185, pop:1650, ef_label:'Nacional S09' },
+  },
+};
+
+let activeWeek = 'S12';
+let activeZone = 'bajio';
+
+function setWeek(week, el) {
+  activeWeek = week;
+  document.querySelectorAll('.wtag').forEach(b => {
+    b.style.background = 'var(--bg3)';
+    b.style.color = 'var(--text2)';
+    b.style.border = '1.5px solid var(--border2)';
+  });
+  el.style.background = 'var(--sidebar)';
+  el.style.color = '#fff';
+  el.style.border = 'none';
+  updateDashboard();
+}
+
+function setZone(zone, el) {
+  activeZone = zone;
+  document.querySelectorAll('.zchip').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  updateDashboard();
+}
+
+function updateDashboard() {
+  const d = WR_DATA[activeWeek]?.[activeZone] || WR_DATA.S12.bajio;
+  const efColor = d.ef >= 70 ? 'var(--green)' : d.ef >= 60 ? 'var(--amber)' : 'var(--red)';
+  const efClass = d.ef >= 70 ? 'grn' : d.ef >= 60 ? 'amb' : 'red';
+  const weekLabel = activeWeek + ' / 2026';
+  const zoneLabel = activeZone === 'bajio' ? 'Bajío' : activeZone === 'norte' ? 'Norte' : 'Todas las zonas';
+
+  // Update topbar meta
+  const meta = document.querySelector('.tb-m');
+  if (meta) meta.textContent = 'Líder: Verónica León · Bajío y Occidente · 13-Mar-2026 · Filtro: ' + zoneLabel + ' · ' + weekLabel;
+
+  // Update metric cards — first row
+  const cards = document.querySelectorAll('#tab-dashboard .mc');
+  if (cards.length >= 8) {
+    // Card 1: Efectividad
+    cards[0].querySelector('.mv').textContent = d.ef + '%';
+    cards[0].querySelector('.mv').className = 'mv ' + efClass;
+    cards[0].querySelector('.ml').textContent = 'Efectividad ' + zoneLabel + ' ' + activeWeek;
+
+    // Card 2: Vacantes
+    cards[1].querySelector('.mv').textContent = d.vac;
+    cards[1].querySelector('.ml').textContent = 'Vacantes activas';
+
+    // Card 3: Supervision vacante
+    cards[2].querySelector('.mv').textContent = d.sup_vac;
+    cards[2].querySelector('.ml').textContent = 'Supervisión vacante';
+
+    // Card 4: Curva
+    cards[3].querySelector('.mv').textContent = d.curva;
+
+    // Card 5: Sin captura
+    cards[4].querySelector('.mv').textContent = d.sincap.toLocaleString();
+
+    // Card 6: Falta POP
+    cards[5].querySelector('.mv').textContent = d.pop.toLocaleString();
+  }
+
+  // Update progress bars
+  const fills = document.querySelectorAll('#tab-dashboard .pr-fill');
+  const wrd = WR_DATA[activeWeek];
+  if (fills.length >= 4 && wrd) {
+    const zones = ['bajio','norte','bajio','todas']; // map to sureste/centro approximate
+    const vals = [
+      wrd.bajio?.ef || 51.8,
+      wrd.norte?.ef || 59.5,
+      activeWeek === 'S12' ? 73.5 : activeWeek === 'S11' ? 73.5 : activeWeek === 'S10' ? 72.5 : 71.7,
+      activeWeek === 'S12' ? 80.1 : activeWeek === 'S11' ? 80.0 : activeWeek === 'S10' ? 80.8 : 82.2,
+    ];
+    fills.forEach((f, i) => { if (vals[i]) f.style.width = vals[i] + '%'; });
+
+    // Update progress labels
+    const prVals = document.querySelectorAll('#tab-dashboard .pr-val');
+    const colors = ['var(--red)','var(--amber)','var(--green)','var(--blue)'];
+    prVals.forEach((el, i) => {
+      if (vals[i]) {
+        el.textContent = vals[i] + '%';
+        el.style.color = vals[i] >= 70 ? 'var(--green)' : vals[i] >= 60 ? 'var(--amber)' : 'var(--red)';
+      }
+    });
+
+    // Update progress sub-labels with week data
+    const prLabels = document.querySelectorAll('#tab-dashboard .pr-lbl');
+    const wLabels = ['Bajío','Norte','Sureste','Centro'];
+    const prevWeek = {S12:'S11',S11:'S10',S10:'S09',S09:'S09'};
+    const prev = WR_DATA[prevWeek[activeWeek]];
+    prLabels.forEach((el, i) => {
+      const prevVal = i === 0 ? prev?.bajio?.ef : i === 1 ? prev?.norte?.ef : i === 2 ? 73.5 : 80.8;
+      el.innerHTML = wLabels[i] + ' <span style="color:var(--text3);font-size:9px">' + (prevVal||'—') + '% → ' + vals[i] + '%</span>';
+    });
+  }
+}
 
 </script>
 </body>
