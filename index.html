@@ -311,9 +311,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
       <div class="tab-content active" id="tab-dashboard">
         <div class="mg">
           <div class="mc"><div class="ab ab-r"></div><div class="ml">Efectividad Bajío S12</div><div class="mv red">51.8%</div><div class="ms">Sin mejora 4 semanas · -28 pts vs Centro</div></div>
-          <div class="mc"><div class="ab ab-r"></div><div class="ml">Vacantes activas</div><div class="mv red">10</div><div class="ms">De 163 HC · +6 en 3 semanas</div></div>
-          <div class="mc"><div class="ab ab-r"></div><div class="ml">Supervisión Vacante</div><div class="mv red">244</div><div class="ms">14 rutas sin supervisor · Gallegos / NL</div></div>
-          <div class="mc"><div class="ab ab-a"></div><div class="ml">En curva crítica &lt;15d</div><div class="mv amb">8</div><div class="ms">Sin SIM · Sin captura posible</div></div>
+          <div class="mc"><div class="ab ab-r"></div><div class="ml">Vacantes activas</div><div class="mv red">10</div><div class="ms">Promotores vacantes · HC autorizado: 163</div></div>
+          <div class="mc"><div class="ab ab-r"></div><div class="ml">Supervisión Vacante</div><div class="mv red">244</div><div class="ms">PDV Zona Norte · posición de supervisor vacante · Gallegos</div></div>
+          <div class="mc"><div class="ab ab-a"></div><div class="ml">En curva crítica &lt;15d</div><div class="mv amb">8</div><div class="ms">Promotores sin SIM activa · sin captura posible</div></div>
         </div>
         <div class="mg">
           <div class="mc"><div class="ab ab-a"></div><div class="ml">Sin captura S12</div><div class="mv amb">1,420</div><div class="ms">Tareas no ejecutadas</div></div>
@@ -890,25 +890,27 @@ function renderCadenas() {
 
 // ── Datos por Semana y Zona ─────────────────────────────────
 const WR_DATA = {
+  // BAJÍO = JT Manzanarez Urzua Cristopher Emmanuel
+  // NORTE = JT Gallegos Garrido Maysha Anaid (tiene las 244 rutas sin supervisor en NL)
   S12: {
-    bajio:  { ef:51.8, vac:10, sup_vac:244, curva:8, sincap:1420, pop:1966, ef_label:'Bajío S12' },
-    norte:  { ef:59.5, vac:6,  sup_vac:0,   curva:2, sincap:380,  pop:520,  ef_label:'Norte S12' },
-    todas:  { ef:65.2, vac:10, sup_vac:244,  curva:8, sincap:1420, pop:1966, ef_label:'Nacional S12' },
+    bajio: { ef:51.8, vac_prom:6,  sup_vac:0,   curva_prom:6, sincap:649,  pop:712,  zona:'Bajío',  jt:'Manzanarez', ef_label:'Bajío S12' },
+    norte: { ef:59.5, vac_prom:4,  sup_vac:244, curva_prom:2, sincap:771,  pop:1254, zona:'Norte',  jt:'Gallegos',   ef_label:'Norte S12' },
+    todas: { ef:65.2, vac_prom:10, sup_vac:244, curva_prom:8, sincap:1420, pop:1966, zona:'Todas',  jt:'Ambos JT',   ef_label:'Nacional S12' },
   },
   S11: {
-    bajio:  { ef:50.1, vac:8,  sup_vac:244, curva:5, sincap:912,  pop:1800, ef_label:'Bajío S11' },
-    norte:  { ef:63.7, vac:5,  sup_vac:0,   curva:1, sincap:290,  pop:480,  ef_label:'Norte S11' },
-    todas:  { ef:66.1, vac:8,  sup_vac:244,  curva:5, sincap:912,  pop:1800, ef_label:'Nacional S11' },
+    bajio: { ef:50.1, vac_prom:5,  sup_vac:0,   curva_prom:4, sincap:520,  pop:680,  zona:'Bajío',  jt:'Manzanarez', ef_label:'Bajío S11' },
+    norte: { ef:63.7, vac_prom:3,  sup_vac:244, curva_prom:1, sincap:392,  pop:1120, zona:'Norte',  jt:'Gallegos',   ef_label:'Norte S11' },
+    todas: { ef:66.1, vac_prom:8,  sup_vac:244, curva_prom:5, sincap:912,  pop:1800, zona:'Todas',  jt:'Ambos JT',   ef_label:'Nacional S11' },
   },
   S10: {
-    bajio:  { ef:48.3, vac:7,  sup_vac:244, curva:3, sincap:1117, pop:1700, ef_label:'Bajío S10' },
-    norte:  { ef:60.6, vac:4,  sup_vac:0,   curva:1, sincap:250,  pop:420,  ef_label:'Norte S10' },
-    todas:  { ef:64.3, vac:7,  sup_vac:244,  curva:3, sincap:1117, pop:1700, ef_label:'Nacional S10' },
+    bajio: { ef:48.3, vac_prom:4,  sup_vac:0,   curva_prom:2, sincap:580,  pop:650,  zona:'Bajío',  jt:'Manzanarez', ef_label:'Bajío S10' },
+    norte: { ef:60.6, vac_prom:3,  sup_vac:244, curva_prom:1, sincap:537,  pop:1050, zona:'Norte',  jt:'Gallegos',   ef_label:'Norte S10' },
+    todas: { ef:64.3, vac_prom:7,  sup_vac:244, curva_prom:3, sincap:1117, pop:1700, zona:'Todas',  jt:'Ambos JT',   ef_label:'Nacional S10' },
   },
   S09: {
-    bajio:  { ef:51.3, vac:4,  sup_vac:220, curva:2, sincap:1185, pop:1650, ef_label:'Bajío S09' },
-    norte:  { ef:68.4, vac:3,  sup_vac:0,   curva:0, sincap:210,  pop:390,  ef_label:'Norte S09' },
-    todas:  { ef:67.8, vac:4,  sup_vac:220,  curva:2, sincap:1185, pop:1650, ef_label:'Nacional S09' },
+    bajio: { ef:51.3, vac_prom:3,  sup_vac:0,   curva_prom:1, sincap:600,  pop:620,  zona:'Bajío',  jt:'Manzanarez', ef_label:'Bajío S09' },
+    norte: { ef:68.4, vac_prom:1,  sup_vac:220, curva_prom:0, sincap:585,  pop:1030, zona:'Norte',  jt:'Gallegos',   ef_label:'Norte S09' },
+    todas: { ef:67.8, vac_prom:4,  sup_vac:220, curva_prom:2, sincap:1185, pop:1650, zona:'Todas',  jt:'Ambos JT',   ef_label:'Nacional S09' },
   },
 };
 
@@ -937,39 +939,53 @@ function setZone(zone, el) {
 
 function updateDashboard() {
   const d = WR_DATA[activeWeek]?.[activeZone] || WR_DATA.S12.bajio;
-  const efColor = d.ef >= 70 ? 'var(--green)' : d.ef >= 60 ? 'var(--amber)' : 'var(--red)';
   const efClass = d.ef >= 70 ? 'grn' : d.ef >= 60 ? 'amb' : 'red';
   const weekLabel = activeWeek + ' / 2026';
-  const zoneLabel = activeZone === 'bajio' ? 'Bajío' : activeZone === 'norte' ? 'Norte' : 'Todas las zonas';
+  const zoneLabel = d.zona || (activeZone === 'bajio' ? 'Bajío' : activeZone === 'norte' ? 'Norte' : 'Todas');
+  const jtLabel   = d.jt   || '';
 
   // Update topbar meta
   const meta = document.querySelector('.tb-m');
-  if (meta) meta.textContent = 'Líder: Verónica León · Bajío y Occidente · 13-Mar-2026 · Filtro: ' + zoneLabel + ' · ' + weekLabel;
+  if (meta) meta.textContent = 'Líder: Verónica León · Bajío y Occidente · 13-Mar-2026 · Zona: ' + zoneLabel + ' (' + jtLabel + ') · ' + weekLabel;
 
-  // Update metric cards — first row
   const cards = document.querySelectorAll('#tab-dashboard .mc');
   if (cards.length >= 8) {
     // Card 1: Efectividad
     cards[0].querySelector('.mv').textContent = d.ef + '%';
     cards[0].querySelector('.mv').className = 'mv ' + efClass;
     cards[0].querySelector('.ml').textContent = 'Efectividad ' + zoneLabel + ' ' + activeWeek;
+    cards[0].querySelector('.ms').textContent = 'JT: ' + jtLabel + ' · vs Centro 80.1%';
 
-    // Card 2: Vacantes
-    cards[1].querySelector('.mv').textContent = d.vac;
-    cards[1].querySelector('.ml').textContent = 'Vacantes activas';
+    // Card 2: Vacantes — promotores, no PDV
+    cards[1].querySelector('.mv').textContent = d.vac_prom;
+    cards[1].querySelector('.mv').className = 'mv red';
+    cards[1].querySelector('.ml').textContent = 'Promotores vacantes';
+    cards[1].querySelector('.ms').textContent = 'Posiciones sin cubrir · ' + zoneLabel + ' · ' + activeWeek;
 
-    // Card 3: Supervision vacante
+    // Card 3: Supervision vacante — PDV de Norte/Gallegos
+    const supLabel = d.sup_vac > 0 ? d.sup_vac + ' PDV' : '0 PDV';
     cards[2].querySelector('.mv').textContent = d.sup_vac;
-    cards[2].querySelector('.ml').textContent = 'Supervisión vacante';
+    cards[2].querySelector('.mv').className = d.sup_vac > 0 ? 'mv red' : 'mv grn';
+    cards[2].querySelector('.ml').textContent = 'PDV sin supervisor';
+    cards[2].querySelector('.ms').textContent = d.sup_vac > 0
+      ? 'Zona Norte · Gallegos · posición supervisor vacante'
+      : 'Sin rutas vacantes de supervisor en esta zona';
 
-    // Card 4: Curva
-    cards[3].querySelector('.mv').textContent = d.curva;
+    // Card 4: Curva — promotores
+    cards[3].querySelector('.mv').textContent = d.curva_prom;
+    cards[3].querySelector('.mv').className = d.curva_prom > 0 ? 'mv amb' : 'mv grn';
+    cards[3].querySelector('.ml').textContent = 'Promotores en curva <15d';
+    cards[3].querySelector('.ms').textContent = 'Sin SIM activa · sin captura posible · ' + zoneLabel;
 
-    // Card 5: Sin captura
+    // Card 5: Sin captura — tareas
     cards[4].querySelector('.mv').textContent = d.sincap.toLocaleString();
+    cards[4].querySelector('.ml').textContent = 'Tareas sin captura ' + activeWeek;
+    cards[4].querySelector('.ms').textContent = 'Tareas no ejecutadas · ' + zoneLabel;
 
-    // Card 6: Falta POP
+    // Card 6: Falta POP — tareas
     cards[5].querySelector('.mv').textContent = d.pop.toLocaleString();
+    cards[5].querySelector('.ml').textContent = 'Falta de POP ' + activeWeek;
+    cards[5].querySelector('.ms').textContent = 'Principal motivo de no ejecución · ' + zoneLabel;
   }
 
   // Update progress bars
