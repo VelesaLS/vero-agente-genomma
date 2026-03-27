@@ -204,7 +204,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
 <body>
 
 <!-- MODAL API KEY -->
-<div class="mo" id="modal" style="display:none;">
+<div class="mo" id="modal" style="display:none;pointer-events:none;opacity:0;">
   <div class="mb2">
     <div class="mlog">V</div>
     <div class="mti">VERO · Agente Operaciones PDV</div>
@@ -218,7 +218,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
 </div>
 
 <!-- APP -->
-<div class="shell" id="appShell" style="display:none;">
+<div class="shell" id="appShell" style="display:flex;">
 
   <!-- SIDEBAR -->
   <div class="sidebar">
@@ -588,8 +588,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
         <span style="font-size:10px;color:var(--blue);cursor:pointer;" onclick="fill('¿Qué estrategia de concursos debo priorizar?')">Concursos</span>
       </div>
       <div class="msgs" id="chatMsgs"></div>
-      <div class="inrow">
-        <input type="text" class="chin" id="chatInput" placeholder="Pregunta a VERO sobre operaciones, vacantes, WR, concursos…"/>
+      <div class="inrow" style="flex-wrap:wrap;gap:6px;">
+        <input type="password" class="chin" id="apiInline" placeholder="🔑 API Key (sk-ant-api03-...)" style="max-width:220px;flex-shrink:0;" oninput="setKeyInline(this.value)"/>
+        <input type="text" class="chin" id="chatInput" placeholder="Escribe tu pregunta a VERO…"/>
         <button class="csend" id="sendBtn" onclick="sendMsg()">Enviar →</button>
       </div>
     </div>
@@ -614,15 +615,24 @@ REGLAS: Siempre menciona supervisor al citar promotor. GomezLupercio=acompañami
 
 // ── Inicialización ────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
+  // Dashboard visible sin API Key — chat requiere key para responder
+  document.getElementById('modal').style.display = 'none';
+  document.getElementById('appShell').style.display = 'flex';
   try {
     const saved = sessionStorage.getItem('vero_k');
     if (saved && saved.startsWith('sk-ant')) {
       APIKEY = saved;
-      boot();
-      return;
     }
   } catch(e) {}
-  document.getElementById('modal').style.display = 'flex';
+  // Mostrar mensaje de bienvenida sin requerir key
+  addBot('Bienvenido a **VERO** — Agente de Visibilidad y Ejecución en Retail de Operaciones · Genomma Lab 🟢\n\nExplora el dashboard con todos los módulos: Dashboard General, Vacantes, Supervisores, Nuevos Ingresos, Concursos y Análisis por Cadena.\n\n💡 Para usar el chat inteligente, ingresa tu API Key de Anthropic en el campo de abajo.');
+  // init progress bars
+  setTimeout(() => {
+    document.querySelectorAll('.pr-fill').forEach(el => {
+      const w = el.style.width; el.style.width = '0';
+      setTimeout(() => el.style.width = w, 100);
+    });
+  }, 300);
 });
 
 document.addEventListener('keydown', e => {
@@ -709,7 +719,11 @@ async function sendMsg() {
   const input = document.getElementById('chatInput');
   const btn = document.getElementById('sendBtn');
   const text = input.value.trim();
-  if (!text || !APIKEY) return;
+  if (!text) return;
+  if (!APIKEY) {
+    addBot('💡 Para usar el chat, ingresa tu API Key de Anthropic en el campo de la izquierda (sk-ant-api03-...)');
+    return;
+  }
 
   input.value = ''; btn.disabled = true;
   addUser(text);
@@ -1023,6 +1037,15 @@ function updateDashboard() {
   }
 }
 
+
+// Inline API key setter
+function setKeyInline(val) {
+  const k = val.trim();
+  if (k.startsWith('sk-ant')) {
+    APIKEY = k;
+    try { sessionStorage.setItem('vero_k', k); } catch(e){}
+  }
+}
 </script>
 </body>
 </html>
