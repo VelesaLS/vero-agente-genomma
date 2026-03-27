@@ -145,6 +145,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
 .vn{font-weight:800;font-size:13px;}
 
 /* TIP */
+.scroll-hint-anim{animation:bob 1.5s infinite;}
+@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(3px)}}
 .tip{padding:8px 11px;border-radius:6px;font-size:11px;color:var(--text2);margin-top:9px;border:1px solid;}
 .tipg{background:#f0fdf4;border-color:#bbf7d0;}
 .tipa{background:#fffbeb;border-color:#fde68a;}
@@ -158,7 +160,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
 .tab-content{display:none;}.tab-content.active{display:block;}
 
 /* CHAT — altura fija, no afecta content */
-.chat-w{height:255px;min-height:255px;flex-shrink:0;background:var(--bg2);border-top:1px solid var(--border);display:flex;flex-direction:column;}
+.chat-w{height:200px;min-height:200px;flex-shrink:0;background:var(--bg2);border-top:1px solid var(--border);display:flex;flex-direction:column;}
 .qrow{display:flex;flex-wrap:wrap;gap:5px;padding:7px 14px;border-bottom:1px solid var(--border);flex-shrink:0;}
 .qbtn{padding:4px 9px;border-radius:5px;border:1px solid var(--border2);background:var(--bg2);color:var(--text2);font-size:10px;cursor:pointer;transition:all .15s;font-weight:500;}
 .qbtn:hover{border-color:var(--accent);color:var(--accent);background:rgba(14,169,110,.04);}
@@ -305,7 +307,12 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
     </div>
 
     <!-- CONTENT AREA - scrollable -->
-    <div class="content" id="mainContent">
+    <div style="position:relative;">
+      <div id="scroll-hint" style="display:none;position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);z-index:10;background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.2);border-radius:20px;padding:3px 12px;font-size:10px;color:var(--blue);font-weight:600;pointer-events:none;white-space:nowrap;">
+        ↓ Desliza para ver más
+      </div>
+    </div>
+    <div class="content" id="mainContent" onscroll="checkScroll(this)">
 
       <!-- DASHBOARD -->
       <div class="tab-content active" id="tab-dashboard">
@@ -577,15 +584,12 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
 
     <!-- CHAT — altura fija, NO afecta el scroll de content -->
     <div class="chat-w">
-      <div class="qrow" style="align-items:center;gap:8px;">
-        <span style="font-size:10px;color:var(--text3);font-weight:500;flex-shrink:0;">💡 Escribe tu pregunta o prueba:</span>
-        <span style="font-size:10px;color:var(--blue);cursor:pointer;" onclick="fill('¿Cuáles son las 3 acciones más urgentes esta semana?')">Acciones urgentes</span>
-        <span style="color:var(--text3);font-size:10px;">·</span>
-        <span style="font-size:10px;color:var(--blue);cursor:pointer;" onclick="fill('Dame diagnóstico completo de Gomez Lupercio')">Gomez Lupercio</span>
-        <span style="color:var(--text3);font-size:10px;">·</span>
-        <span style="font-size:10px;color:var(--blue);cursor:pointer;" onclick="fill('¿Cuál es el impacto de las 244 tiendas sin supervisor de Gallegos?')">244 tiendas</span>
-        <span style="color:var(--text3);font-size:10px;">·</span>
-        <span style="font-size:10px;color:var(--blue);cursor:pointer;" onclick="fill('¿Qué estrategia de concursos debo priorizar?')">Concursos</span>
+      <div class="qrow" style="align-items:center;gap:6px;padding:8px 20px;">
+        <span style="font-size:10px;color:var(--text3);font-weight:500;flex-shrink:0;margin-right:4px;">💡 Prueba preguntar:</span>
+        <button class="qbtn" style="font-size:11px;padding:6px 14px;font-weight:600;border-color:var(--blue);color:var(--blue);" onclick="fill('¿Cuáles son las 3 acciones más urgentes esta semana?')">🎯 Acciones urgentes</button>
+        <button class="qbtn" style="font-size:11px;padding:6px 14px;font-weight:600;border-color:var(--amber);color:var(--amber);" onclick="fill('Dame diagnóstico completo de Gomez Lupercio y qué apoyo necesita')">👤 Gomez Lupercio</button>
+        <button class="qbtn" style="font-size:11px;padding:6px 14px;font-weight:600;border-color:var(--red);color:var(--red);" onclick="fill('¿Cuáles son las tiendas críticas con más tareas sin resolver?')">🏪 Tiendas críticas</button>
+        <button class="qbtn" style="font-size:11px;padding:6px 14px;font-weight:600;border-color:var(--green);color:var(--green);" onclick="fill('¿Qué estrategia de concursos debo priorizar esta semana?')">🏆 Concursos</button>
       </div>
       <div class="msgs" id="chatMsgs"></div>
       <div class="inrow" style="flex-wrap:wrap;gap:6px;">
@@ -1046,6 +1050,24 @@ function setKeyInline(val) {
     try { sessionStorage.setItem('vero_k', k); } catch(e){}
   }
 }
+
+function checkScroll(el) {
+  const hint = document.getElementById('scroll-hint');
+  if (!hint) return;
+  if (el.scrollTop < 20) {
+    hint.style.display = 'block';
+    hint.classList.add('scroll-hint-anim');
+  } else {
+    hint.style.display = 'none';
+  }
+}
+window.addEventListener('load', () => {
+  const el = document.getElementById('mainContent');
+  if (el && el.scrollHeight > el.clientHeight) {
+    const hint = document.getElementById('scroll-hint');
+    if (hint) { hint.style.display = 'block'; hint.classList.add('scroll-hint-anim'); }
+  }
+});
 </script>
 </body>
-</html
+</html>
