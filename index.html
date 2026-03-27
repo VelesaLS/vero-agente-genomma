@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VERO · Agente de Operaciones PDV · Genomma Lab</title>
+<title>V.E.R.O · Visibilidad, Ejecución y Resultados de Operación · Genomma Lab</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -207,7 +207,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
 <div class="mo" id="modal" style="display:none;pointer-events:none;opacity:0;">
   <div class="mb2">
     <div class="mlog">V</div>
-    <div class="mti">VERO · Agente Operaciones PDV</div>
+    <div class="mti">V.E.R.O · Visibilidad, Ejecución y Resultados de Operación</div>
     <div class="msu">Genomma Lab · Visibilidad y Ejecución en Retail de Operaciones.<br>Ingresa tu API Key de Anthropic para activar el análisis.</div>
     <div class="mla">API Key de Anthropic</div>
     <input type="password" class="min" id="apiKeyInput" placeholder="sk-ant-api03-..." autocomplete="off"/>
@@ -225,7 +225,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
     <div class="sh">
       <div class="logo-row">
         <div class="logo-box">V</div>
-        <div><div class="logo-name">VERO</div><div class="logo-sub">Ops Intelligence</div></div>
+        <div><div class="logo-name">V.E.R.O</div><div class="logo-sub">Ops Intelligence Agent</div></div>
       </div>
       <div class="live-b">ACTIVO · Genomma Lab</div>
     </div>
@@ -281,15 +281,15 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
       <div class="kr"><span class="k">En curva &lt;15d</span><span class="v vred">8</span></div>
       <div class="kr"><span class="k">Tiendas sin cob.</span><span class="v vred">244</span></div>
     </div>
-    <div class="sf">Datos: S09–S12 · Rutero 13-Mar-2026<br>Genomma Lab · Dirección de Operaciones</div>
+    <div class="sf">Verónica León · Líder · Bajío y Norte<br>Genomma Lab · Dirección de Operaciones</div>
   </div>
 
   <!-- MAIN -->
   <div class="main">
     <div class="topbar">
       <div>
-        <div class="tb-t">VERO · Visibilidad y Ejecución en Retail de Operaciones</div>
-        <div class="tb-m">Líder: Verónica León · Bajío y Occidente · 13-Mar-2026</div>
+        <div class="tb-t">V.E.R.O · Visibilidad, Ejecución y Resultados de Operación</div>
+        <div class="tb-m">Verónica León &nbsp;·&nbsp; Líder Nacional de Operaciones &nbsp;·&nbsp; Bajío y Norte &nbsp;·&nbsp; 13-Mar-2026</div>
       </div>
       <div class="tb-r">
         <div style="display:flex;gap:4px;margin-right:4px;">
@@ -625,7 +625,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   } catch(e) {}
   // Mostrar mensaje de bienvenida sin requerir key
-  addBot('Bienvenido a **VERO** — Agente de Visibilidad y Ejecución en Retail de Operaciones · Genomma Lab 🟢\n\nExplora el dashboard con todos los módulos: Dashboard General, Vacantes, Supervisores, Nuevos Ingresos, Concursos y Análisis por Cadena.\n\n💡 Para usar el chat inteligente, ingresa tu API Key de Anthropic en el campo de abajo.');
+  addBot('Bienvenido a **V.E.R.O** — Visibilidad, Ejecución y Resultados de Operación — Agente de Visibilidad y Ejecución en Retail de Operaciones · Genomma Lab 🟢\n\nExplora el dashboard con todos los módulos: Dashboard General, Vacantes, Supervisores, Nuevos Ingresos, Concursos y Análisis por Cadena.\n\n💡 Para usar el chat inteligente, ingresa tu API Key de Anthropic en el campo de abajo.');
   // init progress bars
   setTimeout(() => {
     document.querySelectorAll('.pr-fill').forEach(el => {
@@ -960,7 +960,7 @@ function updateDashboard() {
 
   // Update topbar meta
   const meta = document.querySelector('.tb-m');
-  if (meta) meta.textContent = 'Líder: Verónica León · Bajío y Occidente · 13-Mar-2026 · Zona: ' + zoneLabel + ' (' + jtLabel + ') · ' + weekLabel;
+  if (meta) meta.textContent = 'Verónica León · Líder · Bajío y Norte · 13-Mar-2026 · Zona: ' + zoneLabel + ' (' + jtLabel + ') · ' + weekLabel;
 
   const cards = document.querySelectorAll('#tab-dashboard .mc');
   if (cards.length >= 8) {
