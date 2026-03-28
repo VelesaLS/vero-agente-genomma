@@ -55,7 +55,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
 .tb-t{font-family:var(--sans);font-weight:700;font-size:14px;color:var(--text);letter-spacing:-.3px;}
 .tb-m{font-size:10px;color:var(--text2);margin-top:1px;}
 .tb-r{display:flex;align-items:center;gap:7px;}
-.zchip{padding:2px 7px;border-radius:10px;font-size:8px;border:1.5px solid var(--border2);color:var(--text2);cursor:pointer;transition:all .15s;background:var(--bg2);font-weight:500;}
+.zchip{padding:2px 8px;border-radius:10px;font-size:8px;border:1.5px solid var(--border2);color:var(--text2);cursor:pointer;transition:all .15s;background:var(--bg2);font-weight:500;margin-left:4px;}
 .zchip:hover{border-color:var(--accent);color:var(--accent);}
 .zchip.active{border-color:var(--accent);color:var(--accent);background:rgba(14,169,110,.06);}
 .wtag{font-size:8px;padding:2px 6px;border-radius:4px;background:var(--sidebar);color:#fff;font-weight:700;cursor:pointer;border:none;}
@@ -296,7 +296,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
         <div class="tb-m">Verónica León &nbsp;·&nbsp; Líder Nacional de Operaciones &nbsp;·&nbsp; Bajío y Norte &nbsp;·&nbsp; S12 · 2026</div>
       </div>
       <div class="tb-r">
-        <div style="display:flex;gap:4px;margin-right:4px;">
+        <div style="display:flex;gap:7px;margin-right:10px;">
           <div class="wtag" id="week-s12" style="cursor:pointer;" onclick="setWeek('S12',this)">S12 / 2026</div>
           <div class="wtag" id="week-s11" style="cursor:pointer;background:var(--bg3);color:var(--text2);border:1.5px solid var(--border2);" onclick="setWeek('S11',this)">S11</div>
           <div class="wtag" id="week-s10" style="cursor:pointer;background:var(--bg3);color:var(--text2);border:1.5px solid var(--border2);" onclick="setWeek('S10',this)">S10</div>
@@ -569,7 +569,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
             </div>
           </div>
           <div style="background:var(--bg2);border:1px solid var(--border);border-radius:9px;overflow:hidden;">
-            <div class="ph"><div class="pt ta">Comparativo ' + prevSem + ' vs ' + semana + '</div><span class="badge ba">Variación</span></div>
+            <div class="ph"><div class="pt ta" id="trend-title">Comparativo S11 vs S12</div><span class="badge ba">Variación</span></div>
             <div style="padding:14px 16px;">
               <div id="trend-chart" style="display:flex;flex-direction:column;gap:8px;"></div>
             </div>
@@ -605,565 +605,377 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
   </div><!-- /main -->
 </div><!-- /shell -->
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
 // ── Estado ────────────────────────────────────────────────────
 let APIKEY = '';
-let history = [];
+let chatHistory = [];
 
 const SYS = `Eres VERO, Agente de Operaciones PDV Genomma Lab. Respondes a Verónica León, Líder de Bajío y Norte.
-
-WR S12: Bajío=51.8%(estancada), Norte=59.5%(caída -8.9pts desde S09), Sureste=73.5%, Centro=80.1%.
-MOTIVOS NO EJECUCIÓN: POP=1966, Gerencia=1841, SinCaptura=1420, Inventario=1189, Festivo=764, Espacio=741, Vacante=286, NI=54.
-VACANTES: 10 individuales (Manzanarez:6, Gallegos:4). Rutero: 14 rutas=244 tiendas TODAS Gallegos NL (RP116=36,RP549=22,RP138=21,RP481=20,RP135=28,RP506=19,RP483=24,RP487=17,RP408=21,RP259=18,RP320=14). Gallegos crónico desde enero.
-SUPERVISORES BAJÍO (Manzanarez): GomezLupercio 26.7%(36d supervisora,3prom<15d:Medrano8dRP288,Olveda9dRP464,MontesNavarro2dRP465,vacRP291—ESTRUCTURAL), VegaGutierrez 47.9%, GutierrezFlores 54.9%, AlonsoPadron 55.5%, ChavezAlfaro 55.8%, MartinezGonzalez 69.9%.
+WR S12: Bajío=51.8%(estancada), Norte=59.5%(caída -8.9pts), Sureste=73.5%, Centro=80.1%.
+MOTIVOS NO EJECUCIÓN: POP=1966, Gerencia=1841, SinCaptura=1420, Inventario=1189, Festivo=764, Espacio=741.
+VACANTES: 10 individuales (Manzanarez:6, Gallegos:4). 14 rutas=244 PDV sin supervisor TODAS Gallegos NL.
+SUPERVISORES BAJÍO: GomezLupercio 26.7%(36d—ESTRUCTURAL), VegaGutierrez 47.9%, GutierrezFlores 54.9%, AlonsoPadron 55.5%, ChavezAlfaro 55.8%, MartinezGonzalez 69.9%.
 CURVA<15d: BastidaMata(VegaGutierrez,0d,RP154), ArteagaArroyo(PicassoPuente,1d,RP498), MontesNavarro(GomezLupercio,2d,RP465), DuranRios(LopezQuintero,3d,RP555), MedranoIbarra(GomezLupercio,8d,RP288), OlvedaGodinez(GomezLupercio,9d,RP464), NuñezSanchez(MartinezGonzalez,9d,RP104), MedinaGonzalez(AlonsoPadron,14d,RP486).
-CONCURSOS: VeranoOTC+Suerox(feb-ago), FeriaBelleza(cierra26abr,3quincenas), Espectacularidad(mar-ago,$1600/promotor). IslaPOP: Gallegos=2,Manzanarez=1. $200conPOP vs $150sinPOP.
-REGLAS: Siempre menciona supervisor al citar promotor. GomezLupercio=acompañamiento no sanción. Directa, máx 3 acciones. Semáforo 🔴🟡🟢.`;
+CONCURSOS: VeranoOTC+Suerox(feb-ago), FeriaBelleza(cierra26abr), Espectacularidad(mar-ago,$1600/promotor). IslaPOP: Gallegos=2,Manzanarez=1.
+REGLAS: Menciona supervisor al citar promotor. GomezLupercio=acompañamiento no sanción. Máx 3 acciones. Semáforo 🔴🟡🟢.`;
 
-// ── Inicialización ────────────────────────────────────────────
+// ── Datos Dashboard ───────────────────────────────────────────
+const WR = {
+  S12:{ bajio:{ef:51.8,vac:6,curva:8,sc:649,jt:'Manzanarez'},   norte:{ef:59.5,vac:4,curva:2,sc:771,jt:'Gallegos'},   todas:{ef:65.2,vac:10,curva:8,sc:1420,jt:'Ambos JT'} },
+  S11:{ bajio:{ef:50.1,vac:5,curva:4,sc:520,jt:'Manzanarez'},   norte:{ef:63.7,vac:3,curva:1,sc:392,jt:'Gallegos'},   todas:{ef:66.1,vac:8, curva:5,sc:912, jt:'Ambos JT'} },
+  S10:{ bajio:{ef:48.3,vac:4,curva:2,sc:580,jt:'Manzanarez'},   norte:{ef:60.6,vac:3,curva:1,sc:537,jt:'Gallegos'},   todas:{ef:64.3,vac:7, curva:3,sc:1117,jt:'Ambos JT'} },
+  S09:{ bajio:{ef:51.3,vac:3,curva:1,sc:600,jt:'Manzanarez'},   norte:{ef:68.4,vac:1,curva:0,sc:585,jt:'Gallegos'},   todas:{ef:67.8,vac:4, curva:2,sc:1185,jt:'Ambos JT'} },
+};
+const PDV = {
+  S12:{ bajio:1247, norte:1134, todas:2381 },
+  S11:{ bajio:1230, norte:1118, todas:2348 },
+  S10:{ bajio:1215, norte:1102, todas:2317 },
+  S09:{ bajio:1198, norte:1089, todas:2287 },
+};
+
+// ── Datos Cadenas ─────────────────────────────────────────────
+const CAD = {
+  todas:    { S12:{s:15767,n:8410,m:{pop:1966,ger:1841,sc:1420,inv:1189,fes:764,esp:741}}, S11:{s:15654,n:8040,m:{pop:1800,ger:1700,sc:912,inv:1100,fes:720,esp:700}},  S10:{s:14727,n:8178,m:{pop:1750,ger:1600,sc:1117,inv:1340,fes:680,esp:650}}, S09:{s:15327,n:7276,m:{pop:1650,ger:1500,sc:1185,inv:1427,fes:700,esp:620}} },
+  walmart:  { S12:{s:4404,n:2999,m:{pop:520,ger:610,sc:380,inv:290,fes:180,esp:210}},     S11:{s:4280,n:3100,m:{pop:500,ger:580,sc:290,inv:310,fes:170,esp:200}},      S10:{s:3980,n:3200,m:{pop:480,ger:550,sc:320,inv:330,fes:160,esp:190}},     S09:{s:4100,n:2900,m:{pop:460,ger:520,sc:350,inv:350,fes:155,esp:180}} },
+  soriana:  { S12:{s:1820,n:980,m:{pop:280,ger:210,sc:160,inv:140,fes:90,esp:95}},        S11:{s:1740,n:1050,m:{pop:260,ger:200,sc:140,inv:155,fes:85,esp:90}},        S10:{s:1650,n:1100,m:{pop:250,ger:190,sc:150,inv:160,fes:80,esp:85}},       S09:{s:1700,n:980,m:{pop:240,ger:180,sc:145,inv:165,fes:78,esp:82}} },
+  chedraui: { S12:{s:980,n:420,m:{pop:110,ger:95,sc:70,inv:65,fes:40,esp:55}},            S11:{s:950,n:440,m:{pop:105,ger:90,sc:65,inv:70,fes:38,esp:52}},             S10:{s:920,n:460,m:{pop:100,ger:85,sc:68,inv:72,fes:36,esp:50}},            S09:{s:900,n:430,m:{pop:95,ger:82,sc:70,inv:68,fes:35,esp:48}} },
+  benavides:{ S12:{s:2100,n:1850,m:{pop:480,ger:390,sc:420,inv:210,fes:120,esp:140}},     S11:{s:2050,n:1900,m:{pop:460,ger:370,sc:400,inv:220,fes:115,esp:135}},      S10:{s:1980,n:1950,m:{pop:440,ger:350,sc:380,inv:230,fes:110,esp:130}},     S09:{s:2000,n:1800,m:{pop:420,ger:340,sc:360,inv:225,fes:108,esp:128}} },
+  fragua:   { S12:{s:3175,n:2949,m:{pop:649,ger:660,sc:649,inv:258,fes:285,esp:196}},     S11:{s:3010,n:2800,m:{pop:620,ger:630,sc:600,inv:270,fes:275,esp:190}},      S10:{s:2900,n:2900,m:{pop:600,ger:610,sc:580,inv:280,fes:265,esp:185}},     S09:{s:3000,n:2700,m:{pop:580,ger:590,sc:560,inv:275,fes:260,esp:180}} },
+  ahorro:   { S12:{s:1200,n:680,m:{pop:180,ger:150,sc:110,inv:95,fes:60,esp:70}},         S11:{s:1150,n:720,m:{pop:170,ger:140,sc:100,inv:100,fes:58,esp:68}},         S10:{s:1100,n:750,m:{pop:165,ger:135,sc:95,inv:105,fes:55,esp:65}},         S09:{s:1120,n:700,m:{pop:160,ger:130,sc:98,inv:102,fes:53,esp:63}} },
+  yza:      { S12:{s:580,n:310,m:{pop:85,ger:70,sc:55,inv:48,fes:30,esp:35}},             S11:{s:550,n:330,m:{pop:80,ger:68,sc:52,inv:50,fes:28,esp:33}},              S10:{s:530,n:340,m:{pop:78,ger:65,sc:50,inv:52,fes:27,esp:32}},             S09:{s:510,n:320,m:{pop:75,ger:63,sc:48,inv:50,fes:26,esp:30}} },
+  sams:     { S12:{s:620,n:280,m:{pop:90,ger:75,sc:60,inv:52,fes:35,esp:40}},             S11:{s:600,n:300,m:{pop:85,ger:72,sc:58,inv:55,fes:33,esp:38}},              S10:{s:580,n:310,m:{pop:82,ger:70,sc:55,inv:57,fes:32,esp:37}},             S09:{s:560,n:290,m:{pop:80,ger:68,sc:53,inv:55,fes:31,esp:36}} },
+};
+const JT_F = { todos:1, gallegos:0.62, manzanarez:0.38 };
+const CADENAS_LIST = ['walmart','soriana','chedraui','benavides','fragua','ahorro','yza','sams'];
+const CADENAS_NAMES = ['Walmart','Soriana','Chedraui','Benavides','FG/Fragua','F.Ahorro','YZA',"Sam's"];
+
+let activeWeek = 'S12';
+let activeZone = 'bajio';
+let activeJT   = 'todos';
+let activeCadena = 'todas';
+let wrChartInst = null;
+
+// ── Boot ──────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
-  // Dashboard visible sin API Key — chat requiere key para responder
+  try { const k=sessionStorage.getItem('vero_k'); if(k&&k.startsWith('sk-ant')) APIKEY=k; } catch(e){}
   document.getElementById('modal').style.display = 'none';
   document.getElementById('appShell').style.display = 'flex';
-  try {
-    const saved = sessionStorage.getItem('vero_k');
-    if (saved && saved.startsWith('sk-ant')) {
-      APIKEY = saved;
-    }
-  } catch(e) {}
-  // Mostrar mensaje de bienvenida sin requerir key
-  addBot('Bienvenido a **V.E.R.O** — Visibilidad, Ejecución y Resultados de Operación — Agente de Visibilidad y Ejecución en Retail de Operaciones · Genomma Lab 🟢\n\nExplora el dashboard con todos los módulos: Dashboard General, Vacantes, Supervisores, Nuevos Ingresos, Concursos y Análisis por Cadena.\n\n💡 Para usar el chat inteligente, ingresa tu API Key de Anthropic en el campo de abajo.');
-  // init progress bars
-  setTimeout(() => {
-    document.querySelectorAll('.pr-fill').forEach(el => {
-      const w = el.style.width; el.style.width = '0';
-      setTimeout(() => el.style.width = w, 100);
-    });
-  }, 300);
+  addBot('Bienvenida **Verónica** 👋 Soy **V.E.R.O** lista.\n\n🔴 **244 PDV sin supervisor** — Gallegos / NL\n🔴 **8 promotores sin SIM** — sin captura\n🔴 **Bajío 51.8%** — estancada 4 semanas\n🟡 **Norte cayendo** — -8.9 pts desde S09\n\n💡 Escribe una pregunta o usa las sugerencias del chat.');
+  initWRChart();
+  updateDashboard();
 });
 
 document.addEventListener('keydown', e => {
-  if (e.key === 'Enter') {
-    if (document.activeElement.id === 'apiKeyInput') { activateAgent(); return; }
-    if (document.activeElement.id === 'chatInput') { sendMsg(); }
-  }
+  if(e.key==='Enter' && document.activeElement.id==='chatInput') sendMsg();
 });
 
-function activateAgent() {
-  const key = document.getElementById('apiKeyInput').value.trim();
-  const err = document.getElementById('modalErr');
-  if (!key.startsWith('sk-ant')) { err.style.display = 'block'; return; }
-  err.style.display = 'none';
-  APIKEY = key;
-  try { sessionStorage.setItem('vero_k', key); } catch(e) {}
-  boot();
-}
-
-function boot() {
-  document.getElementById('modal').style.display = 'none';
-  document.getElementById('appShell').style.display = 'flex';
-  addBot('Hola **Verónica** 👋 Soy **VERO**, activa y lista.\n\n🔴 **244 tiendas sin supervisor** — Gallegos / NL\n🔴 **8 promotores sin SIM** — sin captura ni concurso\n🔴 **Bajío 51.8%** — estancada 4 semanas\n🟡 **Norte cayendo** — -8.9 pts desde S09\n\n¿Por dónde empezamos?');
-  setTimeout(() => {
-    document.querySelectorAll('.pr-fill').forEach(el => {
-      const w = el.style.width; el.style.width = '0';
-      setTimeout(() => el.style.width = w, 100);
-    });
-  }, 300);
-}
-
-// ── Navegación — SOLO cambia vista, NUNCA llama API ──────────
+// ── Navegación tabs — NUNCA llama API ─────────────────────────
 function goTab(tabId, navId) {
-  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.ni').forEach(n => n.classList.remove('active'));
-  document.getElementById('tab-' + tabId).classList.add('active');
-  document.getElementById(navId).classList.add('active');
-  if (tabId === 'cadenas') setTimeout(renderCadenas, 50);
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
+  const tab = document.getElementById('tab-'+tabId);
+  const nav = document.getElementById(navId);
+  if(tab) tab.classList.add('active');
+  if(nav) nav.classList.add('active');
+  if(tabId==='cadenas') setTimeout(renderCadenas, 60);
 }
 
-// ── Chat — SOLO para enviar preguntas a la API ───────────────
-function fmt(t) {
-  return t
-    .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
-    .replace(/🔴 (.*)/g, '<div style="margin:2px 0;color:var(--red)">🔴 $1</div>')
-    .replace(/🟡 (.*)/g, '<div style="margin:2px 0;color:var(--amber)">🟡 $1</div>')
-    .replace(/🟢 (.*)/g, '<div style="margin:2px 0;color:var(--green)">🟢 $1</div>')
-    .replace(/\n/g, '<br>');
-}
-function esc(t) { return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function sc() { const el = document.getElementById('chatMsgs'); el.scrollTop = el.scrollHeight; }
-
-function addBot(text) {
-  const d = document.createElement('div');
-  d.className = 'msg';
-  d.innerHTML = `<div class="mav ava">V</div><div class="mb mba">${fmt(text)}</div>`;
-  document.getElementById('chatMsgs').appendChild(d); sc();
-}
-function addUser(text) {
-  const d = document.createElement('div');
-  d.className = 'msg';
-  d.innerHTML = `<div class="mav avu">VL</div><div class="mb mbu">${esc(text)}</div>`;
-  document.getElementById('chatMsgs').appendChild(d); sc();
-}
-function addTyp() {
-  const d = document.createElement('div');
-  d.className = 'msg'; d.id = 'typm';
-  d.innerHTML = `<div class="mav ava">V</div><div class="mb mba"><div class="typing"><span></span><span></span><span></span></div></div>`;
-  document.getElementById('chatMsgs').appendChild(d); sc();
-}
-function rmTyp() { const t = document.getElementById('typm'); if(t) t.remove(); }
-
-// fill: solo pone el texto en el input, NO envía — el usuario decide cuándo enviar
-function fill(q) {
-  const inp = document.getElementById('chatInput');
-  inp.value = q;
-  inp.focus();
+// ── Semana — actualiza dashboard Y cadenas si está activo ─────
+function setWeek(week, el) {
+  activeWeek = week;
+  document.querySelectorAll('.wtag').forEach(b => {
+    b.style.background='var(--bg3)'; b.style.color='var(--text2)'; b.style.border='1px solid var(--border2)';
+  });
+  el.style.background='var(--sidebar)'; el.style.color='#fff'; el.style.border='none';
+  updateDashboard();
+  if(document.getElementById('tab-cadenas')?.classList.contains('active')) renderCadenas();
 }
 
-// ask() — ahora igual que fill() para evitar envíos automáticos
-function ask(q) { fill(q); }
+// ── Zona — actualiza dashboard Y cadenas si está activo ───────
+function setZone(zone, el) {
+  activeZone = zone;
+  document.querySelectorAll('.zchip').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  updateDashboard();
+  if(document.getElementById('tab-cadenas')?.classList.contains('active')) renderCadenas();
+}
 
-async function sendMsg() {
-  const input = document.getElementById('chatInput');
-  const btn = document.getElementById('sendBtn');
-  const text = input.value.trim();
-  if (!text) return;
-  if (!APIKEY) {
-    addBot('💡 Para usar el chat, ingresa tu API Key de Anthropic en el campo de la izquierda (sk-ant-api03-...)');
-    return;
-  }
+// ── Update Dashboard ──────────────────────────────────────────
+function updateDashboard() {
+  const d = WR[activeWeek]?.[activeZone] || WR.S12.bajio;
+  const p = PDV[activeWeek]?.[activeZone] || 1247;
+  const zl = activeZone==='bajio'?'Bajío':activeZone==='norte'?'Norte':'T. Nacional';
+  const ec = d.ef>=70?'grn':d.ef>=60?'amb':'red';
 
-  input.value = ''; btn.disabled = true;
-  addUser(text);
-  history.push({ role: 'user', content: text });
-  addTyp();
+  // PDV total
+  set('p-pdv-val', p.toLocaleString());
+  set('p-pdv-sub', 'Puntos de venta · '+zl+' · '+activeWeek);
 
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': APIKEY,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
-      body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 800, system: SYS, messages: history })
-    });
+  // Efectividad
+  set('p-ef-lbl', 'Efectividad '+zl+' '+activeWeek);
+  const ev=document.getElementById('p-ef-val');
+  if(ev){ev.textContent=d.ef+'%'; ev.className='mv '+ec;}
+  set('p-ef-sub', 'JT: '+d.jt+' · Zona '+zl);
 
-    if (!res.ok) {
-      const e = await res.json().catch(() => ({}));
-      if (res.status === 401) {
-        try { sessionStorage.removeItem('vero_k'); } catch(ex) {}
-        APIKEY = '';
-        rmTyp();
-        addBot('🔴 API Key inválida. Recarga la página (F5) e ingresa tu key nuevamente desde platform.claude.com → API keys → Create Key.');
-        btn.disabled = false; return;
-      }
-      throw new Error(e?.error?.message || 'HTTP ' + res.status);
+  // Sin captura
+  set('p-sc-lbl', 'Tareas sin captura '+activeWeek);
+  set('p-sc-val', d.sc.toLocaleString());
+  set('p-sc-sub', 'Tareas no ejecutadas · '+zl);
+
+  // Curva
+  const cv=document.getElementById('p-curva-val');
+  if(cv){cv.textContent=d.curva; cv.className='mv '+(d.curva>0?'amb':'grn');}
+
+  // Vacantes
+  set('p-vac-val', d.vac);
+  set('p-vac-sub', 'Posiciones sin cubrir · '+zl);
+
+  // Topbar meta
+  const meta=document.querySelector('.tb-m');
+  if(meta) meta.textContent='Verónica León · Líder Nacional de Operaciones · Bajío y Norte · '+activeWeek+' / 2026';
+}
+
+function set(id, val) {
+  const el=document.getElementById(id);
+  if(el) el.textContent=val;
+}
+
+// ── WR Chart (líneas) ─────────────────────────────────────────
+function initWRChart() {
+  const ctx = document.getElementById('wrLineChart');
+  if(!ctx || typeof Chart==='undefined') return;
+  if(wrChartInst) wrChartInst.destroy();
+  wrChartInst = new Chart(ctx, {
+    type:'line',
+    data:{labels:['S09','S10','S11','S12'],datasets:[
+      {label:'Bajío',  data:[51.3,48.3,50.1,51.8],borderColor:'#e53e3e',tension:0.3,pointRadius:1.8,pointBackgroundColor:'#e53e3e',borderWidth:2,fill:false,backgroundColor:'transparent'},
+      {label:'Norte',  data:[68.4,60.6,63.7,59.5],borderColor:'#d97706',tension:0.3,pointRadius:1.8,pointBackgroundColor:'#d97706',borderWidth:2,fill:false,backgroundColor:'transparent'},
+      {label:'Sureste',data:[71.7,72.5,73.5,73.5],borderColor:'#059669',tension:0.3,pointRadius:1.8,pointBackgroundColor:'#059669',borderWidth:2,fill:false,backgroundColor:'transparent'},
+      {label:'Centro', data:[82.2,80.8,80.0,80.1],borderColor:'#2563eb',tension:0.3,pointRadius:1.8,pointBackgroundColor:'#2563eb',borderWidth:2,fill:false,backgroundColor:'transparent'},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.parsed.y+'%'}}},
+      scales:{x:{grid:{display:false},ticks:{font:{size:9},color:'#94a3b8'}},y:{min:40,max:90,grid:{color:'#f1f3f8'},ticks:{font:{size:9},color:'#94a3b8',callback:v=>v+'%'}}}
     }
-
-    const data = await res.json();
-    rmTyp();
-    const reply = data.content?.[0]?.text || 'Sin respuesta.';
-    history.push({ role: 'assistant', content: reply });
-    addBot(reply);
-  } catch(e) {
-    rmTyp();
-    addBot('🔴 ' + (e.message || 'Error de conexión.'));
-  }
-  btn.disabled = false; input.focus();
+  });
 }
 
-
-// ── Datos por cadena (S11 y S12, Bajio/Norte zona Veronica) ────
-const DATA = {
-  todas:    {
-    S12:{sol:15767,nosol:8410,motivos:{pop:1966,gerencia:1841,sincap:1420,inventario:1189,festivo:764,espacio:741}},
-    S11:{sol:15654,nosol:8040,motivos:{pop:1800,gerencia:1700,sincap:912, inventario:1100,festivo:720,espacio:700}},
-    S10:{sol:14727,nosol:8178,motivos:{pop:1750,gerencia:1600,sincap:1117,inventario:1340,festivo:680,espacio:650}},
-    S09:{sol:15327,nosol:7276,motivos:{pop:1650,gerencia:1500,sincap:1185,inventario:1427,festivo:700,espacio:620}},
-  },
-  walmart:  {
-    S12:{sol:4404, nosol:2999,motivos:{pop:520,gerencia:610,sincap:380,inventario:290,festivo:180,espacio:210}},
-    S11:{sol:4280, nosol:3100,motivos:{pop:500,gerencia:580,sincap:290,inventario:310,festivo:170,espacio:200}},
-    S10:{sol:3980, nosol:3200,motivos:{pop:480,gerencia:550,sincap:320,inventario:330,festivo:160,espacio:190}},
-    S09:{sol:4100, nosol:2900,motivos:{pop:460,gerencia:520,sincap:350,inventario:350,festivo:155,espacio:180}},
-  },
-  soriana:  {
-    S12:{sol:1820, nosol:980, motivos:{pop:280,gerencia:210,sincap:160,inventario:140,festivo:90,espacio:95}},
-    S11:{sol:1740, nosol:1050,motivos:{pop:260,gerencia:200,sincap:140,inventario:155,festivo:85,espacio:90}},
-    S10:{sol:1650, nosol:1100,motivos:{pop:250,gerencia:190,sincap:150,inventario:160,festivo:80,espacio:85}},
-    S09:{sol:1700, nosol:980, motivos:{pop:240,gerencia:180,sincap:145,inventario:165,festivo:78,espacio:82}},
-  },
-  chedraui: {
-    S12:{sol:980,  nosol:420, motivos:{pop:110,gerencia:95,sincap:70,inventario:65,festivo:40,espacio:55}},
-    S11:{sol:950,  nosol:440, motivos:{pop:105,gerencia:90,sincap:65,inventario:70,festivo:38,espacio:52}},
-    S10:{sol:920,  nosol:460, motivos:{pop:100,gerencia:85,sincap:68,inventario:72,festivo:36,espacio:50}},
-    S09:{sol:900,  nosol:430, motivos:{pop:95, gerencia:82,sincap:70,inventario:68,festivo:35,espacio:48}},
-  },
-  benavides:{
-    S12:{sol:2100, nosol:1850,motivos:{pop:480,gerencia:390,sincap:420,inventario:210,festivo:120,espacio:140}},
-    S11:{sol:2050, nosol:1900,motivos:{pop:460,gerencia:370,sincap:400,inventario:220,festivo:115,espacio:135}},
-    S10:{sol:1980, nosol:1950,motivos:{pop:440,gerencia:350,sincap:380,inventario:230,festivo:110,espacio:130}},
-    S09:{sol:2000, nosol:1800,motivos:{pop:420,gerencia:340,sincap:360,inventario:225,festivo:108,espacio:128}},
-  },
-  fragua:   {
-    S12:{sol:3175, nosol:2949,motivos:{pop:649,gerencia:660,sincap:649,inventario:258,festivo:285,espacio:196}},
-    S11:{sol:3010, nosol:2800,motivos:{pop:620,gerencia:630,sincap:600,inventario:270,festivo:275,espacio:190}},
-    S10:{sol:2900, nosol:2900,motivos:{pop:600,gerencia:610,sincap:580,inventario:280,festivo:265,espacio:185}},
-    S09:{sol:3000, nosol:2700,motivos:{pop:580,gerencia:590,sincap:560,inventario:275,festivo:260,espacio:180}},
-  },
-  ahorro:   {
-    S12:{sol:1200, nosol:680, motivos:{pop:180,gerencia:150,sincap:110,inventario:95,festivo:60,espacio:70}},
-    S11:{sol:1150, nosol:720, motivos:{pop:170,gerencia:140,sincap:100,inventario:100,festivo:58,espacio:68}},
-    S10:{sol:1100, nosol:750, motivos:{pop:165,gerencia:135,sincap:95, inventario:105,festivo:55,espacio:65}},
-    S09:{sol:1120, nosol:700, motivos:{pop:160,gerencia:130,sincap:98, inventario:102,festivo:53,espacio:63}},
-  },
-  yza:      {
-    S12:{sol:580,  nosol:310, motivos:{pop:85,gerencia:70,sincap:55,inventario:48,festivo:30,espacio:35}},
-    S11:{sol:550,  nosol:330, motivos:{pop:80,gerencia:68,sincap:52,inventario:50,festivo:28,espacio:33}},
-    S10:{sol:530,  nosol:340, motivos:{pop:78,gerencia:65,sincap:50,inventario:52,festivo:27,espacio:32}},
-    S09:{sol:510,  nosol:320, motivos:{pop:75,gerencia:63,sincap:48,inventario:50,festivo:26,espacio:30}},
-  },
-  sams:     {
-    S12:{sol:620,  nosol:280, motivos:{pop:90,gerencia:75,sincap:60,inventario:52,festivo:35,espacio:40}},
-    S11:{sol:600,  nosol:300, motivos:{pop:85,gerencia:72,sincap:58,inventario:55,festivo:33,espacio:38}},
-    S10:{sol:580,  nosol:310, motivos:{pop:82,gerencia:70,sincap:55,inventario:57,festivo:32,espacio:37}},
-    S09:{sol:560,  nosol:290, motivos:{pop:80,gerencia:68,sincap:53,inventario:55,festivo:31,espacio:36}},
-  },
-};
-
-// Por JT (multiplicadores aproximados)
-const JT_FACTOR = { todos:1, gallegos:0.62, manzanarez:0.38 };
-
-let activeJT = 'todos';
-let activeCadena = 'todas';
-
+// ── Cadenas ───────────────────────────────────────────────────
 function setJT(jt, el) {
   activeJT = jt;
-  document.querySelectorAll('#jt-filters .fchip').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#jt-filters .fchip').forEach(b=>b.classList.remove('active'));
   el.classList.add('active');
   renderCadenas();
 }
 
 function setCadena(c, el) {
   activeCadena = c;
-  document.querySelectorAll('#cadena-filters .fchip').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#cadena-filters .fchip').forEach(b=>b.classList.remove('active'));
   el.classList.add('active');
   renderCadenas();
 }
 
-function pct(a,b){ return b===0?0:Math.round(a/(a+b)*100); }
-function fmt2(n){ return n>=1000?(n/1000).toFixed(1)+'k':n; }
+function pct(s,n){return n+s===0?0:Math.round(s/(s+n)*100);}
+function fmt(n){return n>=1000?(n/1000).toFixed(1)+'k':String(n);}
+
+function prevWeek(w){const o=['S09','S10','S11','S12'];const i=o.indexOf(w);return o[Math.max(0,i-1)];}
 
 function renderCadenas() {
-  // Usar la semana activa del topbar
-  const semana = activeWeek || 'S12';
-  const raw = DATA[activeCadena] || DATA.todas;
-  // Combinar filtro de JT del tab + zona del topbar
-  let zoneJT = activeJT;
-  if (activeJT === 'todos') {
-    if (activeZone === 'bajio') zoneJT = 'manzanarez';
-    else if (activeZone === 'norte') zoneJT = 'gallegos';
-    else zoneJT = 'todos';
+  const raw = CAD[activeCadena] || CAD.todas;
+  // JT zone factor — combine tab JT filter with topbar zone
+  let jt = activeJT;
+  if(jt==='todos') {
+    if(activeZone==='bajio') jt='manzanarez';
+    else if(activeZone==='norte') jt='gallegos';
   }
-  const f = JT_FACTOR[zoneJT] || 1;
-  const semKeys = ['S09','S10','S11','S12'];
-  const semIdx  = semKeys.indexOf(semana);
-  const prevSem = semKeys[Math.max(0, semIdx - 1)];
-  const curData  = raw[semana]  || raw.S12;
-  const prevData = raw[prevSem] || raw.S11;
-  const sol12   = Math.round(curData.sol   * f);
-  const nosol12 = Math.round(curData.nosol * f);
-  const sol11   = Math.round(prevData.sol   * f);
-  const nosol11 = Math.round(prevData.nosol * f);
-  const total12 = sol12 + nosol12;
-  const efec12  = pct(sol12, nosol12);
-  const efec11  = pct(sol11, nosol11);
-  const delta   = efec12 - efec11;
-  const label  = activeCadena === 'todas' ? 'Todas las cadenas' : activeCadena.charAt(0).toUpperCase()+activeCadena.slice(1);
+  const f = JT_F[jt] || 1;
+  const prev = prevWeek(activeWeek);
+  const cur  = raw[activeWeek] || raw.S12;
+  const prv  = raw[prev] || raw.S11;
+  const sol  = Math.round(cur.s*f);
+  const nosol= Math.round(cur.n*f);
+  const sprev= Math.round(prv.s*f);
+  const nprev= Math.round(prv.n*f);
+  const efCur  = pct(sol,nosol);
+  const efPrev = pct(sprev,nprev);
+  const delta  = efCur - efPrev;
+  const zl = activeZone==='bajio'?'Bajío':activeZone==='norte'?'Norte':'T. Nacional';
+  const cadLabel = activeCadena==='todas'?'Todas':activeCadena.charAt(0).toUpperCase()+activeCadena.slice(1);
+  const dColor = delta>=0?'#059669':'#e53e3e';
 
   // KPIs
-  const kpiEl = document.getElementById('cadena-kpis');
-  const dColor = delta >= 0 ? '#059669' : '#e53e3e';
-  const dSign  = delta >= 0 ? '+' : '';
-  const zLabel = activeZone==='bajio'?'Bajío (Manzanarez)':activeZone==='norte'?'Norte (Gallegos)':'T. Nacional';
-  kpiEl.innerHTML = `
-    <div class="mc"><div class="ab ab-b"></div><div class="ml">Total tareas ${semana}</div><div class="mv blu">${fmt2(total12)}</div><div class="ms">${label} · ${zLabel}</div></div>
-    <div class="mc"><div class="ab ab-g"></div><div class="ml">Solucionadas</div><div class="mv grn">${fmt2(sol12)}</div><div class="ms">${efec12}% efectividad</div></div>
-    <div class="mc"><div class="ab ab-r"></div><div class="ml">No solucionadas</div><div class="mv red">${fmt2(nosol12)}</div><div class="ms">${100-efec12}% sin resolver</div></div>
-    <div class="mc"><div class="ab" style="background:${dColor}"></div><div class="ml">Var vs S11</div><div class="mv" style="color:${dColor}">${dSign}${delta}pts</div><div class="ms">S11: ${efec11}% → S12: ${efec12}%</div></div>
+  const kpiEl=document.getElementById('cadena-kpis');
+  if(kpiEl) kpiEl.innerHTML=`
+    <div class="mc"><div class="ab ab-b"></div><div class="ml">Total tareas ${activeWeek}</div><div class="mv blu">${fmt(sol+nosol)}</div><div class="ms">${cadLabel} · ${zl}</div></div>
+    <div class="mc"><div class="ab ab-g"></div><div class="ml">Solucionadas</div><div class="mv grn">${fmt(sol)}</div><div class="ms">${efCur}% efectividad</div></div>
+    <div class="mc"><div class="ab ab-r"></div><div class="ml">No solucionadas</div><div class="mv red">${fmt(nosol)}</div><div class="ms">${100-efCur}% sin resolver</div></div>
+    <div class="mc" style="border:1px solid var(--border)"><div class="ab" style="background:${dColor}"></div><div class="ml">Var vs ${prev}</div><div class="mv" style="color:${dColor}">${delta>=0?'+':''}${delta}pts</div><div class="ms">${prev}: ${efPrev}% → ${activeWeek}: ${efCur}%</div></div>
   `;
 
-  // Chart title
-  document.getElementById('chart-title').textContent = label;
+  // Badge del panel
+  const badge=document.getElementById('chart-title');
+  if(badge) badge.textContent=cadLabel;
 
-  // Bar chart solucionado vs no solucionado por cadena
-  const barEl = document.getElementById('bar-chart');
-  const cadenas = ['walmart','soriana','chedraui','benavides','fragua','ahorro','yza','sams'];
-  const names   = ['Walmart','Soriana','Chedraui','Benavides','FG/Fragua','F.Ahorro','YZA',"Sam's"];
-  barEl.innerHTML = cadenas.map((c,i) => {
-    const d = DATA[c];
-    const sf = Math.round(d.sol12*f), nf = Math.round(d.nosol12*f);
-    const p = pct(sf,nf);
-    const highlight = activeCadena === c ? 'font-weight:700;color:var(--text)' : 'color:var(--text2)';
-    const barColor = p >= 70 ? '#059669' : p >= 55 ? '#d97706' : '#e53e3e';
-    return `<div>
-      <div style="display:flex;justify-content:space-between;margin-bottom:3px;font-size:10px;">
-        <span style="${highlight}">${names[i]}</span>
-        <span style="color:${barColor};font-weight:600">${p}%</span>
+  // Título comparativo
+  set('trend-title', 'Comparativo '+prev+' vs '+activeWeek);
+
+  // Bar chart
+  const barEl=document.getElementById('bar-chart');
+  if(barEl) barEl.innerHTML=CADENAS_LIST.map((c,i)=>{
+    const d=CAD[c];
+    const dw=d[activeWeek]||d.S12;
+    const sf=Math.round(dw.s*f), nf=Math.round(dw.n*f);
+    const p2=pct(sf,nf);
+    const hl=activeCadena===c?'font-weight:700;color:var(--text)':'color:var(--text2)';
+    const bc=p2>=70?'#059669':p2>=55?'#d97706':'#e53e3e';
+    return `<div style="margin-bottom:7px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:2px;font-size:10px;">
+        <span style="${hl}">${CADENAS_NAMES[i]}</span>
+        <span style="color:${bc};font-weight:600">${p2}%</span>
       </div>
-      <div style="height:8px;background:#f1f3f8;border-radius:4px;overflow:hidden;display:flex;">
-        <div style="width:${p}%;background:${barColor};border-radius:4px 0 0 4px;transition:width .6s ease;"></div>
+      <div style="height:7px;background:var(--bg3);border-radius:3px;overflow:hidden;display:flex;">
+        <div style="width:${p2}%;background:${bc};border-radius:3px 0 0 3px;transition:width .5s;"></div>
         <div style="flex:1;background:#fee2e2;"></div>
       </div>
-      <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text3);margin-top:2px;">
-        <span>✓ ${fmt2(sf)}</span><span>✗ ${fmt2(nf)}</span>
+      <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text3);margin-top:1px;">
+        <span>✓ ${fmt(sf)}</span><span>✗ ${fmt(nf)}</span>
       </div>
     </div>`;
   }).join('');
 
-  // Trend chart S11 vs S12
-  const trendEl = document.getElementById('trend-chart');
-  trendEl.innerHTML = cadenas.map((c,i) => {
-    const d = DATA[c];
-    const e11 = pct(Math.round(d.sol11*f), Math.round(d.nosol11*f));
-    const e12 = pct(Math.round(d.sol12*f), Math.round(d.nosol12*f));
-    const diff = e12 - e11;
-    const arrow = diff > 0 ? '▲' : diff < 0 ? '▼' : '→';
-    const col = diff > 0 ? '#059669' : diff < 0 ? '#e53e3e' : '#64748b';
-    const highlight = activeCadena === c ? 'font-weight:700;color:var(--text)' : 'color:var(--text2)';
-    return `<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);">
-      <span style="font-size:10px;flex:1;${highlight}">${names[i]}</span>
-      <span style="font-size:10px;color:var(--text3);">S11: ${e11}%</span>
-      <span style="font-size:11px;color:${col};font-weight:700;">${arrow} ${e12}%</span>
-      <span style="font-size:10px;color:${col};font-weight:600;min-width:32px;text-align:right;">${diff>0?'+':''}${diff}pts</span>
+  // Trend chart
+  const trendEl=document.getElementById('trend-chart');
+  if(trendEl) trendEl.innerHTML=CADENAS_LIST.map((c,i)=>{
+    const d=CAD[c];
+    const dc=d[activeWeek]||d.S12;
+    const dp=d[prev]||d.S11;
+    const e2=pct(Math.round(dc.s*f),Math.round(dc.n*f));
+    const e1=pct(Math.round(dp.s*f),Math.round(dp.n*f));
+    const df=e2-e1;
+    const arrow=df>0?'▲':df<0?'▼':'→';
+    const col=df>0?'#059669':df<0?'#e53e3e':'#64748b';
+    const hl=activeCadena===c?'font-weight:700;color:var(--text)':'color:var(--text2)';
+    return `<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);font-size:10px;">
+      <span style="flex:1;${hl}">${CADENAS_NAMES[i]}</span>
+      <span style="color:var(--text3)">${prev}: ${e1}%</span>
+      <span style="color:${col};font-weight:700">${arrow} ${e2}%</span>
+      <span style="color:${col};font-weight:600;min-width:30px;text-align:right">${df>0?'+':''}${df}pts</span>
     </div>`;
   }).join('');
 
-  // Motivos chart
-  const mot = curData.motivos || raw.S12.motivos;
-  const mf = Math.round;
-  const motData = [
-    {label:'Falta de POP',    val:mf(mot.pop*f),      color:'#d97706'},
-    {label:'No autorizó Ger.',val:mf(mot.gerencia*f),  color:'#ea580c'},
-    {label:'Sin Captura',     val:mf(mot.sincap*f),    color:'#e53e3e'},
-    {label:'Falta Inventario',val:mf(mot.inventario*f),color:'#7c3aed'},
-    {label:'Día Festivo',     val:mf(mot.festivo*f),   color:'#0ea96e'},
-    {label:'Falta Espacio',   val:mf(mot.espacio*f),   color:'#2563eb'},
+  // Motivos
+  const mot=cur.m;
+  const motData=[
+    {l:'Falta de POP',v:Math.round(mot.pop*f),c:'#d97706'},
+    {l:'No autorizó Gerencia',v:Math.round(mot.ger*f),c:'#ea580c'},
+    {l:'Sin Captura',v:Math.round(mot.sc*f),c:'#e53e3e'},
+    {l:'Falta Inventario',v:Math.round(mot.inv*f),c:'#7c3aed'},
+    {l:'Día Festivo',v:Math.round(mot.fes*f),c:'#0ea96e'},
+    {l:'Falta Espacio',v:Math.round(mot.esp*f),c:'#2563eb'},
   ];
-  const maxMot = Math.max(...motData.map(m=>m.val));
-  const motEl = document.getElementById('motivos-chart');
-  motEl.innerHTML = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;">` +
-    motData.map(m => `<div>
+  const maxM=Math.max(...motData.map(m=>m.v));
+  const motEl=document.getElementById('motivos-chart');
+  if(motEl) motEl.innerHTML=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;">
+    ${motData.map(m=>`<div>
       <div style="display:flex;justify-content:space-between;margin-bottom:3px;font-size:10px;">
-        <span style="color:var(--text2)">${m.label}</span>
-        <span style="font-weight:600;color:var(--text)">${fmt2(m.val)}</span>
+        <span style="color:var(--text2)">${m.l}</span>
+        <span style="font-weight:600;color:var(--text)">${fmt(m.v)}</span>
       </div>
-      <div style="height:6px;background:#f1f3f8;border-radius:3px;overflow:hidden;">
-        <div style="width:${Math.round(m.val/maxMot*100)}%;height:100%;background:${m.color};border-radius:3px;transition:width .6s ease;"></div>
+      <div style="height:5px;background:var(--bg3);border-radius:3px;overflow:hidden;">
+        <div style="width:${Math.round(m.v/maxM*100)}%;height:100%;background:${m.c};border-radius:3px;transition:width .5s;"></div>
       </div>
-    </div>`).join('') + `</div>`;
+    </div>`).join('')}
+  </div>`;
 }
 
-// Cadenas se inicializa via goTab() arriba
-
-
-
-
-const PDV_DATA = {
-  S12: { bajio:1247, norte:1134, todas:2381 },
-  S11: { bajio:1230, norte:1118, todas:2348 },
-  S10: { bajio:1215, norte:1102, todas:2317 },
-  S09: { bajio:1198, norte:1089, todas:2287 },
-};
-// ── Datos por Semana y Zona ─────────────────────────────────
-const WR_DATA = {
-  // BAJÍO = JT Manzanarez Urzua Cristopher Emmanuel
-  // NORTE = JT Gallegos Garrido Maysha Anaid (tiene las 244 rutas sin supervisor en NL)
-  S12: {
-    bajio: { ef:51.8, vac_prom:6,  sup_vac:0,   curva_prom:6, sincap:649,  pop:712,  zona:'Bajío',  jt:'Manzanarez', ef_label:'Bajío S12' },
-    norte: { ef:59.5, vac_prom:4,  sup_vac:244, curva_prom:2, sincap:771,  pop:1254, zona:'Norte',  jt:'Gallegos',   ef_label:'Norte S12' },
-    todas: { ef:65.2, vac_prom:12, sup_vac:244, curva_prom:8, sincap:2180, pop:2890, zona:'T. Nacional', jt:'Bajío+Norte+Centro+Sureste', ef_label:'Nacional S12' },
-  },
-  S11: {
-    bajio: { ef:50.1, vac_prom:5,  sup_vac:0,   curva_prom:4, sincap:520,  pop:680,  zona:'Bajío',  jt:'Manzanarez', ef_label:'Bajío S11' },
-    norte: { ef:63.7, vac_prom:3,  sup_vac:244, curva_prom:1, sincap:392,  pop:1120, zona:'Norte',  jt:'Gallegos',   ef_label:'Norte S11' },
-    todas: { ef:66.1, vac_prom:10, sup_vac:244, curva_prom:5, sincap:1680, pop:2600, zona:'T. Nacional', jt:'Bajío+Norte+Centro+Sureste', ef_label:'Nacional S11' },
-  },
-  S10: {
-    bajio: { ef:48.3, vac_prom:4,  sup_vac:0,   curva_prom:2, sincap:580,  pop:650,  zona:'Bajío',  jt:'Manzanarez', ef_label:'Bajío S10' },
-    norte: { ef:60.6, vac_prom:3,  sup_vac:244, curva_prom:1, sincap:537,  pop:1050, zona:'Norte',  jt:'Gallegos',   ef_label:'Norte S10' },
-    todas: { ef:64.3, vac_prom:9,  sup_vac:244, curva_prom:3, sincap:1900, pop:2500, zona:'T. Nacional', jt:'Bajío+Norte+Centro+Sureste', ef_label:'Nacional S10' },
-  },
-  S09: {
-    bajio: { ef:51.3, vac_prom:3,  sup_vac:0,   curva_prom:1, sincap:600,  pop:620,  zona:'Bajío',  jt:'Manzanarez', ef_label:'Bajío S09' },
-    norte: { ef:68.4, vac_prom:1,  sup_vac:220, curva_prom:0, sincap:585,  pop:1030, zona:'Norte',  jt:'Gallegos',   ef_label:'Norte S09' },
-    todas: { ef:67.8, vac_prom:7,  sup_vac:220, curva_prom:2, sincap:2050, pop:2400, zona:'T. Nacional', jt:'Bajío+Norte+Centro+Sureste', ef_label:'Nacional S09' },
-  },
-};
-
-let activeWeek = 'S12';
-let activeZone = 'bajio';
-
-function setWeek(week, el) {
-  activeWeek = week;
-  document.querySelectorAll('.wtag').forEach(b => {
-    b.style.background = 'var(--bg3)';
-    b.style.color = 'var(--text2)';
-    b.style.border = '1.5px solid var(--border2)';
-  });
-  el.style.background = 'var(--sidebar)';
-  el.style.color = '#fff';
-  el.style.border = 'none';
-  updateDashboard();
-  if (document.getElementById('tab-cadenas').classList.contains('active')) renderCadenas();
+// ── fill: solo pone texto, NO envía ──────────────────────────
+function fill(q) {
+  const inp=document.getElementById('chatInput');
+  if(inp){inp.value=q;inp.focus();}
 }
 
-function setZone(zone, el) {
-  activeZone = zone;
-  document.querySelectorAll('.zchip').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  updateDashboard();
-  if (document.getElementById('tab-cadenas').classList.contains('active')) renderCadenas();
-}
-
-function updateDashboard() {
-  const d = WR_DATA[activeWeek]?.[activeZone] || WR_DATA.S12.bajio;
-  const efClass = d.ef >= 70 ? 'grn' : d.ef >= 60 ? 'amb' : 'red';
-  const weekLabel = activeWeek + ' / 2026';
-  const zoneLabel = d.zona || (activeZone === 'bajio' ? 'Bajío' : activeZone === 'norte' ? 'Norte' : 'Todas');
-  const jtLabel   = d.jt   || '';
-
-  // Update topbar meta
-  const meta = document.querySelector('.tb-m');
-  if (meta) meta.textContent = 'Verónica León · Líder Nacional de Operaciones · Bajío y Norte · Zona: ' + zoneLabel + ' (' + jtLabel + ') · ' + weekLabel;
-
-  const cards = document.querySelectorAll('#tab-dashboard .mc');
-  if (cards.length >= 8) {
-    // Card 1: Efectividad
-    // PDV total
-    const pdvEl = document.getElementById('p-pdv-val');
-    const pdvSub = document.getElementById('p-pdv-sub');
-    if (pdvEl) { pdvEl.textContent = (PDV_DATA[activeWeek]?.[activeZone] || PDV_DATA[activeWeek]?.todas || 2381).toLocaleString(); }
-    if (pdvSub) { pdvSub.textContent = 'Puntos de venta · ' + zoneLabel + ' · ' + activeWeek; }
-    // Efectividad
-    cards[0].querySelector('.mv').textContent = d.ef + '%';
-    cards[0].querySelector('.mv').className = 'mv ' + efClass;
-    cards[0].querySelector('.ml').textContent = 'Efectividad ' + zoneLabel + ' ' + activeWeek;
-    cards[0].querySelector('.ms').textContent = 'JT: ' + jtLabel;
-
-    // Usar IDs directos para las nuevas tarjetas
-    const pdvEl2 = document.getElementById('p-pdv-val');
-    const pdvSub2 = document.getElementById('p-pdv-sub');
-    if (pdvEl2) pdvEl2.textContent = (PDV_DATA[activeWeek]?.[activeZone === 'bajio' ? 'bajio' : activeZone === 'norte' ? 'norte' : 'todas'] || 2381).toLocaleString();
-    if (pdvSub2) pdvSub2.textContent = 'Puntos de venta · ' + zoneLabel + ' · ' + activeWeek;
-
-    const scEl = document.getElementById('p-sc-val');
-    const scLbl = document.getElementById('p-sc-lbl');
-    const scSub = document.getElementById('p-sc-sub');
-    if (scEl) scEl.textContent = d.sincap.toLocaleString();
-    if (scLbl) scLbl.textContent = 'Tareas sin captura ' + activeWeek;
-    if (scSub) scSub.textContent = 'Tareas no ejecutadas · ' + zoneLabel;
-
-    const curvaEl = document.getElementById('p-curva-val');
-    if (curvaEl) { curvaEl.textContent = d.curva_prom; curvaEl.className = d.curva_prom > 0 ? 'mv amb' : 'mv grn'; }
-
-    const vacEl = document.getElementById('p-vac-val');
-    const vacSub = document.getElementById('p-vac-sub');
-    if (vacEl) vacEl.textContent = d.vac_prom;
-    if (vacSub) vacSub.textContent = 'Posiciones sin cubrir · ' + zoneLabel;
-  }
-
-  // Update progress bars
-  const fills = document.querySelectorAll('#tab-dashboard .pr-fill');
-  const wrd = WR_DATA[activeWeek];
-  if (fills.length >= 4 && wrd) {
-    const zones = ['bajio','norte','bajio','todas']; // map to sureste/centro approximate
-    const vals = [
-      wrd.bajio?.ef || 51.8,
-      wrd.norte?.ef || 59.5,
-      activeWeek === 'S12' ? 73.5 : activeWeek === 'S11' ? 73.5 : activeWeek === 'S10' ? 72.5 : 71.7,
-      activeWeek === 'S12' ? 80.1 : activeWeek === 'S11' ? 80.0 : activeWeek === 'S10' ? 80.8 : 82.2,
-    ];
-    fills.forEach((f, i) => { if (vals[i]) f.style.width = vals[i] + '%'; });
-
-    // Update progress labels
-    const prVals = document.querySelectorAll('#tab-dashboard .pr-val');
-    const colors = ['var(--red)','var(--amber)','var(--green)','var(--blue)'];
-    prVals.forEach((el, i) => {
-      if (vals[i]) {
-        el.textContent = vals[i] + '%';
-        el.style.color = vals[i] >= 70 ? 'var(--green)' : vals[i] >= 60 ? 'var(--amber)' : 'var(--red)';
-      }
-    });
-
-    // Update progress sub-labels with week data
-    const prLabels = document.querySelectorAll('#tab-dashboard .pr-lbl');
-    const wLabels = ['Bajío','Norte','Sureste','Centro'];
-    const prevWeek = {S12:'S11',S11:'S10',S10:'S09',S09:'S09'};
-    const prev = WR_DATA[prevWeek[activeWeek]];
-    prLabels.forEach((el, i) => {
-      const prevVal = i === 0 ? prev?.bajio?.ef : i === 1 ? prev?.norte?.ef : i === 2 ? 73.5 : 80.8;
-      el.innerHTML = wLabels[i] + ' <span style="color:var(--text3);font-size:9px">' + (prevVal||'—') + '% → ' + vals[i] + '%</span>';
-    });
-  }
-}
-
-
-// Inline API key setter
+// ── Chat ──────────────────────────────────────────────────────
 function setKeyInline(val) {
-  const k = val.trim();
-  if (k.startsWith('sk-ant')) {
-    APIKEY = k;
-    try { sessionStorage.setItem('vero_k', k); } catch(e){}
-  }
+  const k=val.trim();
+  if(k.startsWith('sk-ant')){APIKEY=k;try{sessionStorage.setItem('vero_k',k);}catch(e){}}
 }
 
-function checkScroll(el) {
-  const hint = document.getElementById('scroll-hint');
-  if (!hint) return;
-  if (el.scrollTop < 20) {
-    hint.style.display = 'block';
-    hint.classList.add('scroll-hint-anim');
-  } else {
-    hint.style.display = 'none';
+function activateAgent() {
+  const key=document.getElementById('apiKeyInput')?.value?.trim();
+  if(!key?.startsWith('sk-ant')){
+    const err=document.getElementById('modalErr');
+    if(err) err.style.display='block';
+    return;
   }
+  APIKEY=key;
+  try{sessionStorage.setItem('vero_k',key);}catch(e){}
+  document.getElementById('modal').style.display='none';
 }
-window.addEventListener('load', () => {
-  const el = document.getElementById('mainContent');
-  if (el && el.scrollHeight > el.clientHeight) {
-    const hint = document.getElementById('scroll-hint');
-    if (hint) { hint.style.display = 'block'; hint.classList.add('scroll-hint-anim'); }
-  }
-});
-</script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-<script>
-window.addEventListener('load', function() {
-  const ctx = document.getElementById('wrLineChart');
-  if (ctx) {
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: ['S09','S10','S11','S12'],
-        datasets: [
-          {label:'Bajío',   data:[51.3,48.3,50.1,51.8], borderColor:'#e53e3e', tension:0.3, pointRadius:1.8, pointBackgroundColor:'#e53e3e', borderWidth:2, fill:false, backgroundColor:'transparent'},
-          {label:'Norte',   data:[68.4,60.6,63.7,59.5], borderColor:'#d97706', tension:0.3, pointRadius:1.8, pointBackgroundColor:'#d97706', borderWidth:2, fill:false, backgroundColor:'transparent'},
-          {label:'Sureste', data:[71.7,72.5,73.5,73.5], borderColor:'#059669', tension:0.3, pointRadius:1.8, pointBackgroundColor:'#059669', borderWidth:2, fill:false, backgroundColor:'transparent'},
-          {label:'Centro',  data:[82.2,80.8,80.0,80.1], borderColor:'#2563eb', tension:0.3, pointRadius:1.8, pointBackgroundColor:'#2563eb', borderWidth:2, fill:false, backgroundColor:'transparent'},
-        ]
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        plugins: { legend:{display:false}, tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.parsed.y+'%'}} },
-        scales: {
-          x: { grid:{display:false}, ticks:{font:{size:9}, color:'#94a3b8'} },
-          y: { min:40, max:90, grid:{color:'#f1f3f8'}, ticks:{font:{size:9}, color:'#94a3b8', callback:v=>v+'%'} }
-        }
-      }
+function fmt2(t){
+  return t.replace(/\*\*(.*?)\*\*/g,'<b>$1</b>')
+    .replace(/🔴 (.*)/g,'<div style="margin:2px 0;color:var(--red)">🔴 $1</div>')
+    .replace(/🟡 (.*)/g,'<div style="margin:2px 0;color:var(--amber)">🟡 $1</div>')
+    .replace(/🟢 (.*)/g,'<div style="margin:2px 0;color:var(--green)">🟢 $1</div>')
+    .replace(/\n/g,'<br>');
+}
+function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function sc(){const el=document.getElementById('chatMsgs');if(el)el.scrollTop=el.scrollHeight;}
+
+function addBot(text){
+  const d=document.createElement('div');d.className='msg';
+  d.innerHTML=`<div class="mav ava">V</div><div class="mb mba">${fmt2(text)}</div>`;
+  document.getElementById('chatMsgs')?.appendChild(d);sc();
+}
+function addUser(text){
+  const d=document.createElement('div');d.className='msg';
+  d.innerHTML=`<div class="mav avu">VL</div><div class="mb mbu">${esc(text)}</div>`;
+  document.getElementById('chatMsgs')?.appendChild(d);sc();
+}
+function addTyp(){
+  const d=document.createElement('div');d.className='msg';d.id='typm';
+  d.innerHTML=`<div class="mav ava">V</div><div class="mb mba"><div class="typing"><span></span><span></span><span></span></div></div>`;
+  document.getElementById('chatMsgs')?.appendChild(d);sc();
+}
+function rmTyp(){document.getElementById('typm')?.remove();}
+
+async function sendMsg(){
+  const input=document.getElementById('chatInput');
+  const btn=document.getElementById('sendBtn');
+  const text=input?.value?.trim();
+  if(!text) return;
+  if(!APIKEY){
+    addBot('💡 Para usar el chat, ingresa tu API Key de Anthropic en el campo de la izquierda (sk-ant-api03-...)');
+    return;
+  }
+  input.value='';if(btn)btn.disabled=true;
+  addUser(text);
+  chatHistory.push({role:'user',content:text});
+  addTyp();
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':APIKEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:800,system:SYS,messages:chatHistory})
     });
-  }
+    if(!res.ok){
+      const e=await res.json().catch(()=>({}));
+      if(res.status===401){try{sessionStorage.removeItem('vero_k');}catch(ex){}APIKEY='';}
+      throw new Error(e?.error?.message||'HTTP '+res.status);
+    }
+    const data=await res.json();rmTyp();
+    const reply=data.content?.[0]?.text||'Sin respuesta.';
+    chatHistory.push({role:'assistant',content:reply});
+    addBot(reply);
+  }catch(e){rmTyp();addBot('🔴 '+(e.message||'Error de conexión.'));}
+  if(btn)btn.disabled=false;input?.focus();
+}
+
+// Init cadenas cuando se carga la página por si ya está en ese tab
+window.addEventListener('load', () => {
+  initWRChart();
 });
 </script>
 </body>
+</html>
