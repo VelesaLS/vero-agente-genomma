@@ -55,25 +55,25 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
 .tb-t{font-family:var(--sans);font-weight:700;font-size:14px;color:var(--text);letter-spacing:-.3px;}
 .tb-m{font-size:10px;color:var(--text2);margin-top:1px;}
 .tb-r{display:flex;align-items:center;gap:7px;}
-.zchip{padding:5px 12px;border-radius:12px;font-size:11px;border:1.5px solid var(--border2);color:var(--text2);cursor:pointer;transition:all .15s;background:var(--bg2);font-weight:500;margin-left:4px;}
+.zchip{padding:2px 8px;border-radius:10px;font-size:8px;border:1.5px solid var(--border2);color:var(--text2);cursor:pointer;transition:all .15s;background:var(--bg2);font-weight:500;margin-left:4px;}
 .zchip:hover{border-color:var(--accent);color:var(--accent);}
 .zchip.active{border-color:var(--accent);color:var(--accent);background:rgba(14,169,110,.06);}
-.wtag{font-size:11px;padding:5px 12px;border-radius:4px;background:var(--sidebar);color:#fff;font-weight:700;cursor:pointer;border:none;}
+.wtag{font-size:8px;padding:2px 6px;border-radius:4px;background:var(--sidebar);color:#fff;font-weight:700;cursor:pointer;border:none;}
 
 /* CONTENT */
 .content{flex:1;overflow-y:auto;padding:18px 22px;min-height:0;}
 
 /* METRIC GRID */
 .mg{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:14px;}
-.mc{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:8px 12px;position:relative;overflow:hidden;transition:box-shadow .15s;}
+.mc{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:14px 16px;position:relative;overflow:hidden;transition:box-shadow .15s;}
 .mc:hover{box-shadow:0 2px 10px rgba(0,0,0,.06);}
 .mc .ab{position:absolute;top:0;left:0;right:0;height:3px;}
 .ab-r{background:var(--red);}.ab-a{background:var(--amber);}
 .ab-g{background:var(--green);}.ab-b{background:var(--blue);}
 .ml{font-size:9px;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);font-weight:600;margin-bottom:7px;margin-top:2px;}
-.mv{font-family:var(--sans);font-weight:800;font-size:19px;letter-spacing:-.5px;line-height:1;}
+.mv{font-family:var(--sans);font-weight:800;font-size:24px;letter-spacing:-.5px;line-height:1;}
 .mv.red{color:var(--red);}.mv.amb{color:var(--amber);}.mv.grn{color:var(--green);}.mv.blu{color:var(--blue);}
-.ms{font-size:9px;color:var(--text2);margin-top:2px;}
+.ms{font-size:10px;color:var(--text2);margin-top:4px;}
 
 /* GRIDS */
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:13px;}
@@ -201,7 +201,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
 .mbtn:hover{background:var(--sidebar2);}
 .merr{font-size:11px;color:var(--red);margin-top:7px;display:none;padding:6px 9px;background:#fff5f5;border-radius:5px;border:1px solid #fed7d7;}
 .mnote{font-size:9px;color:var(--text3);margin-top:9px;text-align:center;}
-
 </style>
 </head>
 <body>
@@ -239,10 +238,14 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
         <span class="ni-icon">⊞</span> Dashboard General
       </div>
       <div class="ni" id="nav-vacantes" onclick="goTab('vacantes','nav-vacantes')">
-        <span class="ni-icon">⚡</span> Brechas por Rotación
+        <span class="ni-icon">⚠</span> Vacantes
       </div>
-      
-      
+      <div class="ni" id="nav-supervisores" onclick="goTab('supervisores','nav-supervisores')">
+        <span class="ni-icon">◈</span> Supervisores
+      </div>
+      <div class="ni" id="nav-nuevos" onclick="goTab('nuevos','nav-nuevos')">
+        <span class="ni-icon">◉</span> Nuevos Ingresos
+      </div>
       <div class="ni" id="nav-concursos" onclick="goTab('concursos','nav-concursos')">
         <span class="ni-icon">★</span> Concursos
       </div>
@@ -257,9 +260,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
       <div class="kr"><span class="k">HC Veronica</span><span class="v vblu">163</span></div>
       <div class="kr"><span class="k">Promotores activos</span><span class="v vgrn">154</span></div>
       <div class="kr"><span class="k">Vacantes</span><span class="v vred">10</span></div>
-      <div class="kr"><span class="k">En curva &lt;45d</span><span class="v vamb">30</span></div>
-      <div class="kr"><span class="k">Nuevo ingreso &lt;15d</span><span class="v vred">8</span></div>
-      <div class="kr"><span class="k">PDV sin supervisor</span><span class="v vred">244</span></div>
+      <div class="kr"><span class="k">Nuevos &lt;90d</span><span class="v vamb">30</span></div>
+      <div class="kr"><span class="k">En curva &lt;15d</span><span class="v vred">8</span></div>
+      <div class="kr"><span class="k">Tiendas sin cob.</span><span class="v vred">244</span></div>
     </div>
     <div style="height:1px;background:rgba(255,255,255,0.07);margin:10px 6px;"></div>
     <div class="ns" style="padding-top:4px;">
@@ -315,13 +318,15 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
 
       <!-- DASHBOARD -->
       <div class="tab-content active" id="tab-dashboard">
-        <div class="mg" style="grid-template-columns:repeat(6,1fr);gap:10px;">
-          <div class="mc"><div class="ab ab-g"></div><div class="ml">Total PDV</div><div class="mv grn" id="p-pdv-val">886</div><div class="ms" id="p-pdv-sub">PDV · Bajío · S12</div></div>
-          <div class="mc"><div class="ab ab-r"></div><div class="ml" id="p-ef-lbl">Efectividad Bajío S12</div><div class="mv red" id="p-ef-val">51.8%</div><div class="ms" id="p-ef-sub">JT: Manzanarez</div></div>
-          <div class="mc"><div class="ab ab-a"></div><div class="ml" id="p-sc-lbl">Sin captura S12</div><div class="mv amb" id="p-sc-val">2,949</div><div class="ms" id="p-sc-sub">de 6,124 tareas · Bajío</div></div>
-          <div class="mc"><div class="ab ab-b"></div><div class="ml">En curva &lt;45d</div><div class="mv blu" id="p-encurva-val">30</div><div class="ms" id="p-encurva-sub">Días 16-45 · aprendizaje · Bajío</div></div>
-          <div class="mc"><div class="ab ab-a"></div><div class="ml" id="p-curva-lbl">Nuevo ingreso &lt;15d</div><div class="mv red" id="p-curva-val">8</div><div class="ms">Sin captura posible</div></div>
-          <div class="mc"><div class="ab ab-r"></div><div class="ml">Vacantes</div><div class="mv red" id="p-vac-val">6</div><div class="ms" id="p-vac-sub">Sin cubrir · Bajío</div></div>
+        <div class="mg" style="grid-template-columns:repeat(3,1fr);">
+          <div class="mc"><div class="ab ab-g"></div><div class="ml">Total PDV</div><div class="mv grn" id="p-pdv-val">1,247</div><div class="ms" id="p-pdv-sub">Puntos de venta · Bajío · S12</div></div>
+          <div class="mc"><div class="ab ab-r"></div><div class="ml" id="p-ef-lbl">Efectividad Bajío S12</div><div class="mv red" id="p-ef-val">51.8%</div><div class="ms" id="p-ef-sub">JT: Manzanarez · Zona Bajío</div></div>
+          <div class="mc"><div class="ab ab-a"></div><div class="ml" id="p-sc-lbl">Tareas sin captura S12</div><div class="mv amb" id="p-sc-val">1,420</div><div class="ms" id="p-sc-sub">Tareas no ejecutadas · Bajío</div></div>
+        </div>
+        <div class="mg" style="grid-template-columns:repeat(3,1fr);">
+          <div class="mc"><div class="ab ab-b"></div><div class="ml">Nuevos ingresos &lt;90d</div><div class="mv blu">30</div><div class="ms">19.5% del equipo Verónica</div></div>
+          <div class="mc"><div class="ab ab-a"></div><div class="ml">En curva &lt;15d</div><div class="mv amb" id="p-curva-val">8</div><div class="ms">Sin SIM activa · sin captura</div></div>
+          <div class="mc"><div class="ab ab-r"></div><div class="ml">Vacantes</div><div class="mv red" id="p-vac-val">10</div><div class="ms" id="p-vac-sub">Posiciones sin cubrir · HC: 163</div></div>
         </div>
         <div class="g2">
           <div class="panel">
@@ -340,8 +345,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
             <div class="ph"><div class="pt tr">Semáforo de KPIs</div><span class="badge br">4 críticos</span></div>
             <div class="pb">
               <div class="sr"><div class="sd" style="background:var(--red)"></div><div class="sl">Efectividad Bajío S12</div><div class="sv cr">51.8%</div><div class="sn">Sin mejora 4 sem.</div></div>
-
-              <div class="sr"><div class="sd" style="background:var(--red)"></div><div class="sl">Promotores nuevo ingreso &lt;15d</div><div class="sv cr">8 personas</div><div class="sn">nuevo ingreso activa</div></div>
+              <div class="sr"><div class="sd" style="background:var(--red)"></div><div class="sl">Rutas vacantes Gallegos</div><div class="sv cr">244 tiendas</div><div class="sn">14 rutas · NL</div></div>
+              <div class="sr"><div class="sd" style="background:var(--red)"></div><div class="sl">Promotores curva &lt;15d</div><div class="sv cr">8 personas</div><div class="sn">Sin SIM activa</div></div>
               <div class="sr"><div class="sd" style="background:var(--amber)"></div><div class="sl">Norte — en caída</div><div class="sv ca">59.5%</div><div class="sn">-8.9 pts desde S09</div></div>
               <div class="sr"><div class="sd" style="background:var(--amber)"></div><div class="sl">Falta de POP S12</div><div class="sv ca">1,966</div><div class="sn">Principal motivo</div></div>
               <div class="sr"><div class="sd" style="background:var(--green)"></div><div class="sl">Efectividad Centro / Sureste</div><div class="sv cg">80.1%</div><div class="sn">Zona líder · Centro y Sur</div></div>
@@ -351,8 +356,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
         <div class="panel">
           <div class="ph"><div class="pt tr">Alertas Operativas — Acciones Esta Semana</div><span class="badge br">4 urgentes</span></div>
           <div class="pb">
-            <div class="ar"><div class="ai air">🔴</div><div class="ac"><div class="at">244 PDV sin supervisor — Gallegos / Nuevo León</div><div class="am">14 rutas sin supervisor. RP116 (36), RP549 (22), RP138 (21). Posición de supervisor vacante — promotores pueden estar activos. Impacto: falta de seguimiento y acompañamiento. Solicitar cobertura urgente.</div></div></div>
-            <div class="ar"><div class="ai air">🔴</div><div class="ac"><div class="at">8 promotores nuevo ingreso — no pueden operar ni capturar</div><div class="am">Bastida Mata (Sup: Vega Gutierrez, 0d · RP154) · Arteaga Arroyo (Sup: Picasso Puente, 1d · RP498) · Montes Navarro (Sup: Gomez Lupercio, 2d · RP465) · Duran Rios (Sup: Lopez Quintero, 3d · RP555). Bono de concurso perdido cada día.</div></div></div>
+            <div class="ar"><div class="ai air">🔴</div><div class="ac"><div class="at">244 tiendas sin supervisor — Gallegos / Nuevo León</div><div class="am">14 rutas sin supervisor. RP116 (36), RP549 (22), RP138 (21). Posición de supervisor vacante — promotores pueden estar activos. Impacto: falta de seguimiento y acompañamiento. Solicitar cobertura urgente.</div></div></div>
+            <div class="ar"><div class="ai air">🔴</div><div class="ac"><div class="at">8 promotores sin SIM — no pueden operar ni capturar</div><div class="am">Bastida Mata (Sup: Vega Gutierrez, 0d · RP154) · Arteaga Arroyo (Sup: Picasso Puente, 1d · RP498) · Montes Navarro (Sup: Gomez Lupercio, 2d · RP465) · Duran Rios (Sup: Lopez Quintero, 3d · RP555). Bono de concurso perdido cada día.</div></div></div>
             <div class="ar"><div class="ai aia">🟡</div><div class="ac"><div class="at">Gomez Lupercio: acompañamiento urgente, no sanción</div><div class="am">36 días como supervisora (Manzanarez, Zona 252 GDL/MICH). 26.7% estructural: 3 promotores en curva + vacante RP291. Meta S13: 45-50% en equipo real.</div></div></div>
             <div class="ar"><div class="ai aia">🟡</div><div class="ac"><div class="at">Norte en caída: -8.9 pts en 4 semanas</div><div class="am">68.4% (S09) → 59.5% (S12). Caída más pronunciada del país. Monitoreo cruzado con Bajío.</div></div></div>
           </div>
@@ -361,94 +366,63 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
 
       <!-- VACANTES -->
       <div class="tab-content" id="tab-vacantes">
-
-      <!-- TICKER RUTAS VACANTES -->
-      <div style="background:#1a2540;border-radius:9px;overflow:hidden;margin-bottom:13px;">
-        <div style="display:flex;align-items:center;gap:10px;padding:8px 16px 5px;">
-          <span style="font-size:9px;font-weight:700;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.1em;">Rutas Vacantes</span>
-          <span style="font-size:9px;font-weight:700;padding:1px 7px;border-radius:8px;background:rgba(229,62,62,.2);color:#fc8181;border:1px solid rgba(229,62,62,.3);">9 rutas</span>
-          <span style="font-size:9px;color:rgba(255,255,255,.25);margin-left:auto;">Rutero 13-03-2026</span>
-        </div>
-        <div style="overflow:hidden;position:relative;padding-bottom:9px;">
-          <div style="position:absolute;top:0;bottom:0;left:0;width:50px;background:linear-gradient(to right,#1a2540,transparent);z-index:2;pointer-events:none;"></div>
-          <div style="position:absolute;top:0;bottom:0;right:0;width:50px;background:linear-gradient(to left,#1a2540,transparent);z-index:2;pointer-events:none;"></div>
-          <div id="br-ticker" style="display:flex;width:max-content;animation:brscroll 28s linear infinite;">
+        <div class="g2">
+          <div class="panel">
+            <div class="ph"><div class="pt tr">Vacantes Individuales — Evolución</div><span class="badge br">Mar10: 10</span></div>
+            <div class="pb">
+              <table class="tbl">
+                <thead><tr><th>Líder / JT</th><th>Feb24</th><th>Mar03</th><th>Mar10</th><th>% HC</th></tr></thead>
+                <tbody>
+                  <tr><td class="tdm">Total Verónica León</td><td>4</td><td>7</td><td class="cr">10</td><td class="cr">6.1%</td></tr>
+                  <tr><td class="tdm" style="padding-left:16px">↳ Gallegos Garrido (JT)</td><td>—</td><td>—</td><td class="ca">4</td><td class="ca">4.3%</td></tr>
+                  <tr><td class="tdm" style="padding-left:16px">↳ Manzanarez Urzua (JT)</td><td>—</td><td>—</td><td class="cr">6</td><td class="cr">8.7%</td></tr>
+                  <tr><td class="tdm">Lizbeth Camberos (Ref.)</td><td>5</td><td>5</td><td class="cg">2</td><td class="cg">0.8%</td></tr>
+                </tbody>
+              </table>
+              <div style="margin-top:9px;padding-top:9px;border-top:1px solid var(--border)">
+                <div style="font-size:9px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px">Historial Gallegos</div>
+                <div style="font-size:10px;color:var(--text2);line-height:1.9">Ene5-11:<b style="color:var(--red)"> 10</b> · Ene12-18:<b style="color:var(--amber)"> 5</b> · Ene19-25:<b style="color:var(--amber)"> 5</b> · Ene26-31:<b style="color:var(--amber)"> 4</b><br>Feb2-8:<b style="color:var(--amber)"> 4</b> · Feb9-15:<b style="color:var(--amber)"> 5</b> · Feb16-21:<b style="color:var(--green)"> 2</b> · Feb23-28:<b style="color:var(--amber)"> 3</b> · Mar2-8:<b style="color:var(--amber)"> 4</b></div>
+                <div style="font-size:10px;color:var(--red);margin-top:4px;font-weight:500">⚠ Nivel nunca baja a cero — rotación crónica desde enero</div>
+              </div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="ph"><div class="pt tr">Rutas sin Supervisor — Gallegos / NL</div><span class="badge br">244 tiendas · supervisión vacante</span></div>
+            <div class="pb">
+              <div class="vrow"><span><span class="vc">RP116</span>Benavides, FG, FAHO</span><span class="vn cr">36</span></div>
+              <div class="vrow"><span><span class="vc">RP549</span>Walmart, FG, Benavides</span><span class="vn cr">22</span></div>
+              <div class="vrow"><span><span class="vc">RP138</span>Benavides, Soriana, Walmart</span><span class="vn cr">21</span></div>
+              <div class="vrow"><span><span class="vc">RP481</span>Benavides, Walmart, FG</span><span class="vn cr">20</span></div>
+              <div class="vrow"><span><span class="vc">RP135</span>Benavides, FG, FAHO</span><span class="vn ca">28</span></div>
+              <div class="vrow"><span><span class="vc">RP506</span>Benavides, Walmart, Soriana</span><span class="vn ca">19</span></div>
+              <div class="vrow"><span><span class="vc">RP483</span>Benavides, Walmart, HEB</span><span class="vn ca">24</span></div>
+              <div class="vrow"><span><span class="vc">RP487</span>FG, Benavides, Walmart</span><span class="vn ca">17</span></div>
+              <div class="vrow"><span><span class="vc">RP408</span>FG, Benavides, Walmart</span><span class="vn ca">21</span></div>
+              <div class="vrow"><span><span class="vc">RP259</span>Benavides, Walmart, FG</span><span class="vn ca">18</span></div>
+              <div class="vrow"><span><span class="vc">RP320</span>Soriana, FG, Benavides</span><span class="vn ca">14</span></div>
+              <div class="vrow" style="border-bottom:none"><span><span class="vc">+3 más</span>RP021, RP117, RP530</span><span class="vn" style="color:var(--text3)">4</span></div>
+            </div>
           </div>
         </div>
-      </div>
-
-      <!-- CURVA + NUEVO INGRESO lado a lado -->
-      <div class="g2" style="margin-bottom:13px;">
-
-        <!-- Curva de aprendizaje -->
         <div class="panel">
-          <div class="ph"><div class="pt tb">Curva de aprendizaje — 15 a 45 días</div><span class="badge bb">30 promotores</span></div>
+          <div class="ph"><div class="pt tr">Supervisores con Vacantes — Mar10</div><span class="badge br">6 afectados</span></div>
           <div class="pb">
-            <table style="width:100%;border-collapse:collapse;font-size:11px;">
-              <thead><tr>
-                <th style="text-align:left;padding:5px 7px;color:#94a3b8;font-size:9px;text-transform:uppercase;background:var(--bg2);border-bottom:1px solid var(--border);">Supervisor</th>
-                <th style="text-align:left;padding:5px 7px;color:#94a3b8;font-size:9px;text-transform:uppercase;background:var(--bg2);border-bottom:1px solid var(--border);">JT</th>
-                <th style="text-align:center;padding:5px 7px;color:#94a3b8;font-size:9px;text-transform:uppercase;background:var(--bg2);border-bottom:1px solid var(--border);">En curva</th>
-                <th style="text-align:center;padding:5px 7px;color:#94a3b8;font-size:9px;text-transform:uppercase;background:var(--bg2);border-bottom:1px solid var(--border);">Nuevo ing.</th>
-              </tr></thead>
+            <table class="tbl">
+              <thead><tr><th>Supervisor</th><th>JT</th><th>Vacantes</th><th>% HC</th><th>Prioridad</th></tr></thead>
               <tbody>
-                <tr><td style="padding:6px 7px;border-bottom:1px solid var(--border);color:var(--text)">Lopez Quintero K.M.</td><td style="padding:6px 7px;border-bottom:1px solid var(--border);color:var(--blue);font-weight:600">Gallegos</td><td style="padding:6px 7px;border-bottom:1px solid var(--border);text-align:center;color:var(--amber);font-weight:600">4</td><td style="padding:6px 7px;border-bottom:1px solid var(--border);text-align:center;color:var(--red);font-weight:600">1</td></tr>
-                <tr><td style="padding:6px 7px;border-bottom:1px solid var(--border);color:var(--text)">Gutierrez Flores A.</td><td style="padding:6px 7px;border-bottom:1px solid var(--border);color:var(--blue);font-weight:600">Manzanarez</td><td style="padding:6px 7px;border-bottom:1px solid var(--border);text-align:center;color:var(--amber);font-weight:600">4</td><td style="padding:6px 7px;border-bottom:1px solid var(--border);text-align:center;color:var(--green);font-weight:600">0</td></tr>
-                <tr><td style="padding:6px 7px;border-bottom:1px solid var(--border);color:var(--text)">Gomez Lupercio L.S.</td><td style="padding:6px 7px;border-bottom:1px solid var(--border);color:var(--blue);font-weight:600">Manzanarez</td><td style="padding:6px 7px;border-bottom:1px solid var(--border);text-align:center;color:var(--amber);font-weight:600">3</td><td style="padding:6px 7px;border-bottom:1px solid var(--border);text-align:center;color:var(--red);font-weight:600">3</td></tr>
-                <tr><td style="padding:6px 7px;border-bottom:1px solid var(--border);color:var(--text)">Martinez Gonzalez M.L.</td><td style="padding:6px 7px;border-bottom:1px solid var(--border);color:var(--blue);font-weight:600">Manzanarez</td><td style="padding:6px 7px;border-bottom:1px solid var(--border);text-align:center;color:var(--amber);font-weight:600">3</td><td style="padding:6px 7px;border-bottom:1px solid var(--border);text-align:center;color:var(--red);font-weight:600">1</td></tr>
-                <tr><td style="padding:6px 7px;border-bottom:1px solid var(--border);color:var(--text)">Vega Gutierrez M.M.</td><td style="padding:6px 7px;border-bottom:1px solid var(--border);color:var(--blue);font-weight:600">Manzanarez</td><td style="padding:6px 7px;border-bottom:1px solid var(--border);text-align:center;color:var(--amber);font-weight:600">3</td><td style="padding:6px 7px;border-bottom:1px solid var(--border);text-align:center;color:var(--red);font-weight:600">1</td></tr>
-                <tr><td style="padding:6px 7px;border-bottom:1px solid var(--border);color:var(--text)">Macias Salazar C.</td><td style="padding:6px 7px;border-bottom:1px solid var(--border);color:var(--blue);font-weight:600">Gallegos</td><td style="padding:6px 7px;border-bottom:1px solid var(--border);text-align:center;color:var(--amber);font-weight:600">3</td><td style="padding:6px 7px;border-bottom:1px solid var(--border);text-align:center;color:var(--green);font-weight:600">0</td></tr>
-                <tr><td style="padding:6px 7px;color:var(--text)">Lopez Salgado E. BC</td><td style="padding:6px 7px;color:var(--blue);font-weight:600">Gallegos</td><td style="padding:6px 7px;text-align:center;color:var(--amber);font-weight:600">3</td><td style="padding:6px 7px;text-align:center;color:var(--green);font-weight:600">0</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- Nuevo ingreso <15d -->
-        <div class="panel">
-          <div class="ph"><div class="pt tr">Nuevo Ingreso — Menos de 15 días</div><span class="badge br">8 · sin captura</span></div>
-          <div class="pb">
-            <table style="width:100%;border-collapse:collapse;font-size:11px;">
-              <thead><tr>
-                <th style="text-align:left;padding:5px 7px;color:#94a3b8;font-size:9px;text-transform:uppercase;background:var(--bg2);border-bottom:1px solid var(--border);">Promotor</th>
-                <th style="text-align:left;padding:5px 7px;color:#94a3b8;font-size:9px;text-transform:uppercase;background:var(--bg2);border-bottom:1px solid var(--border);">Supervisor</th>
-                <th style="text-align:center;padding:5px 7px;color:#94a3b8;font-size:9px;text-transform:uppercase;background:var(--bg2);border-bottom:1px solid var(--border);">Días</th>
-                <th style="text-align:center;padding:5px 7px;color:#94a3b8;font-size:9px;text-transform:uppercase;background:var(--bg2);border-bottom:1px solid var(--border);">Ruta</th>
-                <th style="text-align:center;padding:5px 7px;color:#94a3b8;font-size:9px;text-transform:uppercase;background:var(--bg2);border-bottom:1px solid var(--border);">Estado</th>
-              </tr></thead>
-              <tbody>
-                <tr><td style="padding:5px 7px;border-bottom:1px solid var(--border);color:var(--text);font-weight:500">Bastida Mata A.</td><td style="padding:5px 7px;border-bottom:1px solid var(--border);color:var(--text2)">Vega Gut.</td><td style="padding:5px 7px;border-bottom:1px solid var(--border);text-align:center;color:var(--red);font-weight:700">0d</td><td style="padding:5px 7px;border-bottom:1px solid var(--border);text-align:center;color:var(--blue);font-weight:600">RP154</td><td style="padding:5px 7px;border-bottom:1px solid var(--border);text-align:center"><span style="background:#fee2e2;color:#991b1b;font-size:9px;padding:2px 6px;border-radius:4px;font-weight:600">Nuevo ingreso</span></td></tr>
-                <tr><td style="padding:5px 7px;border-bottom:1px solid var(--border);color:var(--text);font-weight:500">Arteaga Arroyo L.</td><td style="padding:5px 7px;border-bottom:1px solid var(--border);color:var(--text2)">Picasso P.</td><td style="padding:5px 7px;border-bottom:1px solid var(--border);text-align:center;color:var(--red);font-weight:700">1d</td><td style="padding:5px 7px;border-bottom:1px solid var(--border);text-align:center;color:var(--blue);font-weight:600">RP498</td><td style="padding:5px 7px;border-bottom:1px solid var(--border);text-align:center"><span style="background:#fee2e2;color:#991b1b;font-size:9px;padding:2px 6px;border-radius:4px;font-weight:600">Nuevo ingreso</span></td></tr>
-                <tr><td style="padding:5px 7px;border-bottom:1px solid var(--border);color:var(--text);font-weight:500">Montes Navarro J.</td><td style="padding:5px 7px;border-bottom:1px solid var(--border);color:var(--text2)">Gomez L.</td><td style="padding:5px 7px;border-bottom:1px solid var(--border);text-align:center;color:var(--red);font-weight:700">2d</td><td style="padding:5px 7px;border-bottom:1px solid var(--border);text-align:center;color:var(--blue);font-weight:600">RP465</td><td style="padding:5px 7px;border-bottom:1px solid var(--border);text-align:center"><span style="background:#fee2e2;color:#991b1b;font-size:9px;padding:2px 6px;border-radius:4px;font-weight:600">Nuevo ingreso</span></td></tr>
-                <tr><td style="padding:5px 7px;border-bottom:1px solid var(--border);color:var(--text);font-weight:500">Duran Rios H.</td><td style="padding:5px 7px;border-bottom:1px solid var(--border);color:var(--text2)">Lopez Q.</td><td style="padding:5px 7px;border-bottom:1px solid var(--border);text-align:center;color:var(--red);font-weight:700">3d</td><td style="padding:5px 7px;border-bottom:1px solid var(--border);text-align:center;color:var(--blue);font-weight:600">RP555</td><td style="padding:5px 7px;border-bottom:1px solid var(--border);text-align:center"><span style="background:#fee2e2;color:#991b1b;font-size:9px;padding:2px 6px;border-radius:4px;font-weight:600">Nuevo ingreso</span></td></tr>
-                <tr><td style="padding:5px 7px;border-bottom:1px solid var(--border);color:var(--text);font-weight:500">Medrano Ibarra J.</td><td style="padding:5px 7px;border-bottom:1px solid var(--border);color:var(--text2)">Gomez L.</td><td style="padding:5px 7px;border-bottom:1px solid var(--border);text-align:center;color:var(--amber);font-weight:700">8d</td><td style="padding:5px 7px;border-bottom:1px solid var(--border);text-align:center;color:var(--blue);font-weight:600">RP288</td><td style="padding:5px 7px;border-bottom:1px solid var(--border);text-align:center"><span style="background:#fef3c7;color:#92400e;font-size:9px;padding:2px 6px;border-radius:4px;font-weight:600">Curva</span></td></tr>
-                <tr><td style="padding:5px 7px;border-bottom:1px solid var(--border);color:var(--text);font-weight:500">Olveda Godinez J.</td><td style="padding:5px 7px;border-bottom:1px solid var(--border);color:var(--text2)">Gomez L.</td><td style="padding:5px 7px;border-bottom:1px solid var(--border);text-align:center;color:var(--amber);font-weight:700">9d</td><td style="padding:5px 7px;border-bottom:1px solid var(--border);text-align:center;color:var(--blue);font-weight:600">RP464</td><td style="padding:5px 7px;border-bottom:1px solid var(--border);text-align:center"><span style="background:#fef3c7;color:#92400e;font-size:9px;padding:2px 6px;border-radius:4px;font-weight:600">Curva</span></td></tr>
-                <tr><td style="padding:5px 7px;border-bottom:1px solid var(--border);color:var(--text);font-weight:500">Nuñez Sanchez E.</td><td style="padding:5px 7px;border-bottom:1px solid var(--border);color:var(--text2)">Martinez G.</td><td style="padding:5px 7px;border-bottom:1px solid var(--border);text-align:center;color:var(--amber);font-weight:700">9d</td><td style="padding:5px 7px;border-bottom:1px solid var(--border);text-align:center;color:var(--blue);font-weight:600">RP104</td><td style="padding:5px 7px;border-bottom:1px solid var(--border);text-align:center"><span style="background:#fef3c7;color:#92400e;font-size:9px;padding:2px 6px;border-radius:4px;font-weight:600">Curva</span></td></tr>
-                <tr><td style="padding:5px 7px;color:var(--text);font-weight:500">Medina Gonzalez J.</td><td style="padding:5px 7px;color:var(--text2)">Alonso P.</td><td style="padding:5px 7px;text-align:center;color:var(--amber);font-weight:700">14d</td><td style="padding:5px 7px;text-align:center;color:var(--blue);font-weight:600">RP486</td><td style="padding:5px 7px;text-align:center"><span style="background:#fef3c7;color:#92400e;font-size:9px;padding:2px 6px;border-radius:4px;font-weight:600">Curva</span></td></tr>
+                <tr><td class="tdm">Lopez Quintero Katy Marcela</td><td class="cb">Gallegos</td><td class="cr">3</td><td class="cr">21.4%</td><td><span class="pill pr">CRÍTICO</span></td></tr>
+                <tr><td class="tdm">Vega Gutierrez Maria Magdalena</td><td class="cb">Manzanarez</td><td class="cr">2</td><td class="cr">20.0%</td><td><span class="pill pr">CRÍTICO</span></td></tr>
+                <tr><td class="tdm">Gomez Lupercio Luisa Sarai</td><td class="cb">Manzanarez</td><td class="cr">2</td><td class="cr">18.2%</td><td><span class="pill pr">CRÍTICO</span></td></tr>
+                <tr><td class="tdm">Alonso Padron Jose Jesus</td><td class="cb">Manzanarez</td><td class="ca">1</td><td class="ca">7.7%</td><td><span class="pill pa">ATENCIÓN</span></td></tr>
+                <tr><td class="tdm">Chavez Alfaro Adriana Alejandra</td><td class="cb">Manzanarez</td><td class="ca">1</td><td class="ca">9.1%</td><td><span class="pill pa">ATENCIÓN</span></td></tr>
+                <tr><td class="tdm">Picasso Puente Mayra Alejandra</td><td class="cb">Gallegos</td><td class="ca">1</td><td class="ca">11.1%</td><td><span class="pill pa">ATENCIÓN</span></td></tr>
               </tbody>
             </table>
           </div>
         </div>
       </div>
 
-      <!-- GRÁFICA EVOLUCIÓN VACANTES -->
-      <div class="panel">
-        <div class="ph">
-          <div class="pt tr">Rotación histórica — Evolución de vacantes · Ene–Mar 2026</div>
-          <span class="badge br">HC: 163</span>
-        </div>
-        <div class="pb">
-          <div style="display:flex;gap:14px;margin-bottom:8px;font-size:10px;color:var(--text2);">
-            <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:3px;background:#e53e3e;border-radius:2px;display:inline-block"></span>Total</span>
-            <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:3px;background:#2563eb;border-radius:2px;display:inline-block"></span>Manzanarez</span>
-            <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:3px;background:#d97706;border-radius:2px;display:inline-block"></span>Gallegos</span>
-            <span style="display:flex;align-items:center;gap:4px;"><span style="width:8px;height:8px;border-radius:50%;background:#7c3aed;display:inline-block"></span>% Rotación</span>
-          </div>
-          <div style="position:relative;height:200px;"><canvas id="brChart"></canvas></div>
-        </div>
-      </div>
-
-<!-- SUPERVISORES -->
+      <!-- SUPERVISORES -->
       <div class="tab-content" id="tab-supervisores">
         <div class="panel">
           <div class="ph"><div class="pt tb">Efectividad WR S12 — Supervisores Bajío (Manzanarez)</div><span class="badge ba">Con contexto rutero</span></div>
@@ -457,8 +431,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
               <thead><tr><th>Supervisor</th><th>JT</th><th>Tareas</th><th>Resueltas</th><th>% Efect.</th><th>Contexto rutero</th></tr></thead>
               <tbody>
                 <tr><td class="tdm">Gomez Lupercio Luisa Sarai</td><td class="cb">Manzanarez</td><td>1,055</td><td>282</td><td class="cr">26.7% ⚠</td><td style="font-size:10px;color:var(--amber);font-weight:500">36d en puesto · 3 prom &lt;15d + vac RP291</td></tr>
-                <tr><td class="tdm">Vega Gutierrez Maria Magdalena</td><td class="cb">Manzanarez</td><td>986</td><td>472</td><td class="cr">47.9%</td><td style="font-size:10px;color:var(--text2)">3 nuevos &lt;45d · Bastida Mata 0d RP154</td></tr>
-                <tr><td class="tdm">Gutierrez Flores Armando</td><td class="cb">Manzanarez</td><td>843</td><td>463</td><td class="ca">54.9%</td><td style="font-size:10px;color:var(--text2)">4 promotores nuevos &lt;45d</td></tr>
+                <tr><td class="tdm">Vega Gutierrez Maria Magdalena</td><td class="cb">Manzanarez</td><td>986</td><td>472</td><td class="cr">47.9%</td><td style="font-size:10px;color:var(--text2)">3 nuevos &lt;90d · Bastida Mata 0d RP154</td></tr>
+                <tr><td class="tdm">Gutierrez Flores Armando</td><td class="cb">Manzanarez</td><td>843</td><td>463</td><td class="ca">54.9%</td><td style="font-size:10px;color:var(--text2)">4 promotores nuevos &lt;90d</td></tr>
                 <tr><td class="tdm">Alonso Padron Jose Jesus</td><td class="cb">Manzanarez</td><td>1,163</td><td>645</td><td class="ca">55.5%</td><td style="font-size:10px;color:var(--text2)">Medina Gonzalez 14d RP486</td></tr>
                 <tr><td class="tdm">Chavez Alfaro Adriana Alejandra</td><td class="cb">Manzanarez</td><td>982</td><td>548</td><td class="ca">55.8%</td><td style="font-size:10px;color:var(--text2)">Limon 65d RP124 · Arvizu 58d RP519</td></tr>
                 <tr><td class="tdm">Martinez Gonzalez Ma De La Luz</td><td class="cb">Manzanarez</td><td>1,095</td><td>765</td><td class="cg">69.9%</td><td style="font-size:10px;color:var(--green);font-weight:500">Mejor resultado JT Manzanarez</td></tr>
@@ -472,15 +446,15 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
       <!-- NUEVOS INGRESOS -->
       <div class="tab-content" id="tab-nuevos">
         <div class="panel" style="margin-bottom:13px">
-          <div class="ph"><div class="pt tr">Nuevo Ingreso — Menos de 15 días (S12 · 2026)</div><span class="badge br">8 · nuevo ingreso</span></div>
+          <div class="ph"><div class="pt tr">Curva Crítica — Menos de 15 días (S12 · 2026)</div><span class="badge br">8 sin SIM</span></div>
           <div class="pb">
             <table class="tbl">
               <thead><tr><th>Promotor</th><th>Supervisor</th><th>JT</th><th>Días</th><th>Ruta</th><th>Estado</th></tr></thead>
               <tbody>
                 <tr><td class="tdm">Bastida Mata Angel Jael</td><td>Vega Gutierrez M.M.</td><td class="cb">Manzanarez</td><td class="cr">0d</td><td class="cb">RP154</td><td><span class="pill pr">Sin acceso</span></td></tr>
-                <tr><td class="tdm">Arteaga Arroyo Lorena Margarita</td><td>Picasso Puente M.A.</td><td class="cb">Gallegos</td><td class="cr">1d</td><td class="cb">RP498</td><td><span class="pill pr">nuevo ingreso</span></td></tr>
-                <tr><td class="tdm">Montes Navarro Jonathan Israel</td><td>Gomez Lupercio L.S.</td><td class="cb">Manzanarez</td><td class="cr">2d</td><td class="cb">RP465</td><td><span class="pill pr">nuevo ingreso</span></td></tr>
-                <tr><td class="tdm">Duran Rios Hector Alexander</td><td>Lopez Quintero K.M.</td><td class="cb">Gallegos</td><td class="cr">3d</td><td class="cb">RP555</td><td><span class="pill pr">nuevo ingreso</span></td></tr>
+                <tr><td class="tdm">Arteaga Arroyo Lorena Margarita</td><td>Picasso Puente M.A.</td><td class="cb">Gallegos</td><td class="cr">1d</td><td class="cb">RP498</td><td><span class="pill pr">Sin SIM</span></td></tr>
+                <tr><td class="tdm">Montes Navarro Jonathan Israel</td><td>Gomez Lupercio L.S.</td><td class="cb">Manzanarez</td><td class="cr">2d</td><td class="cb">RP465</td><td><span class="pill pr">Sin SIM</span></td></tr>
+                <tr><td class="tdm">Duran Rios Hector Alexander</td><td>Lopez Quintero K.M.</td><td class="cb">Gallegos</td><td class="cr">3d</td><td class="cb">RP555</td><td><span class="pill pr">Sin SIM</span></td></tr>
                 <tr><td class="tdm">Medrano Ibarra Jenny Elizabeth</td><td>Gomez Lupercio L.S.</td><td class="cb">Manzanarez</td><td class="ca">8d</td><td class="cb">RP288</td><td><span class="pill pa">En trámite</span></td></tr>
                 <tr><td class="tdm">Olveda Godinez Juan Francisco</td><td>Gomez Lupercio L.S.</td><td class="cb">Manzanarez</td><td class="ca">9d</td><td class="cb">RP464</td><td><span class="pill pa">En trámite</span></td></tr>
                 <tr><td class="tdm">Nuñez Sanchez Erika Arlet</td><td>Martinez Gonzalez M.L.</td><td class="cb">Manzanarez</td><td class="ca">9d</td><td class="cb">RP104</td><td><span class="pill pa">En trámite</span></td></tr>
@@ -490,10 +464,10 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
           </div>
         </div>
         <div class="panel">
-          <div class="ph"><div class="pt ta">Nuevos &lt;45 días por Supervisor</div><span class="badge ba">30 en total</span></div>
+          <div class="ph"><div class="pt ta">Nuevos &lt;90 días por Supervisor</div><span class="badge ba">30 en total</span></div>
           <div class="pb">
             <table class="tbl">
-              <thead><tr><th>Supervisor</th><th>JT</th><th>Total</th><th>En curva &lt;45d</th><th>Nuevo ingreso &lt;15d</th></tr></thead>
+              <thead><tr><th>Supervisor</th><th>JT</th><th>Total</th><th>Nuevos &lt;90d</th><th>Curva &lt;15d</th></tr></thead>
               <tbody>
                 <tr><td class="tdm">Lopez Quintero Katy Marcela</td><td class="cb">Gallegos</td><td>12</td><td class="ca">4</td><td class="cr">1</td></tr>
                 <tr><td class="tdm">Gutierrez Flores Armando</td><td class="cb">Manzanarez</td><td>9</td><td class="ca">4</td><td class="cg">0</td></tr>
@@ -642,40 +616,22 @@ WR S12: Bajío=51.8%(estancada), Norte=59.5%(caída -8.9pts), Sureste=73.5%, Cen
 MOTIVOS NO EJECUCIÓN: POP=1966, Gerencia=1841, SinCaptura=1420, Inventario=1189, Festivo=764, Espacio=741.
 VACANTES: 10 individuales (Manzanarez:6, Gallegos:4). 14 rutas=244 PDV sin supervisor TODAS Gallegos NL.
 SUPERVISORES BAJÍO: GomezLupercio 26.7%(36d—ESTRUCTURAL), VegaGutierrez 47.9%, GutierrezFlores 54.9%, AlonsoPadron 55.5%, ChavezAlfaro 55.8%, MartinezGonzalez 69.9%.
-NUEVO INGRESO: 0-15d=nuevo ingreso sin captura · 15-45d=curva aprendizaje · >45d=establecido. CURVA<15d: BastidaMata(VegaGutierrez,0d,RP154), ArteagaArroyo(PicassoPuente,1d,RP498), MontesNavarro(GomezLupercio,2d,RP465), DuranRios(LopezQuintero,3d,RP555), MedranoIbarra(GomezLupercio,8d,RP288), OlvedaGodinez(GomezLupercio,9d,RP464), NuñezSanchez(MartinezGonzalez,9d,RP104), MedinaGonzalez(AlonsoPadron,14d,RP486).
+CURVA<15d: BastidaMata(VegaGutierrez,0d,RP154), ArteagaArroyo(PicassoPuente,1d,RP498), MontesNavarro(GomezLupercio,2d,RP465), DuranRios(LopezQuintero,3d,RP555), MedranoIbarra(GomezLupercio,8d,RP288), OlvedaGodinez(GomezLupercio,9d,RP464), NuñezSanchez(MartinezGonzalez,9d,RP104), MedinaGonzalez(AlonsoPadron,14d,RP486).
 CONCURSOS: VeranoOTC+Suerox(feb-ago), FeriaBelleza(cierra26abr), Espectacularidad(mar-ago,$1600/promotor). IslaPOP: Gallegos=2,Manzanarez=1.
 REGLAS: Menciona supervisor al citar promotor. GomezLupercio=acompañamiento no sanción. Máx 3 acciones. Semáforo 🔴🟡🟢.`;
 
 // ── Datos Dashboard ───────────────────────────────────────────
 const WR = {
-  // Datos reales del WR — rutero 13-Mar-2026
-  // bajio=Manzanarez · norte=Gallegos · todas=T.Nacional(4 zonas)
-  // curva = promotores <15d (nuevo ingreso, sin captura) · nuevos <45d = en curva aprendizaje
-  S12:{ bajio:{ef:51.8,vac:6, curva:8, encurva:22,sc:2949,sol:3175, nosol:2949, tot:6124,  jt:'Manzanarez'},
-        norte:{ef:59.5,vac:4, curva:2, encurva:13,sc:2999,sol:4404, nosol:2999, tot:7403,  jt:'Gallegos'},
-        todas:{ef:65.2,vac:12,curva:10,encurva:35,sc:8410,sol:15767,nosol:8410, tot:24177, jt:'4 JT · Nacional'} },
-  S11:{ bajio:{ef:50.1,vac:5, curva:4, encurva:18,sc:3026,sol:3042, nosol:3026, tot:6068,  jt:'Manzanarez'},
-        norte:{ef:63.7,vac:3, curva:1, encurva:10,sc:2572,sol:4506, nosol:2572, tot:7078,  jt:'Gallegos'},
-        todas:{ef:66.1,vac:10,curva:6, encurva:28,sc:8040,sol:15654,nosol:8040, tot:23694, jt:'4 JT · Nacional'} },
-  S10:{ bajio:{ef:48.3,vac:4, curva:2, encurva:15,sc:3097,sol:2894, nosol:3097, tot:5991,  jt:'Manzanarez'},
-        norte:{ef:60.6,vac:3, curva:1, encurva:9, sc:2812,sol:4330, nosol:2812, tot:7142,  jt:'Gallegos'},
-        todas:{ef:64.3,vac:9, curva:4, encurva:24,sc:8178,sol:14727,nosol:8178, tot:22905, jt:'4 JT · Nacional'} },
-  S09:{ bajio:{ef:51.3,vac:3, curva:1, encurva:12,sc:2785,sol:2936, nosol:2785, tot:5721,  jt:'Manzanarez'},
-        norte:{ef:68.4,vac:1, curva:0, encurva:7, sc:2311,sol:5002, nosol:2311, tot:7313,  jt:'Gallegos'},
-        todas:{ef:67.8,vac:7, curva:2, encurva:19,sc:7276,sol:15327,nosol:7276, tot:22603, jt:'4 JT · Nacional'} },
+  S12:{ bajio:{ef:51.8,vac:6,curva:8,sc:649,jt:'Manzanarez'},   norte:{ef:59.5,vac:4,curva:2,sc:771,jt:'Gallegos'},   todas:{ef:65.2,vac:10,curva:8,sc:1420,jt:'Ambos JT'} },
+  S11:{ bajio:{ef:50.1,vac:5,curva:4,sc:520,jt:'Manzanarez'},   norte:{ef:63.7,vac:3,curva:1,sc:392,jt:'Gallegos'},   todas:{ef:66.1,vac:8, curva:5,sc:912, jt:'Ambos JT'} },
+  S10:{ bajio:{ef:48.3,vac:4,curva:2,sc:580,jt:'Manzanarez'},   norte:{ef:60.6,vac:3,curva:1,sc:537,jt:'Gallegos'},   todas:{ef:64.3,vac:7, curva:3,sc:1117,jt:'Ambos JT'} },
+  S09:{ bajio:{ef:51.3,vac:3,curva:1,sc:600,jt:'Manzanarez'},   norte:{ef:68.4,vac:1,curva:0,sc:585,jt:'Gallegos'},   todas:{ef:67.8,vac:4, curva:2,sc:1185,jt:'Ambos JT'} },
 };
 const PDV = {
-  // Datos reales del rutero 13-Mar-2026
-  // Veronica: 2,368 PDV (Bajio 886 + Norte 1,482) · Lizbeth: 1,844 · Nacional: 4,212
-  // Fragua (FDC) no comparte venta · Solo AS y Benavides tienen venta mensual
-  S12:{ bajio:886,  norte:1482, todas:4212,
-        venta_bajio:31612551, venta_norte:42229043, venta_veronica:73841594, venta_nacional:192423878 },
-  S11:{ bajio:886,  norte:1482, todas:4212,
-        venta_bajio:31612551, venta_norte:42229043, venta_veronica:73841594, venta_nacional:192423878 },
-  S10:{ bajio:886,  norte:1482, todas:4212,
-        venta_bajio:31612551, venta_norte:42229043, venta_veronica:73841594, venta_nacional:192423878 },
-  S09:{ bajio:886,  norte:1482, todas:4212,
-        venta_bajio:31612551, venta_norte:42229043, venta_veronica:73841594, venta_nacional:192423878 },
+  S12:{ bajio:1247, norte:1134, todas:2381 },
+  S11:{ bajio:1230, norte:1118, todas:2348 },
+  S10:{ bajio:1215, norte:1102, todas:2317 },
+  S09:{ bajio:1198, norte:1089, todas:2287 },
 };
 
 // ── Datos Cadenas ─────────────────────────────────────────────
@@ -705,7 +661,7 @@ window.addEventListener('DOMContentLoaded', () => {
   try { const k=sessionStorage.getItem('vero_k'); if(k&&k.startsWith('sk-ant')) APIKEY=k; } catch(e){}
   document.getElementById('modal').style.display = 'none';
   document.getElementById('appShell').style.display = 'flex';
-  addBot('Bienvenida **Verónica** 👋 Soy **V.E.R.O** lista.\n\n🔴 **244 PDV sin supervisor** — Gallegos / NL\n🔴 **8 promotores nuevo ingreso** — sin captura\n🔴 **Bajío 51.8%** — estancada 4 semanas\n🟡 **Norte cayendo** — -8.9 pts desde S09\n\n💡 Escribe una pregunta o usa las sugerencias del chat.');
+  addBot('Bienvenida **Verónica** 👋 Soy **V.E.R.O** lista.\n\n🔴 **244 PDV sin supervisor** — Gallegos / NL\n🔴 **8 promotores sin SIM** — sin captura\n🔴 **Bajío 51.8%** — estancada 4 semanas\n🟡 **Norte cayendo** — -8.9 pts desde S09\n\n💡 Escribe una pregunta o usa las sugerencias del chat.');
   initWRChart();
   updateDashboard();
 });
@@ -723,7 +679,6 @@ function goTab(tabId, navId) {
   if(tab) tab.classList.add('active');
   if(nav) nav.classList.add('active');
   if(tabId==='cadenas') setTimeout(renderCadenas, 60);
-  if(tabId==='vacantes') setTimeout(()=>{initBRTicker();initBRChart();}, 60);
 }
 
 // ── Semana — actualiza dashboard Y cadenas si está activo ─────
@@ -751,44 +706,30 @@ function updateDashboard() {
   const d = WR[activeWeek]?.[activeZone] || WR.S12.bajio;
   const p = PDV[activeWeek]?.[activeZone] || 1247;
   const zl = activeZone==='bajio'?'Bajío':activeZone==='norte'?'Norte':'T. Nacional';
-  // T.Nacional subtitle clarification
   const ec = d.ef>=70?'grn':d.ef>=60?'amb':'red';
 
   // PDV total
   set('p-pdv-val', p.toLocaleString());
-  const ventaKey = activeZone==='bajio'?'venta_bajio':activeZone==='norte'?'venta_norte':'venta_nacional';
-  const venta = PDV[activeWeek]?.[ventaKey];
-  const ventaFmt = venta ? '$'+(venta/1000000).toFixed(1)+'M/mes (AS+Ben)' : '';
-  set('p-pdv-sub', 'Puntos de venta · '+zl+(ventaFmt?' · '+ventaFmt:''));
+  set('p-pdv-sub', 'Puntos de venta · '+zl+' · '+activeWeek);
 
   // Efectividad
   set('p-ef-lbl', 'Efectividad '+zl+' '+activeWeek);
   const ev=document.getElementById('p-ef-val');
   if(ev){ev.textContent=d.ef+'%'; ev.className='mv '+ec;}
-  set('p-ef-sub', activeZone==='todas' ? '4 JT · Bajío + Norte + Centro + Sureste' : 'JT: '+d.jt+' · Zona '+zl);
+  set('p-ef-sub', 'JT: '+d.jt+' · Zona '+zl);
 
   // Sin captura
   set('p-sc-lbl', 'Tareas sin captura '+activeWeek);
-  // Mostrar no-solucionadas reales
-  const scVal = d.nosol || d.sc;
-  set('p-sc-val', (scVal).toLocaleString());
-  set('p-sc-sub', 'De '+( d.tot||'—').toLocaleString()+' tareas totales · '+zl);
+  set('p-sc-val', d.sc.toLocaleString());
+  set('p-sc-sub', 'Tareas no ejecutadas · '+zl);
 
   // Curva
-  // Nuevo ingreso <15d
   const cv=document.getElementById('p-curva-val');
-  if(cv){cv.textContent=d.curva; cv.className='mv '+(d.curva>0?'red':'grn');}
-  const cvlbl=document.getElementById('p-curva-lbl');
-  if(cvlbl) cvlbl.textContent='Nuevo ingreso <15d';
-  // En curva 15-45d
-  const ecv=document.getElementById('p-encurva-val');
-  const ecs=document.getElementById('p-encurva-sub');
-  if(ecv){ecv.textContent=d.encurva||'—';}
-  if(ecs){ecs.textContent='Días 16-45 · aprendizaje · '+zl;}
+  if(cv){cv.textContent=d.curva; cv.className='mv '+(d.curva>0?'amb':'grn');}
 
   // Vacantes
   set('p-vac-val', d.vac);
-  set('p-vac-sub', activeZone==='todas' ? 'Vacantes 4 zonas · HC nacional' : 'Posiciones sin cubrir · '+zl);
+  set('p-vac-sub', 'Posiciones sin cubrir · '+zl);
 
   // Topbar meta
   const meta=document.querySelector('.tb-m');
@@ -860,7 +801,6 @@ function renderCadenas() {
   const efPrev = pct(sprev,nprev);
   const delta  = efCur - efPrev;
   const zl = activeZone==='bajio'?'Bajío':activeZone==='norte'?'Norte':'T. Nacional';
-  // T.Nacional subtitle clarification
   const cadLabel = activeCadena==='todas'?'Todas':activeCadena.charAt(0).toUpperCase()+activeCadena.slice(1);
   const dColor = delta>=0?'#059669':'#e53e3e';
 
@@ -1035,64 +975,6 @@ async function sendMsg(){
 // Init cadenas cuando se carga la página por si ya está en ese tab
 window.addEventListener('load', () => {
   initWRChart();
-  initBRTicker();
-  initBRChart();
 });
-
-// ── Brechas por Rotación — Ticker ─────────────────────────────
-function initBRTicker() {
-  const el = document.getElementById('br-ticker');
-  if(!el) return;
-  const VACS = [
-    {ruta:'RP147',    sup:'Alonso Padron J.J.',  jt:'Manzanarez', zona:'Bajío'},
-    {ruta:'RP149',    sup:'Vega Gutierrez M.M.', jt:'Manzanarez', zona:'Bajío'},
-    {ruta:'RP175',    sup:'Lopez Quintero K.M.', jt:'Gallegos',   zona:'Norte'},
-    {ruta:'RP276',    sup:'Chavez Alfaro A.A.',  jt:'Manzanarez', zona:'Bajío'},
-    {ruta:'RP291',    sup:'Gomez Lupercio L.S.', jt:'Manzanarez', zona:'Bajío'},
-    {ruta:'RP460',    sup:'Vega Gutierrez M.M.', jt:'Manzanarez', zona:'Bajío'},
-    {ruta:'RP494',    sup:'Lopez Quintero K.M.', jt:'Gallegos',   zona:'Norte'},
-    {ruta:'RP536',    sup:'Lopez Quintero K.M.', jt:'Gallegos',   zona:'Norte'},
-    {ruta:'RUTA NVA4',sup:'Lopez Salgado E.',    jt:'Gallegos',   zona:'Norte'},
-  ];
-  const html = VACS.map(v=>`<div style="display:flex;flex-direction:column;justify-content:center;padding:4px 20px;border-right:1px solid rgba(255,255,255,.07);min-width:150px;cursor:pointer;" onmouseenter="this.style.background='rgba(255,255,255,.04)'" onmouseleave="this.style.background=''">
-    <div style="display:flex;align-items:center;gap:6px;"><div style="width:5px;height:5px;border-radius:50%;background:#fc8181;flex-shrink:0;"></div><span style="font-size:12px;font-weight:700;color:#fff;">${v.ruta}</span></div>
-    <div style="font-size:9px;color:rgba(255,255,255,.4);margin-top:2px;padding-left:11px;">${v.sup} · ${v.jt} · ${v.zona}</div>
-  </div>`).join('');
-  el.innerHTML = html + html;
-}
-
-// ── Brechas por Rotación — Gráfica montaña ────────────────────
-function initBRChart() {
-  const ctx = document.getElementById('brChart');
-  if(!ctx || typeof Chart==='undefined') return;
-  const labels = ['05-11 Ene','12-18 Ene','19-25 Ene','26-31 Ene','16-20 Feb','23-28 Feb','02-08 Mar','13-Mar'];
-  const total  = [10,9,7,6,4,7,10,9];
-  const manz   = [5,4,2,2,2,4,4,5];
-  const gall   = [5,5,5,4,2,3,4,4];
-  const pct    = [6.2,5.6,4.3,3.7,2.5,4.3,6.1,5.5];
-  new Chart(ctx, {
-    type:'line',
-    data:{labels, datasets:[
-      {label:'Total',      data:total, borderColor:'#e53e3e', backgroundColor:'rgba(229,62,62,0.09)', fill:true,  tension:0.4, pointRadius:4, pointBackgroundColor:'#e53e3e', pointBorderColor:'#fff', pointBorderWidth:2,   borderWidth:2.5, yAxisID:'y'},
-      {label:'Manzanarez', data:manz,  borderColor:'#2563eb', backgroundColor:'rgba(37,99,235,0.04)', fill:true,  tension:0.4, pointRadius:3, pointBackgroundColor:'#2563eb', pointBorderColor:'#fff', pointBorderWidth:1.5, borderWidth:1.5, borderDash:[4,3], yAxisID:'y'},
-      {label:'Gallegos',   data:gall,  borderColor:'#d97706', backgroundColor:'rgba(217,119,6,0.04)', fill:true,  tension:0.4, pointRadius:3, pointBackgroundColor:'#d97706', pointBorderColor:'#fff', pointBorderWidth:1.5, borderWidth:1.5, borderDash:[4,3], yAxisID:'y'},
-      {label:'% Rotación', data:pct,   borderColor:'#7c3aed', backgroundColor:'transparent',          fill:false, tension:0.4, pointRadius:4, pointBackgroundColor:'#7c3aed', pointBorderColor:'#fff', pointBorderWidth:2,   borderWidth:2,   borderDash:[2,2], yAxisID:'y2'},
-    ]},
-    options:{
-      responsive:true, maintainAspectRatio:false,
-      interaction:{mode:'index',intersect:false},
-      plugins:{
-        legend:{display:false},
-        tooltip:{callbacks:{label:c=>c.dataset.label==='% Rotación'?'% Rotación: '+c.parsed.y.toFixed(1)+'%':c.dataset.label+': '+c.parsed.y+' vacantes'}}
-      },
-      scales:{
-        x:{grid:{display:false}, ticks:{font:{size:9}, color:'#94a3b8', maxRotation:30}},
-        y:{min:0, max:14, grid:{color:'#f1f3f8'}, ticks:{font:{size:9}, color:'#94a3b8', stepSize:2, callback:v=>v+' vac'}},
-        y2:{position:'right', min:0, max:10, grid:{display:false}, ticks:{font:{size:9}, color:'#7c3aed', callback:v=>v+'%'}}
-      }
-    }
-  });
-}
 </script>
 </body>
-</html>
