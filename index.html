@@ -55,10 +55,10 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
 .tb-t{font-family:var(--sans);font-weight:700;font-size:14px;color:var(--text);letter-spacing:-.3px;}
 .tb-m{font-size:10px;color:var(--text2);margin-top:1px;}
 .tb-r{display:flex;align-items:center;gap:7px;}
-.zchip{padding:4px 11px;border-radius:20px;font-size:10px;border:1.5px solid var(--border2);color:var(--text2);cursor:pointer;transition:all .15s;background:var(--bg2);font-weight:500;}
+.zchip{padding:2px 7px;border-radius:10px;font-size:8px;border:1.5px solid var(--border2);color:var(--text2);cursor:pointer;transition:all .15s;background:var(--bg2);font-weight:500;}
 .zchip:hover{border-color:var(--accent);color:var(--accent);}
 .zchip.active{border-color:var(--accent);color:var(--accent);background:rgba(14,169,110,.06);}
-.wtag{font-size:10px;padding:4px 9px;border-radius:5px;background:var(--sidebar);color:#fff;font-weight:600;}
+.wtag{font-size:8px;padding:2px 6px;border-radius:4px;background:var(--sidebar);color:#fff;font-weight:700;cursor:pointer;border:none;}
 
 /* CONTENT */
 .content{flex:1;overflow-y:auto;padding:18px 22px;min-height:0;}
@@ -254,6 +254,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
       </div>
     </div>
 
+    <div style="height:1px;background:rgba(255,255,255,0.07);margin:10px 6px;"></div>
     <div class="kpi-s">
       <div class="kpi-sl">S12 · Resumen</div>
       <div class="kr"><span class="k">HC Veronica</span><span class="v vblu">163</span></div>
@@ -263,7 +264,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
       <div class="kr"><span class="k">En curva &lt;15d</span><span class="v vred">8</span></div>
       <div class="kr"><span class="k">Tiendas sin cob.</span><span class="v vred">244</span></div>
     </div>
-    <div class="ns">
+    <div style="height:1px;background:rgba(255,255,255,0.07);margin:10px 6px;"></div>
+    <div class="ns" style="padding-top:4px;">
       <div class="ng">Consultar zona al chat</div>
       <div class="ni" onclick="fill('Cuál es el estado actual de la zona Bajío y qué acciones urgentes necesito tomar esta semana?')">
         <span class="ni-icon" style="color:#fc8181">●</span> Bajío
@@ -316,26 +318,27 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh
 
       <!-- DASHBOARD -->
       <div class="tab-content active" id="tab-dashboard">
-        <div class="mg">
-          <div class="mc"><div class="ab ab-r"></div><div class="ml">Efectividad Bajío S12</div><div class="mv red">51.8%</div><div class="ms">Sin mejora 4 semanas · JT: Manzanarez · Zona Bajío</div></div>
-          <div class="mc"><div class="ab ab-r"></div><div class="ml">Vacantes activas</div><div class="mv red">10</div><div class="ms">Promotores vacantes · HC autorizado: 163</div></div>
-          <div class="mc"><div class="ab ab-r"></div><div class="ml">Supervisión Vacante</div><div class="mv red">244</div><div class="ms">PDV Zona Norte · posición de supervisor vacante · Gallegos</div></div>
-          <div class="mc"><div class="ab ab-a"></div><div class="ml">En curva crítica &lt;15d</div><div class="mv amb">8</div><div class="ms">Promotores sin SIM activa · sin captura posible</div></div>
+        <div class="mg" style="grid-template-columns:repeat(3,1fr);">
+          <div class="mc"><div class="ab ab-g"></div><div class="ml">Total PDV</div><div class="mv grn" id="p-pdv-val">1,247</div><div class="ms" id="p-pdv-sub">Puntos de venta · Bajío · S12</div></div>
+          <div class="mc"><div class="ab ab-r"></div><div class="ml" id="p-ef-lbl">Efectividad Bajío S12</div><div class="mv red" id="p-ef-val">51.8%</div><div class="ms" id="p-ef-sub">JT: Manzanarez · Zona Bajío</div></div>
+          <div class="mc"><div class="ab ab-a"></div><div class="ml" id="p-sc-lbl">Tareas sin captura S12</div><div class="mv amb" id="p-sc-val">1,420</div><div class="ms" id="p-sc-sub">Tareas no ejecutadas · Bajío</div></div>
         </div>
-        <div class="mg">
-          <div class="mc"><div class="ab ab-a"></div><div class="ml">Sin captura S12</div><div class="mv amb">1,420</div><div class="ms">Tareas no ejecutadas</div></div>
-          <div class="mc"><div class="ab ab-a"></div><div class="ml">Falta de POP S12</div><div class="mv amb">1,966</div><div class="ms">Principal motivo nacional</div></div>
+        <div class="mg" style="grid-template-columns:repeat(3,1fr);">
           <div class="mc"><div class="ab ab-b"></div><div class="ml">Nuevos ingresos &lt;90d</div><div class="mv blu">30</div><div class="ms">19.5% del equipo Verónica</div></div>
-          <div class="mc"><div class="ab ab-g"></div><div class="ml">Efectividad Centro / Sureste</div><div class="mv grn">80.1%</div><div class="ms">Zona líder · Centro y Sur · Lizbeth Camberos</div></div>
+          <div class="mc"><div class="ab ab-a"></div><div class="ml">En curva &lt;15d</div><div class="mv amb" id="p-curva-val">8</div><div class="ms">Sin SIM activa · sin captura</div></div>
+          <div class="mc"><div class="ab ab-r"></div><div class="ml">Vacantes</div><div class="mv red" id="p-vac-val">10</div><div class="ms" id="p-vac-sub">Posiciones sin cubrir · HC: 163</div></div>
         </div>
         <div class="g2">
           <div class="panel">
-            <div class="ph"><div class="pt tb">WR por Zona — S09 a S12</div><span class="badge ba">Tendencia</span></div>
+            <div class="ph"><div class="pt tb">WR por Zona — Tendencia S09 a S12</div><span class="badge ba">4 zonas</span></div>
             <div class="pb">
-              <div class="pr-row"><div class="pr-hdr"><span class="pr-lbl">Bajío <span style="color:var(--text3);font-size:9px">51.3→48.3→50.1→51.8%</span></span><span class="pr-val cr">51.8%</span></div><div class="pr-track"><div class="pr-fill pfr" style="width:51.8%"></div></div></div>
-              <div class="pr-row"><div class="pr-hdr"><span class="pr-lbl">Norte <span style="color:var(--text3);font-size:9px">68.4→60.6→63.7→59.5%</span></span><span class="pr-val ca">59.5%</span></div><div class="pr-track"><div class="pr-fill pfa" style="width:59.5%"></div></div></div>
-              <div class="pr-row"><div class="pr-hdr"><span class="pr-lbl">Sureste <span style="color:var(--text3);font-size:9px">71.7→72.5→73.5→73.5%</span></span><span class="pr-val cg">73.5%</span></div><div class="pr-track"><div class="pr-fill pfg" style="width:73.5%"></div></div></div>
-              <div class="pr-row" style="margin-bottom:0"><div class="pr-hdr"><span class="pr-lbl">Centro <span style="color:var(--text3);font-size:9px">82.2→80.8→80.0→80.1%</span></span><span class="pr-val cb">80.1%</span></div><div class="pr-track"><div class="pr-fill pfb" style="width:80.1%"></div></div></div>
+              <div style="display:flex;gap:10px;margin-bottom:8px;flex-wrap:wrap;">
+                <span style="display:flex;align-items:center;gap:3px;font-size:9px;color:var(--text2)"><span style="width:8px;height:8px;border-radius:2px;background:var(--red);display:inline-block"></span>Bajío</span>
+                <span style="display:flex;align-items:center;gap:3px;font-size:9px;color:var(--text2)"><span style="width:8px;height:8px;border-radius:2px;background:var(--amber);display:inline-block"></span>Norte</span>
+                <span style="display:flex;align-items:center;gap:3px;font-size:9px;color:var(--text2)"><span style="width:8px;height:8px;border-radius:2px;background:var(--green);display:inline-block"></span>Sureste</span>
+                <span style="display:flex;align-items:center;gap:3px;font-size:9px;color:var(--text2)"><span style="width:8px;height:8px;border-radius:2px;background:var(--blue);display:inline-block"></span>Centro</span>
+              </div>
+              <div style="position:relative;height:160px;"><canvas id="wrLineChart"></canvas></div>
             </div>
           </div>
           <div class="panel">
@@ -966,6 +969,13 @@ function renderCadenas() {
 
 
 
+
+const PDV_DATA = {
+  S12: { bajio:1247, norte:1134, todas:2381 },
+  S11: { bajio:1230, norte:1118, todas:2348 },
+  S10: { bajio:1215, norte:1102, todas:2317 },
+  S09: { bajio:1198, norte:1089, todas:2287 },
+};
 // ── Datos por Semana y Zona ─────────────────────────────────
 const WR_DATA = {
   // BAJÍO = JT Manzanarez Urzua Cristopher Emmanuel
@@ -1031,41 +1041,37 @@ function updateDashboard() {
   const cards = document.querySelectorAll('#tab-dashboard .mc');
   if (cards.length >= 8) {
     // Card 1: Efectividad
+    // PDV total
+    const pdvEl = document.getElementById('p-pdv-val');
+    const pdvSub = document.getElementById('p-pdv-sub');
+    if (pdvEl) { pdvEl.textContent = (PDV_DATA[activeWeek]?.[activeZone] || PDV_DATA[activeWeek]?.todas || 2381).toLocaleString(); }
+    if (pdvSub) { pdvSub.textContent = 'Puntos de venta · ' + zoneLabel + ' · ' + activeWeek; }
+    // Efectividad
     cards[0].querySelector('.mv').textContent = d.ef + '%';
     cards[0].querySelector('.mv').className = 'mv ' + efClass;
     cards[0].querySelector('.ml').textContent = 'Efectividad ' + zoneLabel + ' ' + activeWeek;
-    cards[0].querySelector('.ms').textContent = 'JT: ' + jtLabel + '';
+    cards[0].querySelector('.ms').textContent = 'JT: ' + jtLabel;
 
-    // Card 2: Vacantes — promotores, no PDV
-    cards[1].querySelector('.mv').textContent = d.vac_prom;
-    cards[1].querySelector('.mv').className = 'mv red';
-    cards[1].querySelector('.ml').textContent = 'Promotores vacantes';
-    cards[1].querySelector('.ms').textContent = 'Posiciones sin cubrir · ' + zoneLabel + ' · ' + activeWeek;
+    // Usar IDs directos para las nuevas tarjetas
+    const pdvEl2 = document.getElementById('p-pdv-val');
+    const pdvSub2 = document.getElementById('p-pdv-sub');
+    if (pdvEl2) pdvEl2.textContent = (PDV_DATA[activeWeek]?.[activeZone === 'bajio' ? 'bajio' : activeZone === 'norte' ? 'norte' : 'todas'] || 2381).toLocaleString();
+    if (pdvSub2) pdvSub2.textContent = 'Puntos de venta · ' + zoneLabel + ' · ' + activeWeek;
 
-    // Card 3: Supervision vacante — PDV de Norte/Gallegos
-    const supLabel = d.sup_vac > 0 ? d.sup_vac + ' PDV' : '0 PDV';
-    cards[2].querySelector('.mv').textContent = d.sup_vac;
-    cards[2].querySelector('.mv').className = d.sup_vac > 0 ? 'mv red' : 'mv grn';
-    cards[2].querySelector('.ml').textContent = 'PDV sin supervisor';
-    cards[2].querySelector('.ms').textContent = d.sup_vac > 0
-      ? 'Zona Norte · Gallegos · posición supervisor vacante'
-      : 'Sin rutas vacantes de supervisor en esta zona';
+    const scEl = document.getElementById('p-sc-val');
+    const scLbl = document.getElementById('p-sc-lbl');
+    const scSub = document.getElementById('p-sc-sub');
+    if (scEl) scEl.textContent = d.sincap.toLocaleString();
+    if (scLbl) scLbl.textContent = 'Tareas sin captura ' + activeWeek;
+    if (scSub) scSub.textContent = 'Tareas no ejecutadas · ' + zoneLabel;
 
-    // Card 4: Curva — promotores
-    cards[3].querySelector('.mv').textContent = d.curva_prom;
-    cards[3].querySelector('.mv').className = d.curva_prom > 0 ? 'mv amb' : 'mv grn';
-    cards[3].querySelector('.ml').textContent = 'Promotores en curva <15d';
-    cards[3].querySelector('.ms').textContent = 'Sin SIM activa · sin captura posible · ' + zoneLabel;
+    const curvaEl = document.getElementById('p-curva-val');
+    if (curvaEl) { curvaEl.textContent = d.curva_prom; curvaEl.className = d.curva_prom > 0 ? 'mv amb' : 'mv grn'; }
 
-    // Card 5: Sin captura — tareas
-    cards[4].querySelector('.mv').textContent = d.sincap.toLocaleString();
-    cards[4].querySelector('.ml').textContent = 'Tareas sin captura ' + activeWeek;
-    cards[4].querySelector('.ms').textContent = 'Tareas no ejecutadas · ' + zoneLabel;
-
-    // Card 6: Falta POP — tareas
-    cards[5].querySelector('.mv').textContent = d.pop.toLocaleString();
-    cards[5].querySelector('.ml').textContent = 'Falta de POP ' + activeWeek;
-    cards[5].querySelector('.ms').textContent = 'Principal motivo de no ejecución · ' + zoneLabel;
+    const vacEl = document.getElementById('p-vac-val');
+    const vacSub = document.getElementById('p-vac-sub');
+    if (vacEl) vacEl.textContent = d.vac_prom;
+    if (vacSub) vacSub.textContent = 'Posiciones sin cubrir · ' + zoneLabel;
   }
 
   // Update progress bars
@@ -1131,5 +1137,33 @@ window.addEventListener('load', () => {
   }
 });
 </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+window.addEventListener('load', function() {
+  const ctx = document.getElementById('wrLineChart');
+  if (ctx) {
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['S09','S10','S11','S12'],
+        datasets: [
+          {label:'Bajío',   data:[51.3,48.3,50.1,51.8], borderColor:'#e53e3e', tension:0.3, pointRadius:1.8, pointBackgroundColor:'#e53e3e', borderWidth:2, fill:false, backgroundColor:'transparent'},
+          {label:'Norte',   data:[68.4,60.6,63.7,59.5], borderColor:'#d97706', tension:0.3, pointRadius:1.8, pointBackgroundColor:'#d97706', borderWidth:2, fill:false, backgroundColor:'transparent'},
+          {label:'Sureste', data:[71.7,72.5,73.5,73.5], borderColor:'#059669', tension:0.3, pointRadius:1.8, pointBackgroundColor:'#059669', borderWidth:2, fill:false, backgroundColor:'transparent'},
+          {label:'Centro',  data:[82.2,80.8,80.0,80.1], borderColor:'#2563eb', tension:0.3, pointRadius:1.8, pointBackgroundColor:'#2563eb', borderWidth:2, fill:false, backgroundColor:'transparent'},
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend:{display:false}, tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.parsed.y+'%'}} },
+        scales: {
+          x: { grid:{display:false}, ticks:{font:{size:9}, color:'#94a3b8'} },
+          y: { min:40, max:90, grid:{color:'#f1f3f8'}, ticks:{font:{size:9}, color:'#94a3b8', callback:v=>v+'%'} }
+        }
+      }
+    });
+  }
+});
+</script>
 </body>
-</html>
